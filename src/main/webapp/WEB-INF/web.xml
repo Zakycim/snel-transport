@@ -16,6 +16,18 @@
   	<description></description>
   	<servlet-class>TestCtrl</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>OrderController</servlet-name>
+  	<display-name>OrderController</display-name>
+  	<description></description>
+  	<servlet-class>controllers.OrderController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>SampleCtrl</servlet-name>
+  	<display-name>SampleCtrl</display-name>
+  	<description></description>
+  	<servlet-class>controllers.SampleCtrl</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>TestCtrk</servlet-name>
   	<url-pattern>/TestCtrk</url-pattern>
@@ -23,5 +35,13 @@
   <servlet-mapping>
   	<servlet-name>TestCtrl</servlet-name>
   	<url-pattern>/TestCtrl</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>OrderController</servlet-name>
+  	<url-pattern>/OrderController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>SampleCtrl</servlet-name>
+  	<url-pattern>/SampleCtrl</url-pattern>
   </servlet-mapping>
 </web-app>
