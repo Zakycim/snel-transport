@@ -2,8 +2,10 @@
 package nl.cimsolutions.snel_transport.controllers;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,12 +15,15 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.cimsolutions.snel_transport.models.Order;
+import nl.cimsolutions.snel_transport.models.OrderLine;
 import nl.cimsolutions.snel_transport.services.OrderFacade;
+import nl.cimsolutions.snel_transport.services.OrderLineFacade;
 
 /**
  * Root resource (exposed at "orders" path)
@@ -55,7 +60,6 @@ public class OrderController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(Order data) {
-        System.out.println("dataa "+ data.getName());
         Order order = new Order();
         order.setName(data.getName());
         
@@ -78,26 +82,45 @@ public class OrderController {
         
         Order newlyOrder = new Order();
         newlyOrder = orderFacade.create(order);
-        
-//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
-//        EntityManager em = emf.createEntityManager();
-//        
-//        EntityTransaction tx = em.getTransaction();
-//        tx.begin();
-//        em.persist(order);
-//        em.flush();
-//        tx.commit();
-//        em.close();
-//        emf.close();
-        
-        
-//        JsonObject obj = Json.createObjectBuilder().
-//                add("message", "Your order has been created.").
-//                add("id", order.getId()).
-//                add("name", data.getString("name")).
-//                build();
-       
-//        return Response.status(Response.Status.CREATED).entity(obj).build();   
+         
         return Response.status(Response.Status.CREATED).entity(newlyOrder).build();      
+    }
+    
+    
+    @POST
+    @Path("/orderlines")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addOrderLine(OrderLine[] data) {
+         
+        System.out.println("ye "+ data);
+        // Print all the array elements
+        for (int i = 0; i < data.length; i++) {
+           System.out.println(data[i].getOrderId() + " qwe");
+            OrderLine orderLine = new OrderLine();
+            orderLine.setOrderId(data[i].getOrderId());
+            orderLine.setProductId(data[i].getProductId());
+            orderLine.setAmount(data[i].getAmount());
+            
+            OrderLineFacade orderLineFacade = new OrderLineFacade();
+            
+            OrderLine newlyOrder = new OrderLine();
+            newlyOrder = orderLineFacade.create(orderLine);
+        }
+        
+        return Response.status(Response.Status.CREATED).entity(data).build();
+        
+    }
+    
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderLines(OrderLine[] data, @PathParam("id") int id) {
+        
+        System.out.println("ye "+ data);
+        System.out.println("ye id "+ id);
+
+        
+        return Response.status(Response.Status.CREATED).entity(data).build();
+        
     }
 }

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.TableGenerator;
 
 /**
  *
@@ -15,65 +16,24 @@ import javax.persistence.Id;
 public class OrderLine implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @TableGenerator(
+            name = "OrderLineGenerator",
+            allocationSize = 1,
+            initialValue = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE,
+            generator="OrderLineGenerator")
     private Long id;
     @Column(name = "orderId")
-    private String orderId;
-    private String name;
-    private int category;
-    private String code;
-    private int stock;
-    private Double price;
+    private Long orderId;
+    private Long productId;
     private int amount;
-    private Double total;
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public int getCategory() {
-        return category;
-    }
     
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getCatagorie() {
-        return category;
-    }
-
-    public void setCatagorie(int catagorie) {
-        this.category = catagorie;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
     }
 
     public int getAmount() {
@@ -84,27 +44,20 @@ public class OrderLine implements Serializable {
         this.amount = amount;
     }
 
-    public Double getTotal() {
-        return total;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setTotal(Double total) {
-        this.total = total;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     @Override
