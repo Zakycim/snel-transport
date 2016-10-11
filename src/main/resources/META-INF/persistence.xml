@@ -5,6 +5,7 @@
     <persistence-unit name="snel-transport" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>nl.cimsolutions.snel_transport.models.Order</class>
+        <class>nl.cimsolutions.snel_transport.models.Product</class>
         <class>nl.cimsolutions.snel_transport.models.OrderLine</class>
         <!-- <jta-data-source>java:app/snel-transport</jta-data-source> -->
         <!-- <exclude-unlisted-classes>false</exclude-unlisted-classes> -->
@@ -29,6 +30,7 @@
     <persistence-unit name="snel-transport-test" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>nl.cimsolutions.snel_transport.models.Order</class>
+        <class>nl.cimsolutions.snel_transport.models.Product</class>
         <class>nl.cimsolutions.snel_transport.models.OrderLine</class>
         <properties>
             <property

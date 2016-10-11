@@ -7,6 +7,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import nl.cimsolutions.snel_transport.models.Product;
+
 /**
  *
  * @author Z.Huraibi
@@ -56,10 +58,22 @@ public abstract class AbstractFacade<T> {
         return getEntityManager().find(entityClass, id);
     }
 
-    public List<T> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
+
+    public List<T> findAll(String jpqlQuery) {
+    	EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
+    	EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        Query query = em.createQuery(jpqlQuery);
+		List<T> result = query.getResultList();
+        em.flush();
+        tx.commit();
+        em.close();
+
+        return result;
+
     }
 
     public List<T> findRange(int[] range) {

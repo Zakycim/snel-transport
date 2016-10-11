@@ -1,12 +1,44 @@
 package nl.cimsolutions.snel_transport.models;
 
-public class Product{
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
-	private Long ProductID;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name="\"Product\"")
+public class Product implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @TableGenerator(
+            name = "producxt_gen",
+            allocationSize = 1,
+            initialValue = 1)
+   
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "product_gen")
+    @SequenceGenerator(name = "product_gen", allocationSize = 1)
+    private Long ProductID;
+    @NotNull
 	private String Name;
 	private String Code;
 	private double Price;
 	private Long CategoryID;
+   // @OneToMany
+   // @JoinColumn(name="productId")
+    //private List<OrderLine> orderLines;
 	
 	public Product(){
 		
@@ -63,7 +95,7 @@ public class Product{
 	public boolean equals(Object object) {
 		// TODO: Warning - this method won't work in the case the id fields are
 		// not set
-		if (!(object instanceof Order)) {
+		if (!(object instanceof Product)) {
 			return false;
 		}
 		Product other = (Product) object;
