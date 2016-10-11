@@ -53,7 +53,16 @@ public abstract class AbstractFacade<T> {
     }
 
     public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+        EntityManager em = getEntityManagerFactory().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        T t = em.find(entityClass, id);
+        em.flush();
+        tx.commit();
+        em.close();
+        getEntityManagerFactory().close();
+        
+        return t;
     }
 
     public List<T> findAll() {

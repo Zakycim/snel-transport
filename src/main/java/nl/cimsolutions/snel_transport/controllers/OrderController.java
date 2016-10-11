@@ -112,15 +112,33 @@ public class OrderController {
     }
     
     @GET
-    @Path("{id}")
+    @Path("/{id}/orderlines")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOrderLines(OrderLine[] data, @PathParam("id") int id) {
+    public Response getOrderLines(@PathParam("id") long id) {
         
-        System.out.println("ye "+ data);
+//        System.out.println("ye "+ data);
         System.out.println("ye id "+ id);
-
+        OrderFacade orderFacade = new OrderFacade();
         
-        return Response.status(Response.Status.CREATED).entity(data).build();
+        Order newlyOrder = new Order();
+        newlyOrder = orderFacade.find(id);
+        System.out.println("ye newlyOrder "+ newlyOrder.getName());
+        
+        OrderLineFacade orderLineFacade = new OrderLineFacade();
+        List orderlines = orderLineFacade.findWithOrderId(id);
+        
+        OrderLine[] orderlineArray;
+        
+        for (int i = 0; i < orderlines.size(); i++) {
+            System.out.println("orderline get  "+ orderlines.get(i));
+            OrderLine orderLine = (OrderLine) orderlines.get(i);
+            System.out.println("orderline  "+ orderLine.getAmount());
+        }
+        
+        //je was bezig met orderlines in array zetten
+        // en je was bezig met order en orderlineArray in een jsonobject te zetten
+             
+        return Response.status(Response.Status.CREATED).entity("wassup").build();
         
     }
 }
