@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.cimsolutions.snel_transport.models.Order;
+import nl.cimsolutions.snel_transport.services.OrderFacade;
 
 /**
  * Root resource (exposed at "orders" path)
@@ -73,16 +74,21 @@ public class OrderController {
 //            }
 //        }
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
-        EntityManager em = emf.createEntityManager();
+        OrderFacade orderFacade = new OrderFacade();
         
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        em.persist(order);
-        em.flush();
-        tx.commit();
-        em.close();
-        emf.close();
+        Order newlyOrder = new Order();
+        newlyOrder = orderFacade.create(order);
+        
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
+//        EntityManager em = emf.createEntityManager();
+//        
+//        EntityTransaction tx = em.getTransaction();
+//        tx.begin();
+//        em.persist(order);
+//        em.flush();
+//        tx.commit();
+//        em.close();
+//        emf.close();
         
         
 //        JsonObject obj = Json.createObjectBuilder().
@@ -92,6 +98,6 @@ public class OrderController {
 //                build();
        
 //        return Response.status(Response.Status.CREATED).entity(obj).build();   
-        return Response.status(Response.Status.CREATED).entity(data).build();      
+        return Response.status(Response.Status.CREATED).entity(newlyOrder).build();      
     }
 }
