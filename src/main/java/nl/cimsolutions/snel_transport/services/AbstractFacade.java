@@ -6,6 +6,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 
 /**
  *
@@ -66,9 +67,19 @@ public abstract class AbstractFacade<T> {
     }
 
     public List<T> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        EntityManager em = getEntityManagerFactory().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        tx.begin();
+        
         cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
+        List t = em.createQuery(cq).getResultList();        
+        em.flush();
+        tx.commit();
+        em.close();
+        getEntityManagerFactory().close();
+        
+        return t;
     }
 
     public List<T> findRange(int[] range) {

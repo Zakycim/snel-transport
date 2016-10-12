@@ -35,29 +35,20 @@ import nl.cimsolutions.snel_transport.services.OrderLineFacade;
 public class OrderController {
 
     /**
-     * Method handling HTTP GET requests. The returned object will be sent
-     * to the client as "text/plain" media type.
+     * Method handling HTTP GET requests. The returned object will be sent to
+     * the client as "text/plain" media type.
      *
      * @return String that will be returned as a text/plain response.
      */
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getIt() {
-        return "Got it orders!";
-    }
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Order> getAllOrders() {
+        OrderFacade orderFacade = new OrderFacade();
 
-//    @POST
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response post(Order order) {
-//      
-//        
-//        JsonObject obj = Json.createObjectBuilder().
-//              add("message", "Your order has been created.").
-//              build();
-//      return Response.status(Response.Status.CREATED).entity(order).build();      
-//    }
-    
+        List<Order> orders = orderFacade.findAll();
+
+        return orders;
+    } 
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
