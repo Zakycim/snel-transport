@@ -28,7 +28,7 @@ public class OrderLineFacade extends AbstractFacade<OrderLine> {
         return em;
     }
 
-    public List findWithOrderId(long orderId) {
+    public List<OrderLine> findWithOrderId(long orderId) {
         
       EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
       EntityManager em = emf.createEntityManager();

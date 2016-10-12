@@ -6,7 +6,10 @@ import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
+import javax.json.JsonValue;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -91,20 +94,14 @@ public class OrderController {
     @Path("/orderlines")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrderLine(OrderLine[] data) {
-         
-        System.out.println("ye "+ data);
+        OrderLineFacade orderLineFacade = new OrderLineFacade();
         // Print all the array elements
         for (int i = 0; i < data.length; i++) {
-           System.out.println(data[i].getOrderId() + " qwe");
             OrderLine orderLine = new OrderLine();
             orderLine.setOrderId(data[i].getOrderId());
             orderLine.setProductId(data[i].getProductId());
             orderLine.setAmount(data[i].getAmount());
-            
-            OrderLineFacade orderLineFacade = new OrderLineFacade();
-            
-            OrderLine newlyOrder = new OrderLine();
-            newlyOrder = orderLineFacade.create(orderLine);
+            orderLineFacade.create(orderLine);
         }
         
         return Response.status(Response.Status.CREATED).entity(data).build();
@@ -114,31 +111,12 @@ public class OrderController {
     @GET
     @Path("/{id}/orderlines")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOrderLines(@PathParam("id") long id) {
-        
-//        System.out.println("ye "+ data);
-        System.out.println("ye id "+ id);
+    public Order getOrderLines(@PathParam("id") long id) {
         OrderFacade orderFacade = new OrderFacade();
         
-        Order newlyOrder = new Order();
-        newlyOrder = orderFacade.find(id);
-        System.out.println("ye newlyOrder "+ newlyOrder.getName());
-        
-        OrderLineFacade orderLineFacade = new OrderLineFacade();
-        List orderlines = orderLineFacade.findWithOrderId(id);
-        
-        OrderLine[] orderlineArray;
-        
-        for (int i = 0; i < orderlines.size(); i++) {
-            System.out.println("orderline get  "+ orderlines.get(i));
-            OrderLine orderLine = (OrderLine) orderlines.get(i);
-            System.out.println("orderline  "+ orderLine.getAmount());
-        }
-        
-        //je was bezig met orderlines in array zetten
-        // en je was bezig met order en orderlineArray in een jsonobject te zetten
+        Order order = orderFacade.find(id);
              
-        return Response.status(Response.Status.CREATED).entity("wassup").build();
+        return order;//Response.status(Response.Status.CREATED).entity(value).build();
         
     }
 }
