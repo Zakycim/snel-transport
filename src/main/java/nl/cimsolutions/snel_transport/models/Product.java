@@ -23,13 +23,13 @@ public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @TableGenerator(
-            name = "producxt_gen",
+            name = "product_gen",
             allocationSize = 1,
             initialValue = 1)
    
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "product_gen")
-    @SequenceGenerator(name = "product_gen", allocationSize = 1)
+   // @SequenceGenerator(name = "product_gen", allocationSize = 1)
     private Long ProductID;
     @NotNull
 	private String Name;

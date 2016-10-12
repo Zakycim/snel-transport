@@ -44,10 +44,13 @@ public class ProductController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(Product product) {
+	public Response CreateProduct(Product product) {
+        
 		ProductFacade pf = new ProductFacade();
+		 Product newlyProduct = new Product( product.getProductID(),product.getName(),product.getCode(), product.getPrice(), product.getCategoryID());
+
 		JsonObject obj = Json.createObjectBuilder().add("message", "Your order has been created.").build();
-		return Response.status(Response.Status.CREATED).entity(pf.create(product)).build();
+		return Response.status(Response.Status.CREATED).entity(pf.create(newlyProduct)).build();
 	}
 
 
