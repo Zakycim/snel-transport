@@ -20,8 +20,6 @@ public class OrderFacade extends AbstractFacade<Order> {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport-test");
         EntityManager testEm = emf.createEntityManager();
         
-
-        
         public OrderFacade() {
             super(Order.class);
         }
