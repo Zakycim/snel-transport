@@ -7,12 +7,10 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import nl.cimsolutions.snel_transport.models.OrderList;
 import nl.cimsolutions.snel_transport.models.Product;
 
-/**
- *
- * @author Z.Huraibi
- */
+
 public abstract class AbstractFacade<T> {
 
     private Class<T> entityClass;

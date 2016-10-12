@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.cimsolutions.snel_transport.models.Order;
-import nl.cimsolutions.snel_transport.services.OrderFacade;
+//import nl.cimsolutions.snel_transport.services.OrderFacade;
 
 /**
  * Root resource (exposed at "orders" path)
@@ -74,10 +74,10 @@ public class OrderController {
 //            }
 //        }
         
-        OrderFacade orderFacade = new OrderFacade();
+        //OrderFacade orderFacade = new OrderFacade();
         
         Order newlyOrder = new Order();
-        newlyOrder = orderFacade.create(order);
+       // newlyOrder = orderFacade.create(order);
         
 //        EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
 //        EntityManager em = emf.createEntityManager();

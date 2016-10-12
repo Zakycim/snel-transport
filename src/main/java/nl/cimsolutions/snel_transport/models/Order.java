@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -17,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name="\"Order\"")
-@XmlRootElement 
+ 
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,10 +33,13 @@ public class Order implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
     private Long customerId;
-    private Integer status;
+    private Long status;
     @OneToMany
     @JoinColumn(name="orderId")
     private List<OrderLine> orderLines;
+//    @ManyToOne
+//    @JoinColumn(name="customerId")
+//    private Customer customer;
     
     public Order() {
         
@@ -43,13 +47,13 @@ public class Order implements Serializable {
     
     public Order(String name, Double price, Date deliveryDate, Long customerId, Integer status,
             List<OrderLine> orderLines) {
-        super();
-        this.name = name;
-        this.price = price;
-        this.deliveryDate = deliveryDate;
-        this.customerId = customerId;
-        this.status = status;
-        this.orderLines = orderLines;
+//        super();
+//        this.name = name;
+//        this.price = price;
+//        this.deliveryDate = deliveryDate;
+//        this.customerId = customerId;
+//        this.status = status;
+//        this.orderLines = orderLines;
     }
 
     public List<OrderLine> getOrderLines() {
@@ -100,11 +104,11 @@ public class Order implements Serializable {
         this.customerId = customerId;
     }
 
-    public Integer getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
     

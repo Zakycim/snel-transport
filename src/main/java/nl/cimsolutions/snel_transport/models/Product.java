@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -36,23 +37,18 @@ public class Product implements Serializable {
 	private String Code;
 	private double Price;
 	private Long CategoryID;
-   // @OneToMany
-   // @JoinColumn(name="productId")
-    //private List<OrderLine> orderLines;
+//    @OneToMany
+//    @JoinColumn(name="ProductId")
+//    private List<OrderLine> orderLines;
+//	@ManyToOne
+//	@JoinColumn(name = "CategoryID")
+//	private List<Category> Catgories;
 	
 	public Product(){
 		
 	}
 	
-	public Product(Long productID, String name, String code, double price, Long categoryID) {
-		super();
-		ProductID = productID;
-		Name = name;
-		Code = code;
-		Price = price;
-		CategoryID = categoryID;
-	}
-	
+
 	public Long getProductID() {
 		return ProductID;
 	}

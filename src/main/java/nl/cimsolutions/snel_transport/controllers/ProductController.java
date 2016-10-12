@@ -23,6 +23,8 @@ import nl.cimsolutions.snel_transport.models.Product;
 import nl.cimsolutions.snel_transport.services.ProductFacade;
 
 @Path("products")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ProductController {
 
 	/**
@@ -34,24 +36,21 @@ public class ProductController {
 
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
 	public List<Product> getProducts() {
 		ProductFacade pf = new ProductFacade();
 		return pf.GetAllProducts();
 
 	}
 
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response CreateProduct(Product product) {
-        
-		ProductFacade pf = new ProductFacade();
-		 Product newlyProduct = new Product( product.getProductID(),product.getName(),product.getCode(), product.getPrice(), product.getCategoryID());
-
-		JsonObject obj = Json.createObjectBuilder().add("message", "Your order has been created.").build();
-		return Response.status(Response.Status.CREATED).entity(pf.create(newlyProduct)).build();
-	}
+//	@POST
+//	public Response CreateProduct(Product product) {
+//        
+//		ProductFacade pf = new ProductFacade();
+//		 //Product newlyProduct = new Product(product.getProductID(),product.getName(),product.getCode(), product.getPrice(), product.getCategoryID());
+//
+//		JsonObject obj = Json.createObjectBuilder().add("message", "Your order has been created.").build();
+//		return Response.status(Response.Status.CREATED).entity(pf.create(product)).build();
+//	}
 
 
 }
