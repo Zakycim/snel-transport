@@ -1,0 +1,14 @@
+<h1>Contacts</h1>
+<div>
+
+    <table>
+        <tr *ngFor="let contact of contacts" style="margin-bottom: 10px;">
+            <td>{{contact.descr}}</td> <td><button (click)="removeContact(contact)">Delete</button></td>
+        </tr>
+    </table>
+
+    <input #name placeholder="name" />
+    <input #phone placeholder="phone" />
+    <button (click)="addContact(name.value,phone.value)">Add Contact</button>
+
+</div>

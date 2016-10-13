@@ -9,3 +9,23 @@
 
 # sbteclipse plugin
 target/
+
+font_end/.idea
+font_end/.vscode
+font_end/typings/**
+font_end/node_modules
+font_end/jspm_packages
+font_end/link-checker-results.txt
+font_end/**/*npm-debug.log.*
+font_end/*.js
+font_end/*.js.map
+font_end/e2e/**/*.js
+font_end/e2e/**/*.js.map
+font_end/_test-output
+font_end/_temp
+
+font_end/!karma*.js
+font_end/!protractor*.js
+font_end/!systemjs.config.js
+font_end/!typings/typings.d.ts
+font_end/!wallaby.js
