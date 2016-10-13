@@ -1,5 +1,6 @@
 package nl.cimsolutions.snel_transport.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -8,6 +9,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerResponseContext;
+import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -20,10 +24,10 @@ public class CustomerController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Customer> getAllCustomers() {
+        
         CustomerFacade customerFacade = new CustomerFacade();
         List<Customer> customers = customerFacade.findAll();
-
+        
         return customers;
-    } 
-
+    }
 }

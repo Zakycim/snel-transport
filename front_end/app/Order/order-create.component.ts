@@ -168,10 +168,10 @@ export class OrderCreateComponent implements OnInit {
 
 
   ngOnInit() {
-    this.http.get("http://localhost:8080/snelTransport/resources/customers").
+    this.http.get("http://localhost:8080/snel-transport/api/customers").
       toPromise().then(r => r.json()).then(r => this.customers = r);
 
-    this.http.get("http://localhost:8080/snelTransport/resources/products").
-      toPromise().then(r => r.json()).then(r => this.products = r);
+   // this.http.get("http://localhost:8080/snelTransport/resources/products").
+   //   toPromise().then(r => r.json()).then(r => this.products = r);
   }
 }

@@ -10,14 +10,12 @@ import { ContactsComponent }  from './contacts/contacts.component';
 import { OrderListComponent } from './orderlist/order-list.component';
 // import { FiltersComponent }  from './filters/filters.component';
 import { routing } from './app.routes';
-import { SimpleNotificationsModule } from 'angular2-notifications';
 import { DeliveryListComponent } from './deliverylist/delivery-list.component';
 import { FilterPipe } from './filter.pipe';
 
 @NgModule({
   imports: [
     BrowserModule,
-    SimpleNotificationsModule,
     FormsModule,
     HttpModule,
     JsonpModule,
