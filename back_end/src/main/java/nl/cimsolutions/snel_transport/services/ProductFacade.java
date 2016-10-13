@@ -28,10 +28,7 @@ public class ProductFacade extends AbstractFacade<Product> {
 		return em;
 	}
 
-//	public List<Product> GetAllProducts() {
-//
-//		return findAll();
-//	}
+
 	
 	public Product GetProduct(Integer id) {
 
