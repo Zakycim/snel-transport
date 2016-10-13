@@ -1,0 +1,8 @@
+<form id="filter">
+	<input type="text" name="term" [(ngModel)]="term"/>
+</form>
+	<ul>
+		<li *ngFor="let todo of todos | filter:term">
+			{{todo}}
+		</li>
+	</ul>

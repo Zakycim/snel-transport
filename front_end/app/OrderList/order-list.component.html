@@ -1,0 +1,30 @@
+<div id="main">
+    <div class="contentContainer">
+        <div class="clientContainer">
+            <div class="Column">
+                <div class="nameLabel">
+                </div>
+            </div>
+            <div class="Column">
+                <div class="productForm">
+                    <table class="fontSize">
+                        <tr>
+                            <th>Klant</th>
+                            <th>Truck</th>
+                            <th>Bestelnummer</th>
+                            <th>Status</th>
+                        </tr>
+                        <tr *ngFor="let delivery of deliverylist">
+                            <td>{{delivery.customerName}}</td>
+                            <td>{{delivery.licensePlate}}</td>
+                            <td>{{delivery.orderNumber}}</td>
+                            <td>
+                                <select class="customerSelect largeInput" name="singleSelect" #q (change)="statusChange(delivery.id, q)">
+                                    <option *ngFor="let status of statuses" value="{{status.id}}" [selected]="status.id == delivery.status">{{status.status}} </option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
