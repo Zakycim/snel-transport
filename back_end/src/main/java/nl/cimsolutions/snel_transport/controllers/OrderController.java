@@ -45,15 +45,13 @@ public class OrderController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(Order data) {
         Order order = new Order();
-        order.setName(data.getName());
         
         long customerId = data.getCustomerId();
         order.setCustomerId(customerId);
-        Double price = new Double(data.getPrice());
-        order.setPrice(price);
         Date orderDate = new Date();
         order.setOrderDate(orderDate);
         order.setStatus(data.getStatus());
+        order.setOrderLines(data.getOrderLines());
         String dbName = "snel-transport";
         
 //        if(data.containsKey("environment")) {
