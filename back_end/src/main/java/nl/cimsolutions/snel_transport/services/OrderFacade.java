@@ -20,8 +20,6 @@ public class OrderFacade extends AbstractFacade<Order> {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport-test");
         EntityManager testEm = emf.createEntityManager();
         
-
-        
         public OrderFacade() {
             super(Order.class);
         }
@@ -31,10 +29,10 @@ public class OrderFacade extends AbstractFacade<Order> {
             return em;
         }
 
-        public List findWithName(String name) {
-            return getEntityManager().createQuery(
-                "SELECT u FROM User u WHERE u.name = :name ")
-                .setParameter("name", name)
-                .getResultList();
-        }
+//        public List findWithName(String name) {
+//            return getEntityManager().createQuery(
+//                "SELECT u FROM User u WHERE u.name = :name ")
+//                .setParameter("name", name)
+//                .getResultList();
+//        }
     }

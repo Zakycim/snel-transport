@@ -46,6 +46,6 @@ public class OrderLineFacade extends AbstractFacade<OrderLine> {
       em.close();
       emf.close();
         
-        return resultList;
+       return resultList;
     }
 }

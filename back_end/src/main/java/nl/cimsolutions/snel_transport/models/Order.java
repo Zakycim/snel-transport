@@ -34,6 +34,10 @@ public class Order implements Serializable {
     @OneToMany
     @JoinColumn(name="orderId")
     private List<OrderLine> orderLines;
+    @OneToMany(mappedBy = "order")
+    private OrderList orderlist;
+    
+    
     
     public Order() {
         
