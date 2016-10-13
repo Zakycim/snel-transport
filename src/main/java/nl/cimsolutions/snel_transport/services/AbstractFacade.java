@@ -65,6 +65,22 @@ public abstract class AbstractFacade<T> {
         
         return t;
     }
+    public List<T> findAll(String jpqlQuery) {
+    	EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
+    	EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        Query query = em.createQuery(jpqlQuery);
+		List<T> result = query.getResultList();
+        em.flush();
+        tx.commit();
+        em.close();
+
+        return result;
+
+    }
 
     public List<T> findAll() {
         EntityManager em = getEntityManagerFactory().createEntityManager();

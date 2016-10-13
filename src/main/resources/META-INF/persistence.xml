@@ -6,6 +6,8 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>nl.cimsolutions.snel_transport.models.Order</class>
         <class>nl.cimsolutions.snel_transport.models.OrderLine</class>
+        <class>nl.cimsolutions.snel_transport.models.Product</class>
+        <class>nl.cimsolutions.snel_transport.models.OrderList</class>
         <!-- <jta-data-source>java:app/snel-transport</jta-data-source> -->
         <!-- <exclude-unlisted-classes>false</exclude-unlisted-classes> -->
         <properties>
