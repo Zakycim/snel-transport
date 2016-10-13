@@ -27,8 +27,6 @@ public class ProductFacade extends AbstractFacade<Product> {
 	protected EntityManager getEntityManager() {
 		return em;
 	}
-
-
 	
 	public Product GetProduct(Integer id) {
 
