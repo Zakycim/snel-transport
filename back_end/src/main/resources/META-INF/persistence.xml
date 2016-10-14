@@ -7,6 +7,7 @@
         <class>nl.cimsolutions.snel_transport.models.Order</class>
         <class>nl.cimsolutions.snel_transport.models.OrderLine</class>
         <class>nl.cimsolutions.snel_transport.models.Customer</class>
+        <class>nl.cimsolutions.snel_transport.models.Product</class>
         <!-- <jta-data-source>java:app/snel-transport</jta-data-source> -->
         <!-- <exclude-unlisted-classes>false</exclude-unlisted-classes> -->
         <properties>
