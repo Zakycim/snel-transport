@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
@@ -37,51 +39,70 @@ public class Product {
     private Double Price;
     @Column(name="code")
     private String Code;
-    @NotNull
-    @Column(name="categoryid")
-    private Long CategoryId;
-//  @ManyToOne
-//    @JoinColumn(name="CategoryId")
-//    private Category Categories;
-    
+//    @NotNull
+//    @Column(name="categoryid")
+//    private Long CategoryId;
+    @OneToOne
+    @JoinColumn(name="categoryId")
+    private Category Categories;
+//    
     public Product(){
         
     }
     
-    public Product(Long productId, String name,String code, Double price, Long categoryId) {
-        super();
-        ProductId = productId;
-        Name = name;
-        Price = price;
-        CategoryId = categoryId;
-        Code = code;
-    }
+    public Product(Long productId, String name, Double price, String code, Category categories) {
+		super();
+		ProductId = productId;
+		Name = name;
+		Price = price;
+		Code = code;
+		Categories = categories;
+	}
+
+	
     
+   
     public Long getProductId() {
-        return ProductId;
-    }
-    public void setProductId(Long productId) {
-        ProductId = productId;
-    }
-    public String getName() {
-        return Name;
-    }
-    public void setName(String name) {
-        Name = name;
-    }
-    public Double getPrice() {
-        return Price;
-    }
-    public void setPrice(Double price) {
-        Price = price;
-    }
-    public Long getCategoryId() {
-        return CategoryId;
-    }
-    public void setCategoryId(Long categoryId) {
-        CategoryId = categoryId;
-    }
-    @Override
+		return ProductId;
+	}
+
+	public void setProductId(Long productId) {
+		ProductId = productId;
+	}
+
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
+	}
+
+	public Double getPrice() {
+		return Price;
+	}
+
+	public void setPrice(Double price) {
+		Price = price;
+	}
+
+	public String getCode() {
+		return Code;
+	}
+
+	public void setCode(String code) {
+		Code = code;
+	}
+
+	public Category getCategories() {
+		return Categories;
+	}
+
+	public void setCategories(Category categories) {
+		Categories = categories;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (ProductId != null ? ProductId.hashCode() : 0);
