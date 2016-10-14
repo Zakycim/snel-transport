@@ -54,6 +54,15 @@ public class Order implements Serializable {
         this.orderLines = orderLines;
     }
 
+    
+    public boolean validate(Order order){ 
+        if (order.getCustomerId() == null) {
+            return false; 
+        }
+        
+        return true;        
+    }
+    
     public List<OrderLine> getOrderLines() {
         return orderLines;
     }

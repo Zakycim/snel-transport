@@ -44,7 +44,7 @@ public class OrderController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(Order data) {
-        System.out.println("data "+ data.getCustomerId());
+        System.out.println("yes");
         for(OrderLine ol: data.getOrderLines()) { 
             System.out.println("data ol "+ ol.getProductId());
             System.out.println("data amount "+ ol.getAmount());
