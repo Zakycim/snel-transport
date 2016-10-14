@@ -37,7 +37,7 @@
           <td>{{productId}}</td>
           <td><select #id class="largeInput" #i (change)="getProductInfo(i.value)">
                 <option>Kies product</option>
-                <option *ngFor="let product of products" value="{{product.id}}">{{product.name}} </option>
+                <option *ngFor="let product of products" value="{{product.productId}}">{{product.name}} </option>
             </select>
           </td>
           <td>{{productCat}}</td>

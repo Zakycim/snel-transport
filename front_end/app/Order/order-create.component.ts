@@ -70,7 +70,7 @@ export class OrderCreateComponent implements OnInit {
       } else {
 
         this.productName = this.products[this.productSelectId].name;
-        this.productCat = this.products[this.productSelectId].category;
+        this.productCat = this.products[this.productSelectId].categories.name;
         this.productCode = this.products[this.productSelectId].code;
         this.productPrice = this.products[this.productSelectId].price;
 
@@ -112,7 +112,7 @@ export class OrderCreateComponent implements OnInit {
   getProductInfo(productId) {
     if (productId) {
       this.productSelectId = parseInt(productId) - 1;
-      this.productCat = this.products[this.productSelectId].category;
+      this.productCat = this.products[this.productSelectId].categories.name;
       this.productCode = this.products[this.productSelectId].code;
       this.productPrice = this.products[this.productSelectId].price;
       this.productStock = this.products[this.productSelectId].stock;
@@ -171,7 +171,7 @@ export class OrderCreateComponent implements OnInit {
     this.http.get("http://localhost:8080/snel-transport/api/customers").
       toPromise().then(r => r.json()).then(r => this.customers = r);
 
-   // this.http.get("http://localhost:8080/snelTransport/resources/products").
-   //   toPromise().then(r => r.json()).then(r => this.products = r);
+    this.http.get("http://localhost:8080/snel-transport/api/products").
+      toPromise().then(r => r.json()).then(r => this.products = r);
   }
 }
