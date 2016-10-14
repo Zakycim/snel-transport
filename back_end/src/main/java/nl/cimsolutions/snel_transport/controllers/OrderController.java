@@ -44,13 +44,18 @@ public class OrderController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(Order data) {
+        System.out.println("data "+ data.getCustomerId());
+        for(OrderLine ol: data.getOrderLines()) { 
+            System.out.println("data ol "+ ol.getProductId());
+            System.out.println("data amount "+ ol.getAmount());
+        }
         Order order = new Order();
         
         long customerId = data.getCustomerId();
         order.setCustomerId(customerId);
         Date orderDate = new Date();
         order.setOrderDate(orderDate);
-        order.setStatus(data.getStatus());
+        order.setStatus(1);
         order.setOrderLines(data.getOrderLines());
         String dbName = "snel-transport";
         
@@ -66,6 +71,7 @@ public class OrderController {
         newlyOrder = orderFacade.create(order);
          
         return Response.status(Response.Status.CREATED).entity(newlyOrder).build();      
+//        return Response.status(Response.Status.CREATED).entity(data).build();      
     }
     
     

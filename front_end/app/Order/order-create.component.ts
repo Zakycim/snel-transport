@@ -1,7 +1,7 @@
 // Imports
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Http } from '@angular/http';
+import { Http, RequestOptions, RequestOptionsArgs, Headers  } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {orderLineCreate} from './orderLineCreate';
 
@@ -18,6 +18,7 @@ export class OrderCreateComponent implements OnInit {
   customers = [];
   products = [];
   selectedProducts = [];
+  postProducts = [];
 
   // customer variables
   customerAddress: string;
@@ -44,6 +45,15 @@ export class OrderCreateComponent implements OnInit {
   indexOfOrderLine: number;
   newOrderTotal = 0;
   orderlines: Array<orderLineCreate>;
+  orderUrl = 'http://localhost:8080/snel-transport/api/orders';
+
+  private headers = new Headers({ 'Content-Type': 'application/json' });
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error); // for demo purposes only
+    return Promise.reject(error.message || error);
+  }
+
   constructor(private http: Http) {
     this.orderlines = [];
   }
@@ -76,6 +86,7 @@ export class OrderCreateComponent implements OnInit {
 
         this.orderLineTotal = this.productPrice * quantity;
 
+        console.log("id " + id);
         let orderline = new orderLineCreate(id, this.productName, this.productCat, this.productCode, this.productPrice, quantity, this.orderLineTotal);
         this.orderlines.push(orderline);
         this.orderTotal = this.orderTotal + this.orderLineTotal;
@@ -94,16 +105,17 @@ export class OrderCreateComponent implements OnInit {
 
   setOrderTotal(total: number) {
     total = 0;
-    this.orderlines.forEach(function (item) {
+    this.orderlines.forEach(function(item) {
       total = total + item["total"];
     });
     this.orderTotal = total;
   }
 
   getCustomerInfo(customerId) {
+    console.log(customerId);
     this.customerId = parseInt(customerId) - 1;
     this.customerAddress = this.customers[this.customerId].adres;
-    this.customerZipCode = this.customers[this.customerId].zipCode;
+    this.customerZipCode = this.customers[this.customerId].postalCode;
     this.customerCity = this.customers[this.customerId].city;
     //this.order.type=value;
     // this.selectedOption = this.options.filter((item)=> item.id == optionid)[0];
@@ -123,7 +135,7 @@ export class OrderCreateComponent implements OnInit {
       this.selectedProducts = [
         { productId: this.productId, totalPrice: this.products[this.productSelectId].price },
       ];
-    }else{
+    } else {
       this.productCat = null;
       this.productCode = null;
       this.productPrice = null;
@@ -145,7 +157,7 @@ export class OrderCreateComponent implements OnInit {
   updateTotalPrice(quantity, productId) {
     this.indexOfOrderLine = this.getIndexByValue("Id", productId);
 
-    this.orderlines[this.indexOfOrderLine].setQuantity(quantity);
+    this.orderlines[this.indexOfOrderLine].setamount(quantity);
 
     this.setOrderTotal(0);
     // return this.orderlines[]
@@ -167,11 +179,34 @@ export class OrderCreateComponent implements OnInit {
   }
 
 
+  submitOrder(customerId) {
+    //    this.http.post(this.heroesUrl, JSON.stringify({ name: name }), { headers: this.headers })
+    //      .toPromise().then(res => res.json().data).catch(this.handleError);
+
+    this.orderlines.forEach(function(entry) {
+      console.log(JSON.stringify(entry.name));
+      console.log(entry.productId);
+//      this.postProducts.push(JSON.stringify(entry));
+    });
+    
+//    console.log(this.postProducts);
+
+
+    this.http.post(this.orderUrl, JSON.stringify({
+      customerId: this.customerId,
+      orderLines: this.orderlines
+    }), { headers: this.headers })
+      .toPromise().then(res => res.json().data).catch(this.handleError);
+  }
+
+
+
+
   ngOnInit() {
     this.http.get("http://localhost:8080/snel-transport/api/customers").
       toPromise().then(r => r.json()).then(r => this.customers = r);
 
-   // this.http.get("http://localhost:8080/snelTransport/resources/products").
-   //   toPromise().then(r => r.json()).then(r => this.products = r);
+    this.http.get("http://localhost:8080/snel-transport/api/products").
+      toPromise().then(r => r.json()).then(r => this.products = r);
   }
 }

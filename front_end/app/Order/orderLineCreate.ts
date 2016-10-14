@@ -1,35 +1,39 @@
 export class orderLineCreate{
 
-    Id: string;
+    productId: number;
     name: string;
     category: string;
     code: string;
     price: number;
-    quantity: number;
+    amount: number;
     total: number;
 
-    constructor(id, name, category, code, price, quantity, total){
-        this.Id = id;
+    constructor(id, name, category, code, price, amount, total){
+        this.productId = id;
         this.name = name;
         this.category = category;
         this.code = code;
         this.price = price;
-        this.quantity = quantity;
+        this.amount = amount;
         this.total = total;
     }
 
-    getQuantity(){
-        return this.quantity;
+    getamount(){
+        return this.amount;
+    }
+  
+    getId(){
+        return this.productId;
     }
 
-    setQuantity(quantity){
-        this.quantity = quantity;
+    setamount(amount){
+        this.amount = amount;
 
-        this.setnewPrice(quantity);
+        this.setnewPrice(amount);
     }
 
-    setnewPrice(quantity){
-        this.total = this.price * quantity;
+    setnewPrice(amount){
+        this.total = this.price * amount;
     }
     
 }

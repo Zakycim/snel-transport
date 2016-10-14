@@ -29,8 +29,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE,
             generator="ProductGenerator")
-    @Column(name="id")
-    private Long ProductId;
+    private Long id;
     @Column(name="Name")
     private String Name;
     @Column(name="Price")
@@ -48,20 +47,20 @@ public class Product {
         
     }
     
-    public Product(Long productId, String name,String code, Double price, Long categoryId) {
+    public Product(Long Id, String name,String code, Double price, Long categoryId) {
         super();
-        ProductId = productId;
+        id = Id;
         Name = name;
         Price = price;
         CategoryId = categoryId;
         Code = code;
     }
     
-    public Long getProductId() {
-        return ProductId;
+    public Long getId() {
+        return id;
     }
-    public void setProductId(Long productId) {
-        ProductId = productId;
+    public void setId(Long Id) {
+        id = Id;
     }
     public String getName() {
         return Name;
@@ -75,6 +74,12 @@ public class Product {
     public void setPrice(Double price) {
         Price = price;
     }
+    public String getCode() {
+        return Code;
+    }
+    public void setCode(String code) {
+        Code = code;
+    }
     public Long getCategoryId() {
         return CategoryId;
     }
@@ -84,7 +89,7 @@ public class Product {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (ProductId != null ? ProductId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -95,7 +100,7 @@ public class Product {
             return false;
         }
         Product other = (Product) object;
-        if ((this.ProductId == null && other.ProductId != null) || (this.ProductId != null && !this.ProductId.equals(other.ProductId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -103,7 +108,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "model.Product[ id=" + ProductId + " ]";
+        return "model.Product[ id=" + id + " ]";
     }
     
 }
