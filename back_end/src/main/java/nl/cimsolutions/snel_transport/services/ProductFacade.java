@@ -41,5 +41,11 @@ public class ProductFacade extends AbstractFacade<Product> {
 
         return findAll("SELECT p FROM Product p");
     }
+
+    @Override
+    protected EntityManagerFactory getEntityManagerFactory(Product entity) {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }

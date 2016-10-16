@@ -10,29 +10,47 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import nl.cimsolutions.snel_transport.models.Order;
 
-
 public class OrderFacade extends AbstractFacade<Order> {
+
+    @PersistenceContext(unitName = "snel-transport")
+    private EntityManager em;
+
+    EntityManagerFactory emf;
+//    EntityManager testEm = emf.createEntityManager();
+
+    public OrderFacade() {
+        super(Order.class);
+    }
     
+    public OrderFacade(String env) {
+        super(Order.class, env);
+    }
 
-        @PersistenceContext(unitName = "snel-transport")
-        private EntityManager em;
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport-test");
-        EntityManager testEm = emf.createEntityManager();
-        
-        public OrderFacade() {
-            super(Order.class);
-        }
-
-        @Override
-        protected EntityManager getEntityManager() {
-            return em;
-        }
-
-        public List findWithName(String name) {
-            return getEntityManager().createQuery(
-                "SELECT u FROM User u WHERE u.name = :name ")
-                .setParameter("name", name)
+    public List findWithName(String name) {
+        return getEntityManager().createQuery("SELECT u FROM User u WHERE u.name = :name ").setParameter("name", name)
                 .getResultList();
+    }
+
+    public void setup(Order order) {
+
+    }
+
+    @Override
+    protected EntityManagerFactory getEntityManagerFactory(Order order) {
+        if (order.getEnv() == null) {
+            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
+        }
+
+        switch (order.getEnv()) {
+        case "TEST":
+            return this.emf = Persistence.createEntityManagerFactory("snel-transport-test");
+        default:
+            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
         }
     }
+}

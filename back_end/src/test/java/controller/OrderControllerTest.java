@@ -17,6 +17,11 @@ import javax.json.JsonArray;
 import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.persistence.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -36,8 +41,10 @@ import org.junit.Test;
 import nl.cimsolutions.snel_transport.controllers.OrderController;
 import nl.cimsolutions.snel_transport.models.Order;
 import nl.cimsolutions.snel_transport.models.OrderLine;
+import nl.cimsolutions.snel_transport.services.OrderFacade;
 
 public class OrderControllerTest {
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport-test");
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -49,13 +56,25 @@ public class OrderControllerTest {
 
     @Before
     public void setUp() throws Exception {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Query q = em.createNativeQuery("DELETE FROM public.\"orderline\" ");
+        q.executeUpdate();
+        q = em.createNativeQuery("DELETE FROM public.\"Order\" ");
+        q.executeUpdate();
+        em.flush();
+        tx.commit();
+        em.close();
+        emf.close();
+
     }
 
     @After
     public void tearDown() throws Exception {
     }
     
-//    @Test
+    @Test
     public void testAddOrder() {
         String url = "http://localhost:8080/snel-transport/api/orders";
         Client client = ClientBuilder.newClient();
@@ -74,45 +93,93 @@ public class OrderControllerTest {
         postOrder.setStatus(1);
         postOrder.setCustomerId(customerId);
         postOrder.setOrderLines(orderLines);
+        postOrder.setEnv("TEST");
         
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String dateInString = "2013/10/15 16:16:39";
-        Date date;
-        try {
-            date = sdf.parse(dateInString);
-            postOrder.setDeliveryDate(date);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        
-
-
-        
-        System.out.println("tar "+target);
+        OrderFacade orderFacade = new OrderFacade("snel-transport-test");
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
-        System.out.println("res "+response);
-//        System.out.println("entit "+response.readEntity(String.class));
         
+        //We expect to receive a 201 as statuscode
+        assertEquals(201, response.getStatus());
+        
+        String output = response.readEntity(String.class);
+        JsonReader jsonReader = Json.createReader(new StringReader(output));
+        JsonObject object = jsonReader.readObject();
+        jsonReader.close();
+        
+        Order foundOrder = new Order();
+        long orderId = object.getInt("id");
+        
+        //We expect that the first row will have ID 1
+        foundOrder = orderFacade.find(orderId);
+        assertEquals("1", foundOrder.getId().toString());
     }
     
     @Test
-    public void testGetOrderLines() {
-//        OrderController instance = new OrderController();
-//        
-//        Response result = instance.getOrderLines(41);
-//        System.out.println("result "+ result);
-//        
-//        JsonReader jsonReader = Json.createReader(new StringReader(result.getEntity().toString()));
-////        JsonObject object = jsonReader.readObject();
-//        JsonArray array = jsonReader.readArray();
-//        
-//        jsonReader.close();
-//        
-//        System.out.println("array " + array);
+    public void testAddOrderWithoutCustomer() {
+        String url = "http://localhost:8080/snel-transport/api/orders";
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(url);
+        ArrayList<OrderLine> orderLines = new ArrayList<OrderLine>(); 
         
+        OrderLine orderLine = new OrderLine();
+        orderLine.setAmount(7);
+        Long productId = (long) 3;
+        orderLine.setProductId(productId);
+        
+        orderLines.add(orderLine);
+        
+        Order postOrder = new Order();
+        postOrder.setStatus(1);
+        postOrder.setOrderLines(orderLines);
+        postOrder.setEnv("TEST");
+        
+        OrderFacade orderFacade = new OrderFacade("snel-transport-test");
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
+        
+        //We expect to receive a 400 as statuscode
+        assertEquals(400, response.getStatus());
+        
+        String output = response.readEntity(String.class);
+        assertEquals("customer ID is required", output);
+    }
+    
+    @Test
+    public void testAddOrderWithInvalidCustomer() {
+        String url = "http://localhost:8080/snel-transport/api/orders";
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(url);
+        ArrayList<OrderLine> orderLines = new ArrayList<OrderLine>(); 
+        
+        OrderLine orderLine = new OrderLine();
+        orderLine.setAmount(7);
+        Long productId = (long) 3;
+        Long customerId = (long) 2;
+        orderLine.setProductId(productId);
+        
+        orderLines.add(orderLine);
+        
+        Order postOrder = new Order();
+        postOrder.setStatus(1);
+        postOrder.setCustomerId(customerId);
+        postOrder.setOrderLines(orderLines);
+        postOrder.setEnv("TEST");
+        
+        OrderFacade orderFacade = new OrderFacade("snel-transport-test");
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
+        
+        //We expect to receive a 400 as statuscode
+        assertEquals(400, response.getStatus());
+        
+        String output = response.readEntity(String.class);
+        assertEquals("customer ID is required", output);
+    }
+    
+    //TO DO the test below..
+    //@Test
+    public void testGetOrderLines() {
      ArrayList<OrderLine> orderLines = new ArrayList<OrderLine>(); 
         
         OrderLine orderLine = new OrderLine();
@@ -124,6 +191,7 @@ public class OrderControllerTest {
         orderLines.add(orderLine);
         
         Order postOrder = new Order();
+        postOrder.setEnv("TEST");
         postOrder.setStatus(1);
         postOrder.setCustomerId(customerId);
 //        postOrder.setOrderLines(orderLines);
@@ -137,13 +205,26 @@ public class OrderControllerTest {
         String url = "http://localhost:8080/snel-transport/api/customers";
         String post_url = "http://localhost:8080/snel-transport/api/orders";
         Client client = ClientBuilder.newClient();
+        
+        
+        
         WebTarget myResource = client.target(post_url);
         Response response = myResource.request(MediaType.APPLICATION_JSON)
+                .header("environment", "test")
                 .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
         
-        JsonReader jsonReader = Json.createReader(new StringReader(response.getEntity().toString()));
+        System.out.println("status is "+response.getStatus());
+        Order result = response.readEntity(Order.class);
+        System.out.println(result.getCustomerId());
+        
+        
+//        JsonReader jsonReader = Json.createReader(new StringReader(response.getEntity().toString()));
 
-        System.out.println("yeye "+response.getEntity());
+//        System.out.println("yeye "+response.getEntity());
+        
+//        JsonReader jsonReader = Json.createReader(new StringReader(response.getEntity().toString()));
+
+//        System.out.println("yeye "+response.getEntity());
      
     }
 

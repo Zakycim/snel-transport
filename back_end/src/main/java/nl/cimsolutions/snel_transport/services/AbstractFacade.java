@@ -19,6 +19,8 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
   
+    protected abstract EntityManagerFactory getEntityManagerFactory(T entity);
+
     public EntityManagerFactory getEntityManagerFactory() {
         return entityManagerFactory;
     }
@@ -28,12 +30,18 @@ public abstract class AbstractFacade<T> {
     }
     
     public void setup(){
+        System.out.println("nee ik mag hier niet komen tijdens test");
         this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport");
+        setEntityManagerFactory(this.entityManagerFactory);
+    }
+    public void setup(String dbName){
+        System.out.println("dbname "+ dbName);
+        this.entityManagerFactory = Persistence.createEntityManagerFactory(dbName);
         setEntityManagerFactory(this.entityManagerFactory);
     }
     
     public T create(T entity) {
-        EntityManager em = getEntityManagerFactory().createEntityManager();
+        EntityManager em = getEntityManagerFactory(entity).createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.persist(entity);
@@ -54,6 +62,8 @@ public abstract class AbstractFacade<T> {
     }
 
     public T find(Object id) {
+//        this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport-test");
+//        EntityManager em =   this.entityManagerFactory.createEntityManager();
         EntityManager em = getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -124,8 +134,12 @@ public abstract class AbstractFacade<T> {
     }
     
     public AbstractFacade(Class<T> entityClass) {
-        setup();
         this.entityClass = entityClass;
+        setup();
+    }
+    public AbstractFacade(Class<T> entityClass, String dbName) {
+        this.entityClass = entityClass;
+        setup(dbName);
     }
 
 }

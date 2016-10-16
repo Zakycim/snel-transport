@@ -48,4 +48,10 @@ public class OrderLineFacade extends AbstractFacade<OrderLine> {
         
         return resultList;
     }
+
+    @Override
+    protected EntityManagerFactory getEntityManagerFactory(OrderLine entity) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

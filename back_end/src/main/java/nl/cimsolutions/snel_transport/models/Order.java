@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +21,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="\"Order\"")
-public class Order implements Serializable {
+public class Order extends Config implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @TableGenerator(
@@ -53,8 +54,8 @@ public class Order implements Serializable {
         this.status = status;
         this.orderLines = orderLines;
     }
-
     
+    //TO DO: call this method in Order ctrl
     public boolean validate(Order order){ 
         if (order.getCustomerId() == null) {
             return false; 

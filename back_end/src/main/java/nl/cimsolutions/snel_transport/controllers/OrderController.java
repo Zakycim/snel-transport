@@ -1,9 +1,13 @@
 
 package nl.cimsolutions.snel_transport.controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,8 +17,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import nl.cimsolutions.snel_transport.models.Customer;
 import nl.cimsolutions.snel_transport.models.Order;
 import nl.cimsolutions.snel_transport.models.OrderLine;
+import nl.cimsolutions.snel_transport.services.CustomerFacade;
 import nl.cimsolutions.snel_transport.services.OrderFacade;
 import nl.cimsolutions.snel_transport.services.OrderLineFacade;
 
@@ -44,26 +50,40 @@ public class OrderController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(Order data) {
-        System.out.println("yes");
-        for(OrderLine ol: data.getOrderLines()) { 
-            System.out.println("data ol "+ ol.getProductId());
-            System.out.println("data amount "+ ol.getAmount());
-        }
+        System.out.println("customer jajaj" );
         Order order = new Order();
         
+        if(data.getCustomerId() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("customer ID is required").build();
+        }
+        
+        CustomerFacade customerFacade = new CustomerFacade();
+        if(data.getEnv() != null){
+            order.setEnv(data.getEnv());    
+//            customerFacade = new CustomerFacade("snel-transport-test");
+        } else{
+            
+        }
         long customerId = data.getCustomerId();
+        
+        //find method gaat naar DEV db daarom kan je je test ook niet laten slagen..
+        Customer customer = customerFacade.find(customerId);
+     
+        if(customer == null) {
+            System.out.println("customer is null" );
+            return Response.status(Response.Status.BAD_REQUEST).entity("customer ID wasn't found").build();
+        }
+        
         order.setCustomerId(customerId);
+        
         Date orderDate = new Date();
         order.setOrderDate(orderDate);
         order.setStatus(1);
-        order.setOrderLines(data.getOrderLines());
-        String dbName = "snel-transport";
         
-//        if(data.containsKey("environment")) {
-//            if(data.getString("environment").equals("TEST") ){
-//                dbName = "snel-transport-test";
-//            }
-//        }
+        if(data.getOrderLines() != null) {
+            order.setOrderLines(data.getOrderLines());
+        }
+      
         
         OrderFacade orderFacade = new OrderFacade();
         
@@ -71,7 +91,6 @@ public class OrderController {
         newlyOrder = orderFacade.create(order);
          
         return Response.status(Response.Status.CREATED).entity(newlyOrder).build();      
-//        return Response.status(Response.Status.CREATED).entity(data).build();      
     }
     
     
