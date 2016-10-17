@@ -51,6 +51,7 @@ export class OrderCreateComponent implements OnInit {
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error); // for demo purposes only
+    alert(error["_body"]);
     return Promise.reject(error.message || error);
   }
 
@@ -60,11 +61,11 @@ export class OrderCreateComponent implements OnInit {
 
   addOrderLine(id, quantity: number) {
     if (!isNaN(id)) {
-      this.indexOfOrderLine = this.getIndexByValue("Id", id);
+      this.indexOfOrderLine = this.getIndexByValue("productId", id);
 
       if (!isNaN(this.indexOfOrderLine)) {
 
-        alert("Nee sorry!");
+        alert("Het is niet mogelijk om dezelfde producten toe te voegen. Pas het aantal van het product aan.");
         // var test = quantity.toString(quantity);
         // var test_2 = parseInt(test);
         // var testQuantity =  this.orderlines[this.indexOfOrderLine].getQuantity().toString(this.orderlines[this.indexOfOrderLine].getQuantity());
@@ -184,13 +185,9 @@ export class OrderCreateComponent implements OnInit {
     //      .toPromise().then(res => res.json().data).catch(this.handleError);
 
     this.orderlines.forEach(function(entry) {
-      console.log(JSON.stringify(entry.name));
-      console.log(entry.productId);
+
 //      this.postProducts.push(JSON.stringify(entry));
     });
-    
-//    console.log(this.postProducts);
-
 
     this.http.post(this.orderUrl, JSON.stringify({
       customerId: this.customerId,
@@ -198,9 +195,6 @@ export class OrderCreateComponent implements OnInit {
     }), { headers: this.headers })
       .toPromise().then(res => res.json().data).catch(this.handleError);
   }
-
-
-
 
   ngOnInit() {
     this.http.get("http://localhost:8080/snel-transport/api/customers").
