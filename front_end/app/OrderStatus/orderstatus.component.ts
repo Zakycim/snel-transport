@@ -6,14 +6,14 @@ import 'rxjs/add/operator/toPromise';
 
 @Component({
   moduleId: module.id,
-  selector: 'orderlist',
-  templateUrl: `order-list.component.html`
+  selector: 'orderstatus',
+  templateUrl: `orderstatus.component.html`
 })
 
 //Leveringsstatus bijwerken
 
 // Component class implementing OnInit
-export class OrderListComponent implements OnInit {
+export class OrderStatusComponent implements OnInit {
   customers = [];
   deliverylist = [];
   statuses = [];
