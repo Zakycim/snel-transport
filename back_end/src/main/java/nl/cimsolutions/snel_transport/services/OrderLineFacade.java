@@ -16,7 +16,7 @@ public class OrderLineFacade extends AbstractFacade<OrderLine> {
     @PersistenceContext(unitName = "snel-transport")
     private EntityManager em;
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport-test");
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
     EntityManager testEm = emf.createEntityManager();
     
     public OrderLineFacade() {
