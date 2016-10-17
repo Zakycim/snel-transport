@@ -80,7 +80,7 @@ export class OrderCreateComponent implements OnInit {
       } else {
 
         this.productName = this.products[this.productSelectId].name;
-        this.productCat = this.products[this.productSelectId].category;
+        this.productCat = this.products[this.productSelectId].categories.name;
         this.productCode = this.products[this.productSelectId].code;
         this.productPrice = this.products[this.productSelectId].price;
 
@@ -124,7 +124,7 @@ export class OrderCreateComponent implements OnInit {
   getProductInfo(productId) {
     if (productId) {
       this.productSelectId = parseInt(productId) - 1;
-      this.productCat = this.products[this.productSelectId].category;
+      this.productCat = this.products[this.productSelectId].categories.name;
       this.productCode = this.products[this.productSelectId].code;
       this.productPrice = this.products[this.productSelectId].price;
       this.productStock = this.products[this.productSelectId].stock;

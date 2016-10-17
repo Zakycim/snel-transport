@@ -12,6 +12,7 @@ import { OrderListComponent } from './orderlist/order-list.component';
 import { routing } from './app.routes';
 import { DeliveryListComponent } from './deliverylist/delivery-list.component';
 import { FilterPipe } from './filter.pipe';
+import { ExampleComponent } from './example/example.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { FilterPipe } from './filter.pipe';
     ContactsComponent,
     OrderListComponent,
     DeliveryListComponent,
-    FilterPipe
+    FilterPipe,
+    ExampleComponent
     // FiltersComponent
   ],
   bootstrap: [AppComponent]

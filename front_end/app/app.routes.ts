@@ -9,6 +9,7 @@ import { contactsRoutes }    from './contacts/contacts.routes';
 import { orderListRoutes } from './orderlist/order-list.routes';
 // import { filtersRoutes }    from './filters/filters.routes';
 import { deliveryRoutes } from './deliverylist/delivery-list.routes';
+import { exampleRoutes } from './example/example.routes';
 
 // Route Configuration
 export const routes: Routes = [
@@ -20,7 +21,8 @@ export const routes: Routes = [
   ...orderRoutes,
   ...contactsRoutes,
   ...orderListRoutes,
-  ...deliveryRoutes
+  ...deliveryRoutes,
+  ...exampleRoutes
   // ...filtersRoutes
 ];
 

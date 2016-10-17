@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
@@ -36,24 +38,24 @@ public class Product {
     private Double Price;
     @Column(name="code")
     private String Code;
-    @NotNull
-    @Column(name="categoryid")
-    private Long CategoryId;
-//  @ManyToOne
-//    @JoinColumn(name="CategoryId")
-//    private Category Categories;
-    
+//    @NotNull
+//    @Column(name="categoryid")
+//    private Long CategoryId;
+    @OneToOne
+    @JoinColumn(name="categoryId")
+    private Category Categories;
+//    
     public Product(){
         
     }
     
-    public Product(Long Id, String name,String code, Double price, Long categoryId) {
+    public Product(Long Id, String name,String code, Double price, Category categories) {
         super();
         id = Id;
         Name = name;
         Price = price;
-        CategoryId = categoryId;
         Code = code;
+        Categories = categories;
     }
     
     public Long getId() {
@@ -80,12 +82,15 @@ public class Product {
     public void setCode(String code) {
         Code = code;
     }
-    public Long getCategoryId() {
-        return CategoryId;
+
+    public Category getCategories() {
+        return Categories;
     }
-    public void setCategoryId(Long categoryId) {
-        CategoryId = categoryId;
+
+    public void setCategories(Category categories) {
+        Categories = categories;
     }
+    
     @Override
     public int hashCode() {
         int hash = 0;
