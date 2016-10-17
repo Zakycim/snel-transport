@@ -1,0 +1,33 @@
+<div id="orderlistmain">
+    <div class="platenum">
+        <h1> Kentekennummer </h1>
+        <button class='btn btn-generate'>
+                Verdelen
+        </button>       
+    </div>
+    <div class="orderlist-body">
+        <div class="table-data">
+            <table class="data">
+                <!-- <thread> -->
+                    <tr>
+                        <th>Klantennummers</th>
+                        <th>Ordernummers</th>
+                    </tr>
+                <!-- </thread> -->
+                <tr *ngFor="let x of Ordernummers">
+                    <td>{{x.Klantnummer}}</td>
+                    <td>{{x.Ordernummer}}</td>
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+    <footer> 
+        <button class="btn btn-confirm">
+            Bevestigen
+        </button>
+    </footer>
+</div>
+
+   
+
