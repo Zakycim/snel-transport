@@ -1,7 +1,7 @@
 // Imports
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Http, RequestOptions, RequestOptionsArgs, Headers  } from '@angular/http';
+import { Http, RequestOptions, RequestOptionsArgs, Headers, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {orderLineCreate} from './orderLineCreate';
 
@@ -193,7 +193,16 @@ export class OrderCreateComponent implements OnInit {
       customerId: this.customerId,
       orderLines: this.orderlines
     }), { headers: this.headers })
-      .toPromise().then(res => res.json().data).catch(this.handleError);
+      .toPromise().then(this.extractData).catch(this.handleError);
+  }
+  
+  private extractData(res: Response) {
+    let body = res.json();
+    if(res.status == 201) {
+      alert("Bestelling is succesvol aangemaakt");
+    }
+
+    return body.data || {};
   }
 
   ngOnInit() {
