@@ -27,6 +27,8 @@
             <property name="javax.persistence.jdbc.user" value="transport_user" />
             <property name="javax.persistence.jdbc.password"
                 value="admin" />
+                
+                <property name="javax.persistence.jdbc.show_sql" value="true"/>
         </properties>
     </persistence-unit>
     <persistence-unit name="snel-transport-test" transaction-type="RESOURCE_LOCAL">
