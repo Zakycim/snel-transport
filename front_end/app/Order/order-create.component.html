@@ -6,11 +6,10 @@
 					<label>Klant</label>
 				</div>
 				<select class="largeInput" #t (change)="getCustomerInfo(t.value)">
-					<option>Kies product</option>
+					<option>Kies klant</option>
 					<option *ngFor="let customer of customers" value="{{customer.id}}">{{customer.name}}
 					</option>
 				</select>
-
 			</div>
 			<div class="Column">
 				<div class="nameLabel">
