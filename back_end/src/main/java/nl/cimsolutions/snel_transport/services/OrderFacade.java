@@ -29,10 +29,15 @@ public class OrderFacade extends AbstractFacade<Order> {
             return em;
         }
 
-        public List findWithName(String name) {
-            return getEntityManager().createQuery(
-                "SELECT u FROM User u WHERE u.name = :name ")
-                .setParameter("name", name)
-                .getResultList();
+//        public List findWithName(String name) {
+//            return getEntityManager().createQuery(
+//                "SELECT u FROM User u WHERE u.name = :name ")
+//                .setParameter("name", name)
+//                .getResultList();
+//        }
+//        
+        public List getAllCustomerIdandOrderId() {
+        	System.out.println("dude");
+        	return findAll("SELECT customerid FROM orders");
         }
     }

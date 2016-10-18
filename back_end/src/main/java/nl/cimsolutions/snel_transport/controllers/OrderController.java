@@ -35,7 +35,7 @@ public class OrderController {
     public List<Order> getAllOrders() {
         OrderFacade orderFacade = new OrderFacade();
 
-        List<Order> orders = orderFacade.findAll();
+        List<Order> orders = orderFacade.getAllCustomerIdandOrderId();//findAll();
 
         return orders;
     } 

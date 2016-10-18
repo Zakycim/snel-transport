@@ -59,9 +59,6 @@ public class Product {
 		Categories = categories;
 	}
 
-	
-    
-   
     public Long getProductId() {
 		return ProductId;
 	}
