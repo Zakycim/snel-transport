@@ -1,8 +1,39 @@
-<form id="filter">
-	<input type="text" name="term" [(ngModel)]="term"/>
-</form>
-	<ul>
-		<li *ngFor="let todo of todos | filter:term">
-			{{todo}}
-		</li>
-	</ul>
+<div class="deliver-container">
+	<div class="row row-deliver-big">
+		<div class="col-lg-6"></div>
+		<div class="col-lg-6">
+			<h4>datum</h4>
+			<h4>klantgegevens</h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-6">
+			<h4>order nr</h4>
+		</div>
+		<div class="col-lg-6"></div>
+	</div>
+	<div class="row row-deliver-big">
+		<div class="col-lg-4">
+			<h4>artikel nr</h4>
+		</div>
+		<div class="col-lg-4">
+			<h4>omschrijving</h4>
+		</div>
+		<div class="col-lg-4">
+			<h4>aantal</h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<span class="deliver-text">Tijdstip aflevering:</span> <span> bijv 14.00 uur</span>
+		</div>
+	</div>
+	<div class="row row-deliver-big">
+		<div class="col-lg-6">
+			<h4>Paraaf chauffeur</h4>
+		</div>
+		<div class="col-lg-6">
+			<h4>Paraaf klant</h4>
+		</div>
+	</div>
+</div>

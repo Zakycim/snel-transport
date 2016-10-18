@@ -3,6 +3,26 @@ body {
     font-size: 12px;
 }
 
+.deliver-text {
+	font-size: 18px;
+}
+
+.deliver-container .row {
+    margin-right: -11px;
+    margin-left: -11px;
+}
+
+.deliver-container .row .col-lg-4, .col-lg-6, .col-lg-12{
+	height: 100px;
+}
+
+.col-lg-4, .col-lg-6, .col-lg-12{
+	border-bottom-style: solid;
+	border-right-style: solid;
+	
+
+}
+
 nav {
   margin: 24px;
   padding: 7px;
@@ -99,6 +119,10 @@ a {
     color: #333;
     text-decoration: none;
 
+}
+
+.row-deliver-big {
+	height: 200px;
 }
 
 table {
