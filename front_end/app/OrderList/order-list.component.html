@@ -1,0 +1,26 @@
+<button class='btn btn-generate' onclick="verdeelOrders()">Verdelen</button>
+<div id="orderlistmain" *ngFor="let order of orderlist">
+	<div class="platenum">
+		<h2> Kentekennummer
+			<input class="marginAdres largeinput" type="text" name="Stad" placeholder="kentekennummer" value="{{order.platenum}}"
+			/>
+		</h2>
+	</div>
+	<div class="orderlist-body">
+		<div class="table-data">
+			<table class="data">
+				<!-- <thread> -->
+				<tr>
+					<th>Klantennummers</th>
+					<th>Ordernummers</th>
+				</tr>
+				<!-- </thread> -->
+				<tr *ngFor="let bla of order.orders">
+					<td>{{bla.id}}</td>
+					<td>{{bla.orderNumber}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<button class="btn btn-confirm">Bevestigen</button>

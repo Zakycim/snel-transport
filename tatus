@@ -1,0 +1,35 @@
+[33mcommit e5cd90ae5a70339390b1971247050c7d39d73dfa[m
+Author: CIMSOLUTIONS\k.lalaoui <k.lalaoui@cimsolutions.nl>
+Date:   Fri Oct 14 12:23:55 2016 +0200
+
+    working category name and product code
+
+[33mcommit 938c8a3d79912a4ba25ec23931892ca2761851f3[m
+Author: CIMSOLUTIONS\k.lalaoui <k.lalaoui@cimsolutions.nl>
+Date:   Fri Oct 14 11:42:15 2016 +0200
+
+    category name and code
+
+[33mcommit 48b3f6a6f403a2bf210f165e677bda4140adfa55[m
+Author: CIMSOLUTIONS\Z.Huraibi <Z.Huraibi@cimsolutions.nl>
+Date:   Fri Oct 14 10:16:42 2016 +0200
+
+    Added get products again
+
+[33mcommit 88fdf0dea3c39b3dc6652f3f564eee5d105d8bd6[m
+Author: CIMSOLUTIONS\Z.Huraibi <Z.Huraibi@cimsolutions.nl>
+Date:   Thu Oct 13 17:08:47 2016 +0200
+
+    Enabled CORS for front end
+
+[33mcommit 0b00c23a2fe02dc9f8f3bb050181df0db9d28113[m
+Author: CIMSOLUTIONS\Z.Huraibi <Z.Huraibi@cimsolutions.nl>
+Date:   Thu Oct 13 13:28:50 2016 +0200
+
+    Invoked setOrderline in OrderCtrl
+
+[33mcommit daff68ad0422588ad67b44310f5e2cee1296fd23[m
+Author: CIMSOLUTIONS\Z.Huraibi <Z.Huraibi@cimsolutions.nl>
+Date:   Thu Oct 13 11:26:00 2016 +0200
+
+    Deleted unused files
