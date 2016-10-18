@@ -6,7 +6,7 @@
 					<label>Klant</label>
 				</div>
 				<select class="largeInput" #t (change)="getCustomerInfo(t.value)">
-					<option>Kies product</option>
+					<option>Kies klant</option>
 					<option *ngFor="let customer of customers" value="{{customer.id}}">{{customer.name}}
 					</option>
 				</select>
@@ -57,7 +57,7 @@
 				</tr>
 				<tr *ngFor="let orderline of orderlines"
 					style="margin-bottom: 10px;">
-					<td>{{orderline.Id}}</td>
+					<td>{{orderline.productId}}</td>
 					<td>{{orderline.name}}</td>
 					<td>{{orderline.category}}</td>
 					<td>{{orderline.code}}</td>

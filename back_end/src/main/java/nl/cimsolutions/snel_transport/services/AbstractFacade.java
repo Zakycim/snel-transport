@@ -30,7 +30,7 @@ public abstract class AbstractFacade<T> {
     }
     
     public void setup(){
-        System.out.println("nee ik mag hier niet komen tijdens test");
+//        System.out.println("nee ik mag hier niet komen tijdens test");
         this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport");
         setEntityManagerFactory(this.entityManagerFactory);
     }

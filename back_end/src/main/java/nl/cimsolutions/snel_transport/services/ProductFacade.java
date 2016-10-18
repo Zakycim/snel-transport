@@ -38,8 +38,6 @@ public class ProductFacade extends AbstractFacade<Product> {
         return  find(id);
     }
     public List<Product> getAllProducts() {
-    	System.out.println("Before running my query.");
-
         return findAll("SELECT p FROM Product p ORDER BY p.id");
     }
 

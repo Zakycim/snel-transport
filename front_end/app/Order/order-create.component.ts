@@ -201,6 +201,7 @@ export class OrderCreateComponent implements OnInit {
     if(res.status == 201) {
       alert("Bestelling is succesvol aangemaakt");
     }
+    location.reload();
 
     return body.data || {};
   }
