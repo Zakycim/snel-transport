@@ -13,12 +13,9 @@ import nl.cimsolutions.snel_transport.models.Order;
 
 public class CustomerFacade extends AbstractFacade<Customer> {
     EntityManagerFactory emf;
+    
     public CustomerFacade() {
         super(Customer.class);
-    }
-
-    public CustomerFacade(String env) {
-        super(Customer.class, env);
     }
     
     @Override
@@ -27,18 +24,17 @@ public class CustomerFacade extends AbstractFacade<Customer> {
         return null;
     }
 
-    @Override
-    protected EntityManagerFactory getEntityManagerFactory(Customer customer) {
-        if (customer.getEnv() == null) {
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
-        }
-
-        switch (customer.getEnv()) {
-        case "TEST":
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport-test");
-        default:
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
-        }
-    }
+//    @Override
+//    protected EntityManagerFactory getEntityManagerFactory() {
+//        if (System.getenv("Environment") == null) {
+//            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
+//        }
+//        switch (System.getenv("Environment")) {
+//        case "TEST":
+//            return this.emf = Persistence.createEntityManagerFactory("snel-transport-test");
+//        default:
+//            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
+//        }
+//    }
     
 }

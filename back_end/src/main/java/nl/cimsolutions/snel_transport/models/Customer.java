@@ -14,7 +14,7 @@ import javax.persistence.TableGenerator;
  * @author Z.Huraibi
  */
 @Entity
-public class Customer extends Config implements Serializable {
+public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @TableGenerator(

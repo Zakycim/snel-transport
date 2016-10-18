@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.TableGenerator;
 
 @Entity
-public class Status extends Config implements Serializable {
+public class Status implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @TableGenerator(

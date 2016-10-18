@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.json.Json;
@@ -93,9 +94,10 @@ public class OrderControllerTest {
         postOrder.setStatus(1);
         postOrder.setCustomerId(customerId);
         postOrder.setOrderLines(orderLines);
-        postOrder.setEnv("TEST");
         
-        OrderFacade orderFacade = new OrderFacade("snel-transport-test");
+        System.setProperty("sleutel", "spons");
+        
+        OrderFacade orderFacade = new OrderFacade();
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
         
@@ -132,9 +134,8 @@ public class OrderControllerTest {
         Order postOrder = new Order();
         postOrder.setStatus(1);
         postOrder.setOrderLines(orderLines);
-        postOrder.setEnv("TEST");
         
-        OrderFacade orderFacade = new OrderFacade("snel-transport-test");
+        OrderFacade orderFacade = new OrderFacade();
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
         
@@ -164,9 +165,9 @@ public class OrderControllerTest {
         postOrder.setStatus(1);
         postOrder.setCustomerId(customerId);
         postOrder.setOrderLines(orderLines);
-        postOrder.setEnv("TEST");
         
-        OrderFacade orderFacade = new OrderFacade("snel-transport-test");
+        
+        OrderFacade orderFacade = new OrderFacade();
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
         
@@ -191,7 +192,6 @@ public class OrderControllerTest {
         orderLines.add(orderLine);
         
         Order postOrder = new Order();
-        postOrder.setEnv("TEST");
         postOrder.setStatus(1);
         postOrder.setCustomerId(customerId);
 //        postOrder.setOrderLines(orderLines);

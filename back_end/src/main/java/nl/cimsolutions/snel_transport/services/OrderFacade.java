@@ -21,10 +21,6 @@ public class OrderFacade extends AbstractFacade<Order> {
     public OrderFacade() {
         super(Order.class);
     }
-    
-    public OrderFacade(String env) {
-        super(Order.class, env);
-    }
 
     @Override
     protected EntityManager getEntityManager() {
@@ -40,14 +36,16 @@ public class OrderFacade extends AbstractFacade<Order> {
 
     }
 
-    @Override
-    protected EntityManagerFactory getEntityManagerFactory(Order order) {
-        if (order.getEnv() == null) {
+    protected EntityManagerFactory getEntityManagerFactory() {
+
+        System.out.println("getEntityManagerFactoryZ ");
+        if (System.getenv("Environment") == null) {
+            System.out.println("ik mag hier niet komen ");
             return this.emf = Persistence.createEntityManagerFactory("snel-transport");
         }
-
-        switch (order.getEnv()) {
+        switch (System.getenv("Environment")) {
         case "TEST":
+            System.out.println("ik mag hier WEL komen ");
             return this.emf = Persistence.createEntityManagerFactory("snel-transport-test");
         default:
             return this.emf = Persistence.createEntityManagerFactory("snel-transport");

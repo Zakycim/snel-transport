@@ -39,6 +39,10 @@ public class OrderController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Order> getAllOrders() {
+        System.out.println("beginz");
+        System.out.println(System.getenv("Environment"));
+        System.out.println("endz");
+        
         OrderFacade orderFacade = new OrderFacade();
 
         List<Order> orders = orderFacade.findAll();
@@ -58,12 +62,7 @@ public class OrderController {
         }
         
         CustomerFacade customerFacade = new CustomerFacade();
-        if(data.getEnv() != null){
-            order.setEnv(data.getEnv());    
-//            customerFacade = new CustomerFacade("snel-transport-test");
-        } else{
-            
-        }
+
         long customerId = data.getCustomerId();
         
         //find method gaat naar DEV db daarom kan je je test ook niet laten slagen..

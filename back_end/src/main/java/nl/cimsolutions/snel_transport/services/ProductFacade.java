@@ -14,7 +14,8 @@ import nl.cimsolutions.snel_transport.controllers.ProductController;
 import nl.cimsolutions.snel_transport.models.Product;
 
 public class ProductFacade extends AbstractFacade<Product> {
-
+    EntityManagerFactory emf;
+    
     @PersistenceContext(unitName = "snel-transport")
     private EntityManager em;
 
@@ -41,10 +42,16 @@ public class ProductFacade extends AbstractFacade<Product> {
         return findAll("SELECT p FROM Product p ORDER BY p.id");
     }
 
-    @Override
-    protected EntityManagerFactory getEntityManagerFactory(Product entity) {
-        // TODO Auto-generated method stub
-        return null;
+    protected EntityManagerFactory getEntityManagerFactory() {
+        if (System.getenv("Environment") == null) {
+            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
+        }
+        switch (System.getenv("Environment")) {
+        case "TEST":
+            return this.emf = Persistence.createEntityManagerFactory("snel-transport-test");
+        default:
+            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
+        }
     }
     
 }

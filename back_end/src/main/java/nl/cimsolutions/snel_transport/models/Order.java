@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="\"Order\"")
-public class Order extends Config implements Serializable {
+public class Order implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @TableGenerator(

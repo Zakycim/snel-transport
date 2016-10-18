@@ -19,13 +19,11 @@ public class StatusFacade extends AbstractFacade<Status> {
         return null;
     }
 
-    @Override
-    protected EntityManagerFactory getEntityManagerFactory(Status status) {
-        if (status.getEnv() == null) {
+    protected EntityManagerFactory getEntityManagerFactory() {
+        if (System.getenv("Environment") == null) {
             return this.emf = Persistence.createEntityManagerFactory("snel-transport");
         }
-
-        switch (status.getEnv()) {
+        switch (System.getenv("Environment")) {
         case "TEST":
             return this.emf = Persistence.createEntityManagerFactory("snel-transport-test");
         default:
