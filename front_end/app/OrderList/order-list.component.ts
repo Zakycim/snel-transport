@@ -15,8 +15,8 @@ export class OrderListComponent{
    
   // customers = [];
   // trucks = [];
-   orderlist = [];
-  orderlistUrl = ("http://localhost:8080/snelTransport/resources/orderlist");
+  trucklist = [];
+  trucklistUrl = ("http://localhost:8080/snel-transport/api/trucks");
 
   //private headers = new Headers({ 'Content-Type': 'application/json' });
 private todos = ['Angular Notification', 'Filter', 'Request API'];
@@ -26,8 +26,8 @@ private todos = ['Angular Notification', 'Filter', 'Request API'];
   }
  ngOnInit() {
 
-    this.http.get(this.orderlistUrl).
-      toPromise().then(r => r.json()).then(r => this.orderlist = r);
+    this.http.get(this.trucklistUrl).
+      toPromise().then(r => r.json()).then(r => this.trucklist = r);
   }
  
 

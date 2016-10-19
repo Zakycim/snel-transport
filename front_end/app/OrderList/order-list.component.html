@@ -1,8 +1,8 @@
 <button class='btn btn-generate' onclick="verdeelOrders()">Verdelen</button>
-<div id="orderlistmain" *ngFor="let order of orderlist">
+<div id="orderlistmain" *ngFor="let truck of trucklist">
 	<div class="platenum">
 		<h2> Kentekennummer
-			<input class="marginAdres largeinput" type="text" name="Stad" placeholder="kentekennummer" value="{{order.platenum}}"
+			<input class="marginAdres largeinput" type="text" name="Stad" placeholder="kentekennummer" value="{{truck.licensePlate}}"
 			/>
 		</h2>
 	</div>
@@ -15,9 +15,11 @@
 					<th>Ordernummers</th>
 				</tr>
 				<!-- </thread> -->
-				<tr *ngFor="let bla of order.orders">
+				<tr *ngFor="let bla of truck.orderList">
+					<td *ngFor="let blaat of bla.order">
+						{{blaat.customerId}}
+					</td>
 					<td>{{bla.id}}</td>
-					<td>{{bla.orderNumber}}</td>
 				</tr>
 			</table>
 		</div>
