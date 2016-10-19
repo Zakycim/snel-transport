@@ -36,7 +36,7 @@ public class OrderListFacade extends AbstractFacade<OrderList> {
     
     public List<OrderList> getAllOrderLists() {
 
-        return findAll("SELECT t FROM OrderList t");
+        return findAll();
     }
     
     

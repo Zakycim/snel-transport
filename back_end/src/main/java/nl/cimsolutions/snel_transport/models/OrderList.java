@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,7 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 @Entity
-@Table(name="orderlist")
+@Table(name="Orderlist")
 public class OrderList implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -27,12 +28,12 @@ public class OrderList implements Serializable{
     @GeneratedValue(strategy = GenerationType.TABLE, 
         generator = "OrderListGenerator")
 	@Column(name="id")
-    private Long listid;
+    private Long id;
 	
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
 	@JoinColumn(name="id")
 	private List<Orders> orders;
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
 	@JoinColumn(name="truckid")
 	private List<Truck> trucks;
 	
@@ -40,19 +41,19 @@ public class OrderList implements Serializable{
 		
 	}
 
-	public OrderList(Long listid, List<Orders> orders, List<Truck> trucks) {
+	public OrderList(Long id, List<Orders> orders, List<Truck> trucks) {
 		super();
-		this.listid = listid;
+		this.id = id;
 		this.orders = orders;
 		this.trucks = trucks;
 	}
 
-	public Long getListid() {
-		return listid;
+	public Long getId() {
+		return id;
 	}
 
-	public void setListid(Long listid) {
-		this.listid = listid;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public List<Orders> getOrders() {
