@@ -1,39 +1,45 @@
-<div class="deliver-container">
-	<div class="row row-deliver-big">
-		<div class="col-lg-6"></div>
-		<div class="col-lg-6">
-			<h4>datum</h4>
-			<h4>klantgegevens</h4>
+<div class="deliver-container" class="print">
+	<div class="row">
+		<div class="tile col-lg-6"></div>
+		<div
+			class="tile bigHeight column column-right align-left column-default">
+			<span class="date">datum</span> <span>klantgegevens</span>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-6">
-			<h4>order nr</h4>
+		<div class="tile smallHeight column column-left">
+			<span>order nr</span>
 		</div>
-		<div class="col-lg-6"></div>
+		<div class="tile col-lg-6"></div>
 	</div>
 	<div class="row row-deliver-big">
-		<div class="col-lg-4">
-			<h4>artikel nr</h4>
+		<div class="tile bigHeight column column-default">
+			<span>artikel nr</span>
+			<!--  -->
+			<div *ngFor="let truck of trucks">
+				<div>{{truck.id}}</div>
+			</div>
 		</div>
-		<div class="col-lg-4">
-			<h4>omschrijving</h4>
+		<div class="bigHeight column column-default">
+			<span>omschrijving</span>
 		</div>
-		<div class="col-lg-4">
-			<h4>aantal</h4>
+		<div class="bigHeight column column-default">
+			<span>aantal</span>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-12">
-			<span class="deliver-text">Tijdstip aflevering:</span> <span> bijv 14.00 uur</span>
+		<div class="tile smallHeight column column-left">
+			<span class="deliver-text">Tijdstip aflevering:</span> <span>
+				bijv 14.00 uur</span>
 		</div>
 	</div>
-	<div class="row row-deliver-big">
-		<div class="col-lg-6">
-			<h4>Paraaf chauffeur</h4>
+	<div class="row">
+		<div class="tile bigHeight column column-default big-column">
+			<span>Paraaf chauffeur</span>
 		</div>
-		<div class="col-lg-6">
-			<h4>Paraaf klant</h4>
+		<div class="bigHeight column column-default big-column column-right">
+			<span>Paraaf klant</span>
 		</div>
 	</div>
 </div>
+	<button href="#" onclick="window.print();return false;">Print this page</button>

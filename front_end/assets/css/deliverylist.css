@@ -1,0 +1,66 @@
+.align-left {
+	text-align: left; 
+}
+
+.align-left span {
+	display: block;
+	width: 100%;
+	margin-bottom: 1%;
+}
+
+.date{
+	margin-bottom: 25px !important;	
+}
+
+.deliver-container {
+	border: 5px solid;
+	position: relative;
+	height: auto;
+}
+
+.row {
+	display: inline-block;
+	width: 98%;
+	padding: 1%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.smallHeight {
+	height: 50px;
+}
+
+.bigHeight {
+	height: 150px;
+}
+
+.column {
+	width: 20%;
+	padding: 10px;
+	border: 1px solid;
+}
+
+.column-default {
+	float:left;
+	width: 29%;
+}
+
+.big-column {
+	width: 40%;
+}
+
+.column-default:nth-child(even) {
+	margin: 0 2% 0 2%;
+}
+
+.column-right {
+	float: right;
+}
+
+.tile {
+	clear: both;
+}
+
+.column-left {
+	float: left;
+}

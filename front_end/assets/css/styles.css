@@ -1,0 +1,129 @@
+body {
+    font-family: Helvetica;
+    font-size: 12px;
+}
+
+nav {
+  margin: 24px;
+  padding: 7px;
+}
+
+.navbar-header {
+    color: #333;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-size: 3em;
+    padding: 1px;
+    font-weight: bold;
+    width: 4em;
+    text-align: center;
+    border: solid 1px;
+    float: right;
+}
+
+.mdl-navigation__link:first-child {
+  border-radius: 5px 0 0 0;
+}
+
+.mdl-navigation__link:last-child {
+  border-radius: 0 5px 0 0;
+}
+
+.mdl-navigation__link:nth-child(odd) {
+  border: 1px solid black;
+}
+
+.mdl-navigation__link {
+    border-top: 1px solid black;
+    padding: 8px;
+}
+
+.container {
+  margin: 20px 10px;
+  padding: 30px 10px;
+  border: 1px solid black;
+  
+}
+
+.clientContainer {
+    margin-top: 2px;
+    margin-left: 12px;
+}
+
+.Column {
+    padding-top: 10px;
+    padding-left: 5px;
+}
+
+label {
+    width: 100px;
+    float: left;
+}
+
+.customerSelect {
+    width: 125px;
+}
+
+.largeInput {
+    width: 170px;
+}
+
+.smallInput {
+    width: 75px;
+}
+
+.marginAdres {
+    margin-right: 15px;
+}
+
+.productForm {
+    margin: 20px;
+}
+
+ul {
+    list-style: none;
+    margin: 20px 20px 20px 0px;
+    padding: 20px;
+    clear: both;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    float: left;
+}
+
+.navMenu {
+    color: #333;
+    text-decoration: none;
+
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #d3d3d3;
+    text-align: left;
+    padding: 5px;
+    height: 18px;
+}
+
+tr:nth-child(even) {
+    background-color: #d3d3d3;
+}
+
+.fontSize td, th {
+    font-size: 12px;
+}
+
+.Btn {
+    float: right;
+    display: block; 
+    margin: 5px 0 20px 0; 
+}
