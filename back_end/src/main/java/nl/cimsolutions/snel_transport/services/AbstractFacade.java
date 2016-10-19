@@ -19,40 +19,16 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-//    protected abstract EntityManagerFactory getEntityManagerFactory();
+    public EntityManagerFactory getEntityManagerFactory(){
+        return this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport");
+    }
     
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
     
-    protected EntityManagerFactory getCurrentDB() {
-
-        System.out.println("getCurrentDB ");
-        System.out.println("System env ");
-        System.out.println(System.getenv("Environment"));
-        System.out.println("System env end ");
-        
-        System.out.println("System get prop ");
-        System.out.println(System.getProperty("sleutel"));
-        System.out.println("System get prop  end");
-        
-        if (System.getenv("Environment") == null) {
-            System.out.println("ik mag hier niet komen getCurrentDB ");
-            return this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport");
-        }
-        switch (System.getenv("Environment")) {
-        case "TEST":
-            System.out.println("ik mag hier WEL komen getCurrentDB");
-            return this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport-test");
-        default:
-            return this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport");
-        }
-    }
-    
     public T create(T entity) {
-//        EntityManager em = getEntityManagerFactory().createEntityManager();
-        EntityManager em = getCurrentDB().createEntityManager();
-        
+        EntityManager em = getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.persist(entity);
@@ -60,7 +36,7 @@ public abstract class AbstractFacade<T> {
         tx.commit();
         em.close();
 //        getEntityManagerFactory().close();
-        getCurrentDB().close();
+        getEntityManagerFactory().close();
        
         return entity;
     }
@@ -70,25 +46,23 @@ public abstract class AbstractFacade<T> {
     }
 
     public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
+        EntityManager em = getEntityManagerFactory().createEntityManager();
+        em.getTransaction().begin();
+        em.remove(em.merge(entity));
+        
+        em.getTransaction().commit();        
+        em.close();
     }
 
     public T find(Object id) {
-//        this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport-test");
-//        EntityManager em =   this.entityManagerFactory.createEntityManager();
-        
-//        EntityManager em = getEntityManagerFactory().createEntityManager();
-        EntityManager em = getCurrentDB().createEntityManager();
-
+        EntityManager em = getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         T t = em.find(entityClass, id);
         em.flush();
         tx.commit();
         em.close();
-        
 //        getEntityManagerFactory().close();
-        getCurrentDB().close();
         
         return t;
     }
@@ -110,7 +84,7 @@ public abstract class AbstractFacade<T> {
     }
 
     public List<T> findAll() {
-        EntityManager em = getCurrentDB().createEntityManager();
+        EntityManager em = getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         tx.begin();
@@ -121,7 +95,6 @@ public abstract class AbstractFacade<T> {
         tx.commit();
         em.close();
 //        getEntityManagerFactory().close();
-        getCurrentDB().close();
         
         return t;
     }

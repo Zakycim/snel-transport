@@ -45,7 +45,7 @@ import nl.cimsolutions.snel_transport.models.OrderLine;
 import nl.cimsolutions.snel_transport.services.OrderFacade;
 
 public class OrderControllerTest {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport-test");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -57,17 +57,17 @@ public class OrderControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        Query q = em.createNativeQuery("DELETE FROM public.\"orderline\" ");
-        q.executeUpdate();
-        q = em.createNativeQuery("DELETE FROM public.\"Order\" ");
-        q.executeUpdate();
-        em.flush();
-        tx.commit();
-        em.close();
-        emf.close();
+//        EntityManager em = emf.createEntityManager();
+//        EntityTransaction tx = em.getTransaction();
+//        tx.begin();
+//        Query q = em.createNativeQuery("DELETE FROM public.\"orderline\" ");
+//        q.executeUpdate();
+//        q = em.createNativeQuery("DELETE FROM public.\"Order\" ");
+//        q.executeUpdate();
+//        em.flush();
+//        tx.commit();
+//        em.close();
+//        emf.close();
 
     }
 
@@ -79,6 +79,7 @@ public class OrderControllerTest {
     public void testAddOrder() {
         String url = "http://localhost:8080/snel-transport/api/orders";
         Client client = ClientBuilder.newClient();
+        //Setting the url for the client
         WebTarget target = client.target(url);
         ArrayList<OrderLine> orderLines = new ArrayList<OrderLine>(); 
         
@@ -95,9 +96,8 @@ public class OrderControllerTest {
         postOrder.setCustomerId(customerId);
         postOrder.setOrderLines(orderLines);
         
-        System.setProperty("sleutel", "spons");
-        
         OrderFacade orderFacade = new OrderFacade();
+        //Making a POST request to receive a response from the webserver
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
         
@@ -114,7 +114,9 @@ public class OrderControllerTest {
         
         //We expect that the first row will have ID 1
         foundOrder = orderFacade.find(orderId);
-        assertEquals("1", foundOrder.getId().toString());
+        assertEquals("1", foundOrder.getCustomerId().toString());
+        
+        orderFacade.remove(foundOrder);
     }
     
     @Test
@@ -156,7 +158,8 @@ public class OrderControllerTest {
         OrderLine orderLine = new OrderLine();
         orderLine.setAmount(7);
         Long productId = (long) 3;
-        Long customerId = (long) 2;
+        //We set a customerId of 99 in the hopes that it doesn't exists in the DEV database..
+        Long customerId = (long) 99;
         orderLine.setProductId(productId);
         
         orderLines.add(orderLine);
@@ -175,7 +178,7 @@ public class OrderControllerTest {
         assertEquals(400, response.getStatus());
         
         String output = response.readEntity(String.class);
-        assertEquals("customer ID is required", output);
+        assertEquals("customer ID wasn't found", output);
     }
     
     //TO DO the test below..

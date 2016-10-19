@@ -18,16 +18,4 @@ public class CategoryFacade extends AbstractFacade<Category> {
         // TODO Auto-generated method stub
         return null;
     }
-
-    protected EntityManagerFactory getEntityManagerFactory() {
-        if (System.getenv("Environment") == null) {
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
-        }
-        switch (System.getenv("Environment")) {
-        case "TEST":
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport-test");
-        default:
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
-        }
-    }
 }

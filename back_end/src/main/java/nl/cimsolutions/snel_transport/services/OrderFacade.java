@@ -35,20 +35,4 @@ public class OrderFacade extends AbstractFacade<Order> {
     public void setup(Order order) {
 
     }
-
-    protected EntityManagerFactory getEntityManagerFactory() {
-
-        System.out.println("getEntityManagerFactoryZ ");
-        if (System.getenv("Environment") == null) {
-            System.out.println("ik mag hier niet komen ");
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
-        }
-        switch (System.getenv("Environment")) {
-        case "TEST":
-            System.out.println("ik mag hier WEL komen ");
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport-test");
-        default:
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
-        }
-    }
 }

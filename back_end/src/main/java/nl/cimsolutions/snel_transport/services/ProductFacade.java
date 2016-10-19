@@ -41,17 +41,4 @@ public class ProductFacade extends AbstractFacade<Product> {
     public List<Product> getAllProducts() {
         return findAll("SELECT p FROM Product p ORDER BY p.id");
     }
-
-    protected EntityManagerFactory getEntityManagerFactory() {
-        if (System.getenv("Environment") == null) {
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
-        }
-        switch (System.getenv("Environment")) {
-        case "TEST":
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport-test");
-        default:
-            return this.emf = Persistence.createEntityManagerFactory("snel-transport");
-        }
-    }
-    
 }
