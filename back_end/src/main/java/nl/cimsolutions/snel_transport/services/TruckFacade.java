@@ -25,17 +25,17 @@ public class TruckFacade extends AbstractFacade<Truck> {
 //
 //      return findAll();
 //  }
-    
-    public Truck getTruck(Long id) {
-
-        return  find(id);
-    }
+//    
+//    public Truck getTruck(Long id) {
+//
+//        return  find(id);
+//    }
     public List<Truck> getAllTrucks() {
 
         return findAll("SELECT t FROM Truck t");
     }
-    
-    public List<Truck> getAllTruckPlates() {
-    	return findAll("SELECT licenseplate FROM Truck");
-    }
+//    
+//    public List<Truck> getAllTruckPlates() {
+//    	return findAll("SELECT licenseplate FROM Truck");
+//    }
 }

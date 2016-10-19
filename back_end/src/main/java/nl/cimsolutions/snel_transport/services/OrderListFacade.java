@@ -4,15 +4,16 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
-import nl.cimsolutions.snel_transport.models.Orders;
 import nl.cimsolutions.snel_transport.models.OrderList;
 
 public class OrderListFacade extends AbstractFacade<OrderList> {
-	
-	@PersistenceContext(unitName = "snel-transport")
+
+    @PersistenceContext(unitName = "snel-transport")
     private EntityManager em;
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
@@ -27,21 +28,24 @@ public class OrderListFacade extends AbstractFacade<OrderList> {
         return em;
     }
 
-    public List findWithName(String name) {
-        return getEntityManager().createQuery(
-            "SELECT u FROM User u WHERE u.name = :name ")
-            .setParameter("name", name)
-            .getResultList();
-    }
-    
-    public List<OrderList> getAllOrderLists() {
-
-        return findAll();
-    }
-    
-    
-    public List<OrderList> getOrdersByTruck() {
-
-        return findAll("SELECT truckid FROM Orderlist c1, Orders c2 WHERE c2 MEMBER OF c1.neighbors");
+    public List<OrderList> findWithOrderId(long truckId) {
+        
+      EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
+      EntityManager em = emf.createEntityManager();
+      
+      EntityTransaction tx = em.getTransaction();
+      tx.begin();
+      
+      em.flush();
+      tx.commit();
+      
+      Query query = em.createQuery("SELECT o FROM OrderList o WHERE o.truckId = :truckId");
+      query.setParameter("truckId", truckId);
+      List resultList = query.getResultList();
+      
+      em.close();
+      emf.close();
+        
+        return resultList;
     }
 }

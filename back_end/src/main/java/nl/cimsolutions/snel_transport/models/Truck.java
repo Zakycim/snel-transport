@@ -1,45 +1,50 @@
 package nl.cimsolutions.snel_transport.models;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
-
 @Entity
-@Table(name="Truck")
+@Table(name = "Truck")
 @Access(AccessType.FIELD)
 public class Truck implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	@TableGenerator(
-            name = "TruckGenerator",
-            allocationSize = 1,
-            initialValue = 1)
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, 
-        generator = "TruckGenerator")
-	@Column(name="truckid")
+	@TableGenerator(name = "TruckGenerator", allocationSize = 1, initialValue = 1)
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TruckGenerator")
+	@Column(name = "id")
 	private Long id;
-	@Column(name="licenseplate")
+	@Column(name = "licenseplate")
 	private String LicensePlate;
-	@Column(name="available")
+	@Column(name = "available")
 	private boolean Available;
-	
+	 @OneToMany( cascade = CascadeType.PERSIST)
+	 @JoinColumn(name="truckId")
+	 private List<OrderList> OrderList;
+
 	public Truck() {
-		
+
 	}
-	
-	public Truck(Long truckId, String licensePlate, boolean available){
-		id = truckId;
+
+	public Truck(Long id, String licensePlate, boolean available, List<OrderList> orderList) {
+		super();
+		this.id = id;
 		LicensePlate = licensePlate;
 		Available = available;
+		OrderList = orderList;
 	}
 
 	public Long getId() {
@@ -65,6 +70,14 @@ public class Truck implements Serializable {
 	public void setAvailable(boolean available) {
 		Available = available;
 	}
+
+	public List<OrderList> getOrderList() {
+		return OrderList;
+	}
+
+	public void setOrderList(List<OrderList> orderList) {
+		OrderList = orderList;
+	}
 	
-	
+
 }

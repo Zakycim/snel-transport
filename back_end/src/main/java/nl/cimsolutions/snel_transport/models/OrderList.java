@@ -16,7 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 @Entity
-@Table(name="Orderlist")
 public class OrderList implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -27,25 +26,21 @@ public class OrderList implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, 
         generator = "OrderListGenerator")
-	@Column(name="id")
     private Long id;
-	
-	@OneToMany(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
-	@JoinColumn(name="id")
-	private List<Orders> orders;
-	@OneToMany(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
-	@JoinColumn(name="truckid")
-	private List<Truck> trucks;
+	@Column(name = "orderId")
+    private Long orderId;
+	@Column(name = "truckId")
+    private Long truckId;
 	
 	public OrderList() {
 		
 	}
 
-	public OrderList(Long id, List<Orders> orders, List<Truck> trucks) {
+	public OrderList(Long id, Long orderId, Long truckId) {
 		super();
 		this.id = id;
-		this.orders = orders;
-		this.trucks = trucks;
+		this.orderId = orderId;
+		this.truckId = truckId;
 	}
 
 	public Long getId() {
@@ -56,21 +51,20 @@ public class OrderList implements Serializable{
 		this.id = id;
 	}
 
-	public List<Orders> getOrders() {
-		return orders;
+	public Long getOrderId() {
+		return orderId;
 	}
 
-	public void setOrders(List<Orders> orders) {
-		this.orders = orders;
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 
-	public List<Truck> getTrucks() {
-		return trucks;
+	public Long getTruckId() {
+		return truckId;
 	}
 
-	public void setTrucks(List<Truck> trucks) {
-		this.trucks = trucks;
+	public void setTruckId(Long truckId) {
+		this.truckId = truckId;
 	}
-	
 
 }

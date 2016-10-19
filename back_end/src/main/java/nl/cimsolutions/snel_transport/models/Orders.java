@@ -38,7 +38,7 @@ public class Orders implements Serializable {
     private Long customerId;
     private Integer status;
     @OneToMany( cascade = CascadeType.PERSIST)
-    @JoinColumn(name="orderId")
+    @JoinColumn(name="orderid")
     private List<OrderLine> orderLines;
     
     public Orders() {
