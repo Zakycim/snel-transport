@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="orders")
-public class Order implements Serializable {
+public class Orders implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @TableGenerator(
@@ -41,11 +41,11 @@ public class Order implements Serializable {
     @JoinColumn(name="orderId")
     private List<OrderLine> orderLines;
     
-    public Order() {
+    public Orders() {
         
     }
     
-    public Order(String name, Double price, Date deliveryDate, Long customerId, Integer status,
+    public Orders(String name, Double price, Date deliveryDate, Long customerId, Integer status,
             List<OrderLine> orderLines) {
         super();
         this.deliveryDate = deliveryDate;
@@ -112,10 +112,10 @@ public class Order implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Order)) {
+        if (!(object instanceof Orders)) {
             return false;
         }
-        Order other = (Order) object;
+        Orders other = (Orders) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

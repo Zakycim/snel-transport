@@ -7,7 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
-import nl.cimsolutions.snel_transport.models.Order;
+import nl.cimsolutions.snel_transport.models.Orders;
 import nl.cimsolutions.snel_transport.models.OrderList;
 
 public class OrderListFacade extends AbstractFacade<OrderList> {
@@ -32,5 +32,16 @@ public class OrderListFacade extends AbstractFacade<OrderList> {
             "SELECT u FROM User u WHERE u.name = :name ")
             .setParameter("name", name)
             .getResultList();
+    }
+    
+    public List<OrderList> getAllOrderLists() {
+
+        return findAll("SELECT t FROM OrderList t");
+    }
+    
+    
+    public List<OrderList> getOrdersByTruck() {
+
+        return findAll("SELECT truckid FROM Orderlist c1, Orders c2 WHERE c2 MEMBER OF c1.neighbors");
     }
 }

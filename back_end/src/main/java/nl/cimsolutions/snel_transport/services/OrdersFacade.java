@@ -8,10 +8,11 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import nl.cimsolutions.snel_transport.models.Order;
+import nl.cimsolutions.snel_transport.models.Orders;
+import nl.cimsolutions.snel_transport.models.Product;
 
 
-public class OrderFacade extends AbstractFacade<Order> {
+public class OrdersFacade extends AbstractFacade<Orders> {
     
 
         @PersistenceContext(unitName = "snel-transport")
@@ -20,8 +21,8 @@ public class OrderFacade extends AbstractFacade<Order> {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
         EntityManager testEm = emf.createEntityManager();
         
-        public OrderFacade() {
-            super(Order.class);
+        public OrdersFacade() {
+            super(Orders.class);
         }
 
         @Override
@@ -35,9 +36,14 @@ public class OrderFacade extends AbstractFacade<Order> {
 //                .setParameter("name", name)
 //                .getResultList();
 //        }
-//        
-        public List getAllCustomerIdandOrderId() {
-        	System.out.println("dude");
-        	return findAll("SELECT customerid FROM orders");
+        
+        public List<Orders> getAllOrders() {
+
+            return findAll("SELECT p FROM Orders p");
         }
+        
+//        public List getAllCustomerIdandOrderId() {
+//        	System.out.println("dude");
+//        	return findAll("SELECT c FROM Orders c");
+//        }
     }

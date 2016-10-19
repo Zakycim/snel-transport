@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 @Entity
-@Table(name="Orderlist")
+@Table(name="orderlist")
 public class OrderList implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -31,7 +31,7 @@ public class OrderList implements Serializable{
 	
 	@OneToMany(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="id")
-	private List<Order> orders;
+	private List<Orders> orders;
 	@OneToMany(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="truckid")
 	private List<Truck> trucks;
@@ -40,7 +40,7 @@ public class OrderList implements Serializable{
 		
 	}
 
-	public OrderList(Long listid, List<Order> orders, List<Truck> trucks) {
+	public OrderList(Long listid, List<Orders> orders, List<Truck> trucks) {
 		super();
 		this.listid = listid;
 		this.orders = orders;
@@ -55,11 +55,11 @@ public class OrderList implements Serializable{
 		this.listid = listid;
 	}
 
-	public List<Order> getOrders() {
+	public List<Orders> getOrders() {
 		return orders;
 	}
 
-	public void setOrders(List<Order> orders) {
+	public void setOrders(List<Orders> orders) {
 		this.orders = orders;
 	}
 

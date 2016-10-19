@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import nl.cimsolutions.snel_transport.controllers.OrderController;
+import nl.cimsolutions.snel_transport.controllers.OrdersController;
 
 public class OrderControllerTest {
 
