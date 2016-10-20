@@ -48,10 +48,6 @@
 	width: 40%;
 }
 
-.column-default:nth-child(even) {
-	margin: 0 2% 0 2%;
-}
-
 .column-right {
 	float: right;
 }
@@ -78,12 +74,4 @@
 	}
 }
 
-.amount {
-    margin: 0 2% 0 2%;
-}
-
-.description {
-    width: 40%;
-    margin-left: 125px !important;
-}
 

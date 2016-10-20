@@ -3,12 +3,12 @@
 		<div class="tile col-lg-6"></div>
 		<div
 			class="tile bigHeight column column-right align-left column-default">
-			<span class="date">datum</span> <span>klantgegevens</span>
+			<span class="date">datum: {{order?.orderDate}}</span> <span>klantgegevens</span>
 		</div>
 	</div>
 	<div class="row">
 		<div class="tile smallHeight column column-left">
-			<span>order nr</span>
+			<span>order nr: {{order?.id}}</span>
 		</div>
 		<div class="tile col-lg-6"></div>
 	</div>
@@ -16,15 +16,27 @@
 		<div class="tile bigHeight column column-default">
 			<span>artikel nr</span>
 			<!--  -->
-			<div *ngFor="let truck of trucks">
-				<div>{{truck.id}}</div>
+			<div *ngFor="let orderLine of order?.orderLines">
+				<div>{{orderLine.product.code}}</div>
 			</div>
 		</div>
-		<div class="bigHeight column column-default description">
+		<div class="bigHeight column column-default">
 			<span>omschrijving</span>
+			<div *ngFor="let orderLine of order?.orderLines">
+				<div>{{orderLine.product.name}}</div>
+			</div>
 		</div>
-		<div class="bigHeight column column-default column-right amount">
+		<div class="bigHeight column column-default">
 			<span>aantal</span>
+				<div *ngFor="let orderLine of order?.orderLines">
+				<div>{{orderLine.amount}}</div>
+			</div>
+		</div>
+		<div class="bigHeight column column-default">
+			<span>prijs</span>
+				<div *ngFor="let orderLine of order?.orderLines">
+				<div>{{orderLine.amount * orderLine.product.price | number : '1.2-2'}}</div>
+			</div>
 		</div>
 	</div>
 	<div class="row">
