@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.cimsolutions.snel_transport.models.Truck;
+import nl.cimsolutions.snel_transport.services.OrderListFacade;
 import nl.cimsolutions.snel_transport.services.TruckFacade;
 
 @Path("trucks")
@@ -20,9 +21,11 @@ public class TruckController {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Truck> getAllTrucks() {
 		TruckFacade truckFacade = new TruckFacade();
-
+		OrderListFacade ol = new OrderListFacade();
+		Truck truck = new Truck();
+       
+        truck.setOrderList(ol.AssignTrucksToOrders());
         List<Truck> trucks = truckFacade.getAllTrucks();//findAll();
-
         return trucks;
     } 
 	

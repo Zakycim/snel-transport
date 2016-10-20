@@ -25,14 +25,14 @@ public class Truck implements Serializable {
 	@TableGenerator(name = "TruckGenerator", allocationSize = 1, initialValue = 1)
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TruckGenerator")
-	@Column(name = "id")
+	@Column(name = "truckid")
 	private Long id;
 	@Column(name = "licenseplate")
 	private String LicensePlate;
 	@Column(name = "available")
 	private boolean Available;
 	 @OneToMany( cascade = CascadeType.PERSIST)
-	 @JoinColumn(name="truckId")
+	 @JoinColumn(name="truckid")
 	 private List<OrderList> OrderList;
 
 	public Truck() {
