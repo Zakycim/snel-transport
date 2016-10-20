@@ -39,64 +39,71 @@ public class OrdersController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Orders> getAllOrders() {
+        System.out.println("getallorders");
         OrdersFacade orderFacade = new OrdersFacade();
-        List<Orders> orders = orderFacade.getAllOrders();//findAll();
+        List<Orders> orders = orderFacade.findAll();// findAll();
 
+        System.out.println(orders);
+        System.out.println("getallorders end");
         return orders;
     }
-    
+
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOrderById(@PathParam("id") long id) {
         OrdersFacade orderFacade = new OrdersFacade();
-        
+
         Orders order = orderFacade.find(id);
-             
-        return Response.status(Response.Status.OK).entity(order).build();   
-//        return order;//Response.status(Response.Status.CREATED).entity(value).build();
-        
+
+        return Response.status(Response.Status.OK).entity(order).build();
+        // return
+        // order;//Response.status(Response.Status.CREATED).entity(value).build();
+
     }
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(Orders data) {
+
         Orders order = new Orders();
-        if(data.getCustomerId() == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("customer ID is required").build();
-        }
-        
+        // if(data.getCustomerId() == null) {
+        // return Response.status(Response.Status.BAD_REQUEST).entity("customer
+        // ID is required").build();
+        // }
+
         CustomerFacade customerFacade = new CustomerFacade();
 
-        long customerId = data.getCustomerId();
-        
-        Customer customer = customerFacade.find(customerId);
-     
-        if(customer == null) {
-            System.out.println("customer is null" );
-            return Response.status(Response.Status.BAD_REQUEST).entity("customer ID wasn't found").build();
-        }
-        
-        order.setCustomerId(customerId);
-        
+        Customer customer = new Customer();
+        customer = data.getCustomer();
+
+        // Customer customer = customerFacade.find(customerId);
+        //
+        // if(customer == null) {
+        // System.out.println("customer is null" );
+        // return Response.status(Response.Status.BAD_REQUEST).entity("customer
+        // ID wasn't found").build();
+        // }
+
+        order.setCustomer(customer);
+
         Date orderDate = new Date();
         order.setOrderDate(orderDate);
         order.setStatus(1);
-        
-        if(data.getOrderLines() != null) {
+
+        if (data.getOrderLines() != null) {
             order.setOrderLines(data.getOrderLines());
         }
-      
-        
+
         OrdersFacade orderFacade = new OrdersFacade();
-        
+
         Orders newlyOrder = new Orders();
         newlyOrder = orderFacade.create(order);
-         
-        return Response.status(Response.Status.CREATED).entity(newlyOrder).build();      
+
+        return Response.status(Response.Status.CREATED).entity(newlyOrder).build();
     }
-    
+
     @POST
     @Path("/orderlines")
     @Produces(MediaType.APPLICATION_JSON)
@@ -110,20 +117,20 @@ public class OrdersController {
             orderLine.setAmount(data[i].getAmount());
             orderLineFacade.create(orderLine);
         }
-        
+
         return Response.status(Response.Status.CREATED).entity(data).build();
-        
+
     }
-    
+
     @GET
     @Path("/{id}/orderlines")
     @Produces(MediaType.APPLICATION_JSON)
     public Orders getOrderLines(@PathParam("id") long id) {
         OrdersFacade orderFacade = new OrdersFacade();
-        
+
         Orders order = orderFacade.find(id);
-             
-        return order;//Response.status(Response.Status.CREATED).entity(value).build();
-        
+
+        return order;// Response.status(Response.Status.CREATED).entity(value).build();
+
     }
 }

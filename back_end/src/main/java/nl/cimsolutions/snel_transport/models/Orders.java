@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -36,32 +37,24 @@ public class Orders implements Serializable {
     private Date orderDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
-    private Long customerId;
     private Integer status;
     @OneToMany( cascade = CascadeType.PERSIST)
     @JoinColumn(name="orderId")
     private List<OrderLine> orderLines;
+    @ManyToOne
+    @JoinColumn(name="customerId")
+    private Customer customer;
     
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     public Orders() {
         
-    }
-    
-    public Orders(String name, Double price, Date deliveryDate, Long customerId, Integer status,
-            List<OrderLine> orderLines) {
-        super();
-        this.deliveryDate = deliveryDate;
-        this.customerId = customerId;
-        this.status = status;
-        this.orderLines = orderLines;
-    }
-    
-    //TO DO: call this method in Order ctrl
-    public boolean validate(Orders order){ 
-        if (order.getCustomerId() == null) {
-            return false; 
-        }
-        
-        return true;        
     }
     
     public List<OrderLine> getOrderLines() {
@@ -88,12 +81,15 @@ public class Orders implements Serializable {
         this.deliveryDate = deliveryDate;
     }
 
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public Orders(Long id, Date orderDate, Date deliveryDate, Integer status, List<OrderLine> orderLines,
+            Customer customer) {
+        super();
+        this.id = id;
+        this.orderDate = orderDate;
+        this.deliveryDate = deliveryDate;
+        this.status = status;
+        this.orderLines = orderLines;
+        this.customer = customer;
     }
 
     public Integer getStatus() {
