@@ -106,7 +106,7 @@ public class OrdersController {
         for (int i = 0; i < data.length; i++) {
             OrderLine orderLine = new OrderLine();
             orderLine.setOrderId(data[i].getOrderId());
-            orderLine.setProductId(data[i].getProductId());
+            orderLine.setProduct(data[i].getProduct());
             orderLine.setAmount(data[i].getAmount());
             orderLineFacade.create(orderLine);
         }

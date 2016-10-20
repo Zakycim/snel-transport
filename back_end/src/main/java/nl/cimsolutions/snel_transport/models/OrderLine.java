@@ -1,11 +1,17 @@
 package nl.cimsolutions.snel_transport.models;
 
 import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.TableGenerator;
 
 @Entity 
@@ -22,7 +28,9 @@ public class OrderLine implements Serializable {
     private Long id;
     @Column(name = "orderId")
     private Long orderId;
-    private Long productId;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "productId")
+    private Product product;
     private int amount;
     
     @Override
@@ -48,15 +56,15 @@ public class OrderLine implements Serializable {
         this.orderId = orderId;
     }
 
-    public Long getProductId() {
-        return productId;
-    }
+	public Product getProduct() {
+		return product;
+	}
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
+	public void setProduct(Product product) {
+		this.product = product;
+	}
 
-    @Override
+	@Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof OrderLine)) {
