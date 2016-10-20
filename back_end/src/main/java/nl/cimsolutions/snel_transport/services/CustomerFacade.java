@@ -9,7 +9,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import nl.cimsolutions.snel_transport.models.Customer;
-import nl.cimsolutions.snel_transport.models.Order;
+import nl.cimsolutions.snel_transport.models.Orders;
 
 public class CustomerFacade extends AbstractFacade<Customer> {
     EntityManagerFactory emf;

@@ -1,31 +1,15 @@
 package controller;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.StringReader;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.persistence.Query;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -39,12 +23,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import nl.cimsolutions.snel_transport.controllers.OrderController;
-import nl.cimsolutions.snel_transport.models.Order;
 import nl.cimsolutions.snel_transport.models.OrderLine;
-import nl.cimsolutions.snel_transport.services.OrderFacade;
+import nl.cimsolutions.snel_transport.models.Orders;
+import nl.cimsolutions.snel_transport.services.OrdersFacade;
 
-public class OrderControllerTest {
+public class OrdersControllerTest {
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
 
     @BeforeClass
@@ -91,12 +74,12 @@ public class OrderControllerTest {
         
         orderLines.add(orderLine);
         
-        Order postOrder = new Order();
+        Orders postOrder = new Orders();
         postOrder.setStatus(1);
         postOrder.setCustomerId(customerId);
         postOrder.setOrderLines(orderLines);
         
-        OrderFacade orderFacade = new OrderFacade();
+        OrdersFacade orderFacade = new OrdersFacade();
         //Making a POST request to receive a response from the webserver
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
@@ -109,7 +92,7 @@ public class OrderControllerTest {
         JsonObject object = jsonReader.readObject();
         jsonReader.close();
         
-        Order foundOrder = new Order();
+        Orders foundOrder = new Orders();
         long orderId = object.getInt("id");
         
         //We expect that the first row will have ID 1
@@ -133,11 +116,11 @@ public class OrderControllerTest {
         
         orderLines.add(orderLine);
         
-        Order postOrder = new Order();
+        Orders postOrder = new Orders();
         postOrder.setStatus(1);
         postOrder.setOrderLines(orderLines);
         
-        OrderFacade orderFacade = new OrderFacade();
+        OrdersFacade orderFacade = new OrdersFacade();
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
         
@@ -164,13 +147,13 @@ public class OrderControllerTest {
         
         orderLines.add(orderLine);
         
-        Order postOrder = new Order();
+        Orders postOrder = new Orders();
         postOrder.setStatus(1);
         postOrder.setCustomerId(customerId);
         postOrder.setOrderLines(orderLines);
         
         
-        OrderFacade orderFacade = new OrderFacade();
+        OrdersFacade orderFacade = new OrdersFacade();
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
         
@@ -194,7 +177,7 @@ public class OrderControllerTest {
         
         orderLines.add(orderLine);
         
-        Order postOrder = new Order();
+        Orders postOrder = new Orders();
         postOrder.setStatus(1);
         postOrder.setCustomerId(customerId);
 //        postOrder.setOrderLines(orderLines);
@@ -217,7 +200,7 @@ public class OrderControllerTest {
                 .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
         
         System.out.println("status is "+response.getStatus());
-        Order result = response.readEntity(Order.class);
+        Orders result = response.readEntity(Orders.class);
         System.out.println(result.getCustomerId());
         
         

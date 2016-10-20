@@ -18,17 +18,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nl.cimsolutions.snel_transport.models.Customer;
-import nl.cimsolutions.snel_transport.models.Order;
 import nl.cimsolutions.snel_transport.models.OrderLine;
 import nl.cimsolutions.snel_transport.services.CustomerFacade;
-import nl.cimsolutions.snel_transport.services.OrderFacade;
+import nl.cimsolutions.snel_transport.models.Orders;
+import nl.cimsolutions.snel_transport.services.OrdersFacade;
 import nl.cimsolutions.snel_transport.services.OrderLineFacade;
 
 /**
  * Root resource (exposed at "orders" path)
  */
 @Path("orders")
-public class OrderController {
+public class OrdersController {
 
     /**
      * Method handling HTTP GET requests. The returned object will be sent to
@@ -38,14 +38,9 @@ public class OrderController {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Order> getAllOrders() {
-        System.out.println("beginz");
-        System.out.println(System.getenv("Environment"));
-        System.out.println("endz");
-        
-        OrderFacade orderFacade = new OrderFacade();
-
-        List<Order> orders = orderFacade.findAll();
+    public List<Orders> getAllOrders() {
+        OrdersFacade orderFacade = new OrdersFacade();
+        List<Orders> orders = orderFacade.getAllOrders();//findAll();
 
         return orders;
     } 
@@ -53,10 +48,8 @@ public class OrderController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addOrder(Order data) {
-        System.out.println("customer jajaj" );
-        Order order = new Order();
-        
+    public Response addOrder(Orders data) {
+        Orders order = new Orders();
         if(data.getCustomerId() == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("customer ID is required").build();
         }
@@ -65,7 +58,6 @@ public class OrderController {
 
         long customerId = data.getCustomerId();
         
-        //find method gaat naar DEV db daarom kan je je test ook niet laten slagen..
         Customer customer = customerFacade.find(customerId);
      
         if(customer == null) {
@@ -84,14 +76,13 @@ public class OrderController {
         }
       
         
-        OrderFacade orderFacade = new OrderFacade();
+        OrdersFacade orderFacade = new OrdersFacade();
         
-        Order newlyOrder = new Order();
+        Orders newlyOrder = new Orders();
         newlyOrder = orderFacade.create(order);
          
         return Response.status(Response.Status.CREATED).entity(newlyOrder).build();      
     }
-    
     
     @POST
     @Path("/orderlines")
@@ -114,10 +105,10 @@ public class OrderController {
     @GET
     @Path("/{id}/orderlines")
     @Produces(MediaType.APPLICATION_JSON)
-    public Order getOrderLines(@PathParam("id") long id) {
-        OrderFacade orderFacade = new OrderFacade();
+    public Orders getOrderLines(@PathParam("id") long id) {
+        OrdersFacade orderFacade = new OrdersFacade();
         
-        Order order = orderFacade.find(id);
+        Orders order = orderFacade.find(id);
              
         return order;//Response.status(Response.Status.CREATED).entity(value).build();
         

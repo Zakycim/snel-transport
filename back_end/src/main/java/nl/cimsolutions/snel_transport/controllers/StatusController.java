@@ -7,7 +7,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import nl.cimsolutions.snel_transport.models.Order;
 import nl.cimsolutions.snel_transport.models.Status;
 import nl.cimsolutions.snel_transport.services.StatusFacade;
 

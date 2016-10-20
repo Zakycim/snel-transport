@@ -9,9 +9,9 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import nl.cimsolutions.snel_transport.models.OrderLine;
+import nl.cimsolutions.snel_transport.models.OrderList;
 
-public class OrderLineFacade extends AbstractFacade<OrderLine> {
+public class OrderListFacade extends AbstractFacade<OrderList> {
 
     @PersistenceContext(unitName = "snel-transport")
     private EntityManager em;
@@ -19,8 +19,8 @@ public class OrderLineFacade extends AbstractFacade<OrderLine> {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
     EntityManager testEm = emf.createEntityManager();
     
-    public OrderLineFacade() {
-        super(OrderLine.class);
+    public OrderListFacade() {
+        super(OrderList.class);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class OrderLineFacade extends AbstractFacade<OrderLine> {
         return em;
     }
 
-    public List<OrderLine> findWithOrderId(long orderId) {
+    public List<OrderList> findWithOrderId(long truckId) {
         
       EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
       EntityManager em = emf.createEntityManager();
@@ -39,8 +39,8 @@ public class OrderLineFacade extends AbstractFacade<OrderLine> {
       em.flush();
       tx.commit();
       
-      Query query = em.createQuery("SELECT o FROM OrderLine o WHERE o.orderId = :orderId");
-      query.setParameter("orderId", orderId);
+      Query query = em.createQuery("SELECT o FROM OrderList o WHERE o.truckId = :truckId");
+      query.setParameter("truckId", truckId);
       List resultList = query.getResultList();
       
       em.close();
@@ -48,5 +48,4 @@ public class OrderLineFacade extends AbstractFacade<OrderLine> {
         
         return resultList;
     }
-    
 }

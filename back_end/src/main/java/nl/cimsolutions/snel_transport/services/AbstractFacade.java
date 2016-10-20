@@ -36,7 +36,6 @@ public abstract class AbstractFacade<T> {
         tx.commit();
         em.close();
 //        getEntityManagerFactory().close();
-        getEntityManagerFactory().close();
        
         return entity;
     }

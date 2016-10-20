@@ -7,12 +7,14 @@ import { AppComponent }         from './app.component';
 import { OrderGetComponent }  from './order/order-get.component';
 import { OrderCreateComponent }  from './order/order-create.component';
 import { ContactsComponent }  from './contacts/contacts.component';
-import { OrderListComponent } from './orderlist/order-list.component';
+import { OrderStatusComponent } from './orderstatus/orderstatus.component';
 // import { FiltersComponent }  from './filters/filters.component';
 import { routing } from './app.routes';
 import { DeliveryListComponent } from './deliverylist/delivery-list.component';
 import { FilterPipe } from './filter.pipe';
 import { ExampleComponent } from './example/example.component';
+import { OrderListComponent } from './orderlist/order-list.component';
+
 
 @NgModule({
   imports: [
@@ -27,10 +29,11 @@ import { ExampleComponent } from './example/example.component';
     OrderGetComponent,
     OrderCreateComponent,
     ContactsComponent,
-    OrderListComponent,
+    OrderStatusComponent,
     DeliveryListComponent,
     FilterPipe,
-    ExampleComponent
+    ExampleComponent,
+    OrderListComponent
     // FiltersComponent
   ],
   bootstrap: [AppComponent]

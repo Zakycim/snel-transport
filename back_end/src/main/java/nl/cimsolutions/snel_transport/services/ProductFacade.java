@@ -34,11 +34,11 @@ public class ProductFacade extends AbstractFacade<Product> {
 //      return findAll();
 //  }
     
-    public Product GetProduct(Integer id) {
+    public Product getProduct(Integer id) {
 
         return  find(id);
     }
     public List<Product> getAllProducts() {
-        return findAll("SELECT p FROM Product p ORDER BY p.id");
+        return findAll("SELECT p FROM Product p");
     }
 }

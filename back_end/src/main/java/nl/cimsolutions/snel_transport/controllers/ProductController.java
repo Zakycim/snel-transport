@@ -12,10 +12,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import nl.cimsolutions.snel_transport.models.Customer;
-import nl.cimsolutions.snel_transport.models.Order;
+import nl.cimsolutions.snel_transport.models.Orders;
 import nl.cimsolutions.snel_transport.models.Product;
 import nl.cimsolutions.snel_transport.services.CustomerFacade;
-import nl.cimsolutions.snel_transport.services.OrderFacade;
+import nl.cimsolutions.snel_transport.services.OrdersFacade;
 import nl.cimsolutions.snel_transport.services.ProductFacade;
 
 @Path("products")

@@ -8,10 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.TableGenerator;
 
-/**
- *
- * @author Z.Huraibi
- */
 @Entity 
 public class OrderLine implements Serializable {
 
@@ -22,7 +18,7 @@ public class OrderLine implements Serializable {
             initialValue = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE,
-            generator="OrderLineGenerator")
+        generator="OrderLineGenerator")
     private Long id;
     @Column(name = "orderId")
     private Long orderId;
