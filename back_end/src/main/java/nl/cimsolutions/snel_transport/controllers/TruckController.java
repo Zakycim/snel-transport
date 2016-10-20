@@ -1,5 +1,6 @@
 package nl.cimsolutions.snel_transport.controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import nl.cimsolutions.snel_transport.models.Customer;
+import nl.cimsolutions.snel_transport.models.OrderLine;
+import nl.cimsolutions.snel_transport.models.OrderList;
+import nl.cimsolutions.snel_transport.models.Orders;
 import nl.cimsolutions.snel_transport.models.Truck;
+import nl.cimsolutions.snel_transport.services.CustomerFacade;
+import nl.cimsolutions.snel_transport.services.OrdersFacade;
 import nl.cimsolutions.snel_transport.services.TruckFacade;
 
 @Path("trucks")
@@ -26,15 +33,29 @@ public class TruckController {
         return trucks;
     } 
 	
-//    @POST
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response addOrder() {
-//        Truck truck = new Truck(1L, "bla", true);//(data.getId(), data.getLicensePlate(), true);
-//        String dbName = "snel-transport";
-//        
-//        TruckFacade truckFacade = new TruckFacade();
-//         
-//        return Response.status(Response.Status.CREATED).entity(truckFacade.create(truck)).build();   
-//    }
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addTruck(Truck data) {
+        Truck truck = new Truck();//(data.getId(), data.getLicensePlate(), true);
+        truck.setLicensePlate("abcdefg");
+        truck.setAvailable(true);
+        
+        System.out.println("addtruck");
+        for (int i = 0; i < data.getOrderList().size(); i++) {
+            
+            System.out.println("de truck id");
+            System.out.println(data.getOrderList().get(i).getTruckId());
+            System.out.println(data.getOrderList().get(i).getTruckId());
+            System.out.println("de order id");
+            System.out.println(data.getOrderList().get(i).getOrder().getId());
+           
+        }
+    
+        truck.setOrderList(data.getOrderList());
+        
+        TruckFacade truckFacade = new TruckFacade();
+         
+        return Response.status(Response.Status.CREATED).entity(truckFacade.create(truck)).build(); 
+    }
 }

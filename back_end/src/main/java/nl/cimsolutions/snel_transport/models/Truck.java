@@ -21,63 +21,63 @@ import javax.persistence.TableGenerator;
 @Access(AccessType.FIELD)
 public class Truck implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	@TableGenerator(name = "TruckGenerator", allocationSize = 1, initialValue = 1)
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "TruckGenerator")
-	@Column(name = "id")
-	private Long id;
-	@Column(name = "licenseplate")
-	private String LicensePlate;
-	@Column(name = "available")
-	private boolean Available;
-	 @OneToMany( cascade = CascadeType.PERSIST)
-	 @JoinColumn(name="truckId")
-	 private List<OrderList> OrderList;
+    private static final long serialVersionUID = 1L;
+    @TableGenerator(name = "TruckGenerator", allocationSize = 1, initialValue = 1)
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "TruckGenerator")
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "licenseplate")
+    private String LicensePlate;
+    @Column(name = "available")
+    private boolean Available;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "truckId")
+    private List<OrderList> orderList;
 
-	public Truck() {
+    public List<OrderList> getOrderList() {
+        return orderList;
+    }
 
-	}
+    public void setOrderList(List<OrderList> orderList) {
+        this.orderList = orderList;
+    }
 
-	public Truck(Long id, String licensePlate, boolean available, List<OrderList> orderList) {
-		super();
-		this.id = id;
-		LicensePlate = licensePlate;
-		Available = available;
-		OrderList = orderList;
-	}
+    public Truck() {
 
-	public Long getId() {
-		return id;
-	}
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Truck(Long id, String licensePlate, boolean available, List<OrderList> orderList) {
+        super();
+        this.id = id;
+        LicensePlate = licensePlate;
+        Available = available;
+        orderList = orderList;
+    }
 
-	public String getLicensePlate() {
-		return LicensePlate;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setLicensePlate(String licensePlate) {
-		LicensePlate = licensePlate;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public boolean isAvailable() {
-		return Available;
-	}
+    public String getLicensePlate() {
+        return LicensePlate;
+    }
 
-	public void setAvailable(boolean available) {
-		Available = available;
-	}
+    public void setLicensePlate(String licensePlate) {
+        LicensePlate = licensePlate;
+    }
 
-	public List<OrderList> getOrderList() {
-		return OrderList;
-	}
+    public boolean isAvailable() {
+        return Available;
+    }
 
-	public void setOrderList(List<OrderList> orderList) {
-		OrderList = orderList;
-	}
-	
+    public void setAvailable(boolean available) {
+        Available = available;
+    }
+
 
 }
