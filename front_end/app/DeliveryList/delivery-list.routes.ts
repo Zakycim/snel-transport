@@ -7,5 +7,5 @@ import { DeliveryListComponent }    from './delivery-list.component';
 
 // Route Configuration
 export const deliveryRoutes: Routes = [
-  { path: 'deliverylist', component: DeliveryListComponent }
+  { path: 'deliverylist/:id', component: DeliveryListComponent }
 ];

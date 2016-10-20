@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {Truck} from './Truck';
+import {Order} from './Order';
+import { ActivatedRoute, Params }   from '@angular/router';
 import { TruckService } from './truck.service';
 
 @Component({
@@ -16,9 +17,12 @@ import { TruckService } from './truck.service';
 // Component class implementing OnInit
 export class DeliveryListComponent implements OnInit {
   _truckService: TruckService;
-  truck: Truck;
+  order: Order;
+  
+   orderId: number;
+   orderURL: string;
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private route: ActivatedRoute) {
   }
 
   printDeliveryList(divName) {
@@ -36,19 +40,38 @@ export class DeliveryListComponent implements OnInit {
 
   }
     
+
+    
   ngOnInit() {
-//    this._truckService.getTrucks()
-//      .subscribe(
-//      res => {
-//        console.log("app trucks ");
-//        //log the response which shows a session
-//        console.log("truck yeye");
-//        //                  this.truck = res;
-//      },
-//      error => {
-//        console.log("app trucks error");
-//        console.log(error);
-//      }
-//      );
+    this.route.params.subscribe(
+      (param: any) => {
+        let id = param['id'];
+//        console.log(id);
+        this.orderId = id;
+      });
+    
+    this.orderURL = "http://localhost:8080/snel-transport/api/orders/" + this.orderId.toString();
+    
+    console.log(this.orderId);
+    
+    this.http.get(this.orderURL).
+      toPromise().then(r => r.json()).then(r => this.order = r);
+    console.log("qwe res");
+    console.log(this.order);
+    
+//    TO DO:
+    this._truckService.getTrucks()
+      .subscribe(
+      res => {
+        console.log("app trucks ");
+        //log the response which shows a session
+        console.log("truck yeye");
+        //                  this.truck = res;
+      },
+      error => {
+        console.log("app trucks error");
+        console.log(error);
+      }
+      );
   }
 }
