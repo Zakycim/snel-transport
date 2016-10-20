@@ -10,8 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.TableGenerator;
 
 @Entity 
@@ -28,8 +27,8 @@ public class OrderLine implements Serializable {
     private Long id;
     @Column(name = "orderId")
     private Long orderId;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "productId")
+    @ManyToOne
+    @JoinColumn(name="productId")
     private Product product;
     private int amount;
     

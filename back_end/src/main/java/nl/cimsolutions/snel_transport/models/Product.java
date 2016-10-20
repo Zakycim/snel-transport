@@ -44,6 +44,8 @@ public class Product {
     @OneToOne
     @JoinColumn(name="categoryId")
     private Category Categories;
+    @OneToMany(mappedBy = "product", targetEntity = OrderLine.class)
+    private List<OrderLine> orderLines;
 //    
     public Product(){
         
