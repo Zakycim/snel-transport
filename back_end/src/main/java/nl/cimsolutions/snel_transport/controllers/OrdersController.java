@@ -43,7 +43,20 @@ public class OrdersController {
         List<Orders> orders = orderFacade.getAllOrders();//findAll();
 
         return orders;
-    } 
+    }
+    
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderById(@PathParam("id") long id) {
+        OrdersFacade orderFacade = new OrdersFacade();
+        
+        Orders order = orderFacade.find(id);
+             
+        return Response.status(Response.Status.OK).entity(order).build();   
+//        return order;//Response.status(Response.Status.CREATED).entity(value).build();
+        
+    }
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
