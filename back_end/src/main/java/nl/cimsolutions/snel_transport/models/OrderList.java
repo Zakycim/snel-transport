@@ -3,6 +3,8 @@ package nl.cimsolutions.snel_transport.models;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,11 +13,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 @Entity
+//@NamedQuery(query = "Select e from Orderlist e", name = "find Orderlist by id")
 public class OrderList implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -26,6 +30,7 @@ public class OrderList implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, 
         generator = "OrderListGenerator")
+	@Column(name="id")
     private Long id;
 //	@Column(name = "orderId")
 //  private Long orderId;

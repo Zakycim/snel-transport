@@ -47,16 +47,14 @@ public class TruckFacade extends AbstractFacade<Truck> {
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
 	       em = emf.createEntityManager();
-	      
-	      EntityTransaction tx = em.getTransaction();
-	      tx.begin();
-	      
-	      em.flush();
-	      tx.commit();
+//	      
+//	      EntityTransaction tx = em.getTransaction();
+//	      tx.begin();
+//	      
+//	      em.flush();
+//	      tx.commit();
 		Query query = em.createQuery("SELECT COUNT(t) FROM Truck t");
 		long truckCount = (Long) query.getSingleResult();
-		em.close();
-	      emf.close();
 		return truckCount;
 	}
 	
@@ -65,8 +63,14 @@ public class TruckFacade extends AbstractFacade<Truck> {
 //		Array[] array = (Array[]) listtrucks.toArray();
 //		array.
 //	}
-	////
-	// public List<Truck> getAllTruckPlates() {
-	// return findAll("SELECT licenseplate FROM Truck");
-	// }
+	
+	 public List<Long> getAllIdTrucks() {
+		 EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
+	       em = emf.createEntityManager();
+	       Query query = em.createQuery("SELECT t.id FROM Truck t");
+	       List<Long> truckIds =  (List<Long>) query.getResultList();
+	       return truckIds;
+	 }
+	 
+
 }

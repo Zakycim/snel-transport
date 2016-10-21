@@ -42,6 +42,7 @@ public class OrdersFacade extends AbstractFacade<Orders> {
             return findAll("SELECT p FROM Orders p");
         }
         
+
 //        public List getAllCustomerIdandOrderId() {
 //        	System.out.println("dude");
 //        	return findAll("SELECT c FROM Orders c");

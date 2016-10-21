@@ -1,5 +1,7 @@
 package nl.cimsolutions.snel_transport.controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -22,12 +24,11 @@ public class TruckController {
     public List<Truck> getAllTrucks() {
 		TruckFacade truckFacade = new TruckFacade();
 		OrderListFacade ol = new OrderListFacade();
-		Truck truck = new Truck();
-       
-        truck.setOrderList(ol.AssignTrucksToOrders());
-        List<Truck> trucks = truckFacade.getAllTrucks();//findAll();
+        List<Truck> trucks = truckFacade.getAllTrucks();
         return trucks;
     } 
+	
+	
 	
 //    @POST
 //    @Consumes(MediaType.APPLICATION_JSON)
