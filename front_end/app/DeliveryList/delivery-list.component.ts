@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Order} from './Order';
-import { ActivatedRoute, Params }   from '@angular/router';
+import { ActivatedRoute, Params, Router }   from '@angular/router';
 import { OrderService } from './order.service';
 
 @Component({
@@ -21,7 +21,8 @@ export class DeliveryListComponent implements OnInit {
   orderId: number;
   orderURL: string;
 
-  constructor(private http: Http, private route: ActivatedRoute, private _orderService: OrderService) {
+  constructor(private http: Http, private route: ActivatedRoute, private _orderService: OrderService,
+    private router: Router) {
   }
 
   printDeliveryList(divName) {
@@ -38,9 +39,7 @@ export class DeliveryListComponent implements OnInit {
     window.clearInterval(2);
 
   }
-
-
-
+  
   ngOnInit() {
     this.route.params.subscribe(
       (param: any) => {
@@ -54,18 +53,15 @@ export class DeliveryListComponent implements OnInit {
     this._orderService.getOrder(this.orderId)
       .subscribe(
       res => {
-        console.log("app res ");
-        console.log(res);
         this.order = res;
-        console.log("order res ");
-        console.log(this.order);
       },
       error => {
-        console.log("app trucks error");
+        console.log("app order error");
         console.log(error);
+        this.router.navigateByUrl('/');
       }
       );
-      console.log(" outside res order ");
-      console.log(this.order);
+    console.log(" outside res order ");
+    console.log(this.order);
   }
 }
