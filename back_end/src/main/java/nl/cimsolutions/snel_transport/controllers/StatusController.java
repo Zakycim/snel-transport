@@ -26,14 +26,14 @@ public class StatusController {
         Status status2 = new Status();
         Status status3 = new Status();
         
-        if(data.getStatus() == null) {
+        if(data.getName() == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("A status is required").build();
         }
         
-        status.setStatus("In behandeling");
-        status1.setStatus("Verzonden");
-        status2.setStatus("Afgeleverd");
-        status3.setStatus("Geannuleerd");
+        status.setName("In behandeling");
+        status1.setName("Verzonden");
+        status2.setName("Afgeleverd");
+        status3.setName("Geannuleerd");
         
         StatusFacade statusFacade = new StatusFacade();
         

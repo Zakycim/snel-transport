@@ -20,7 +20,7 @@ public class Status implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE, 
         generator = "StatusGenerator")
     private Long id;
-    private String status;
+    private String name;
 
     public Status() {
         // TODO Auto-generated constructor stub
@@ -30,15 +30,15 @@ public class Status implements Serializable {
         return id;
     }
 
-    public String getStatus() {
-        return status;
+    public String getName() {
+        return name;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setName(String name) {
+        this.name = name;
     }
 }

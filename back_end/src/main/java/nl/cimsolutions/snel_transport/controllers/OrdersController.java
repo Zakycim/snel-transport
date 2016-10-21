@@ -21,6 +21,7 @@ import nl.cimsolutions.snel_transport.models.Customer;
 import nl.cimsolutions.snel_transport.models.OrderLine;
 import nl.cimsolutions.snel_transport.services.CustomerFacade;
 import nl.cimsolutions.snel_transport.models.Orders;
+import nl.cimsolutions.snel_transport.models.Status;
 import nl.cimsolutions.snel_transport.services.OrdersFacade;
 import nl.cimsolutions.snel_transport.services.OrderLineFacade;
 
@@ -90,7 +91,7 @@ public class OrdersController {
 
         Date orderDate = new Date();
         order.setOrderDate(orderDate);
-        order.setStatus(1);
+        order.setStatus(data.getStatus());
 
         if (data.getOrderLines() != null) {
             order.setOrderLines(data.getOrderLines());

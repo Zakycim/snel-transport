@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
@@ -37,7 +38,9 @@ public class Orders implements Serializable {
     private Date orderDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
-    private Integer status;
+    @OneToOne
+    @JoinColumn(name="statusId")
+    private Status status;
     @OneToMany( cascade = CascadeType.PERSIST)
     @JoinColumn(name="orderId")
     private List<OrderLine> orderLines;
@@ -81,7 +84,7 @@ public class Orders implements Serializable {
         this.deliveryDate = deliveryDate;
     }
 
-    public Orders(Long id, Date orderDate, Date deliveryDate, Integer status, List<OrderLine> orderLines,
+    public Orders(Long id, Date orderDate, Date deliveryDate, Status status, List<OrderLine> orderLines,
             Customer customer) {
         super();
         this.id = id;
@@ -92,15 +95,15 @@ public class Orders implements Serializable {
         this.customer = customer;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
+    public Status getStatus() {
+		return status;
+	}
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-    
-    public Long getId() {
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Long getId() {
         return id;
     }
 
