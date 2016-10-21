@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -37,11 +38,13 @@ public class OrdersController {
      *
      * @return String that will be returned as a text/plain response.
      */
+
+    OrdersFacade orderFacade = new OrdersFacade();
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Orders> getAllOrders() {
         System.out.println("getallorders");
-        OrdersFacade orderFacade = new OrdersFacade();
+//        OrdersFacade orderFacade = new OrdersFacade();
         List<Orders> orders = orderFacade.findAll();// findAll();
 
         System.out.println(orders);
@@ -69,23 +72,11 @@ public class OrdersController {
     public Response addOrder(Orders data) {
 
         Orders order = new Orders();
-        // if(data.getCustomerId() == null) {
-        // return Response.status(Response.Status.BAD_REQUEST).entity("customer
-        // ID is required").build();
-        // }
 
         CustomerFacade customerFacade = new CustomerFacade();
 
         Customer customer = new Customer();
         customer = data.getCustomer();
-
-        // Customer customer = customerFacade.find(customerId);
-        //
-        // if(customer == null) {
-        // System.out.println("customer is null" );
-        // return Response.status(Response.Status.BAD_REQUEST).entity("customer
-        // ID wasn't found").build();
-        // }
 
         order.setCustomer(customer);
 
@@ -103,6 +94,19 @@ public class OrdersController {
         newlyOrder = orderFacade.create(order);
 
         return Response.status(Response.Status.CREATED).entity(newlyOrder).build();
+        
+        // if(data.getCustomerId() == null) {
+        // return Response.status(Response.Status.BAD_REQUEST).entity("customer
+        // ID is required").build();
+        // }
+
+        // Customer customer = customerFacade.find(customerId);
+        //
+        // if(customer == null) {
+        // System.out.println("customer is null" );
+        // return Response.status(Response.Status.BAD_REQUEST).entity("customer
+        // ID wasn't found").build();
+        // }
     }
 
     @POST
@@ -122,12 +126,29 @@ public class OrdersController {
         return Response.status(Response.Status.CREATED).entity(data).build();
 
     }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editOrder(Orders data) {
+        Orders order = orderFacade.find(data.getId());
+        order.setStatus(data.getStatus());
+        order = orderFacade.edit(order);
+
+    	return Response.status(Response.Status.CREATED).entity(order).build();
+//        try {
+//        	orderFacade.edit(order);
+//        	return Response.status(Response.Status.CREATED).entity("Status changed").build();
+//		} catch (Exception e) {
+//			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update order status").build();
+//		}
+    }
 
     @GET
     @Path("/{id}/orderlines")
     @Produces(MediaType.APPLICATION_JSON)
     public Orders getOrderLines(@PathParam("id") long id) {
-        OrdersFacade orderFacade = new OrdersFacade();
+//        OrdersFacade orderFacade = new OrdersFacade();
 
         Orders order = orderFacade.find(id);
 
