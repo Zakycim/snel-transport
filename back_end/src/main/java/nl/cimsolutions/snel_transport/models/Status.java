@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.TableGenerator;
 
 @Entity
@@ -21,6 +22,8 @@ public class Status implements Serializable {
         generator = "StatusGenerator")
     private Long id;
     private String name;
+    @OneToOne(mappedBy="status")
+    private Orders order;
 
     public Status() {
         // TODO Auto-generated constructor stub

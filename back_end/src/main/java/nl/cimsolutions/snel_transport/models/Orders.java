@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,7 +40,7 @@ public class Orders implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
     @OneToOne
-    @JoinColumn(name="statusId")
+    @JoinColumn(name="statusid")
     private Status status;
     @OneToMany( cascade = CascadeType.PERSIST)
     @JoinColumn(name="orderId")
