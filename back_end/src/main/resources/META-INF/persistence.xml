@@ -20,7 +20,8 @@
                 value="create" />
             <property name="eclipselink.canonicalmodel.subpackage"
                 value="dev" />
-
+            <property name="javax.persistence.sql-load-script-source"
+                value="META-INF/sql/Customer.sql" />
             <property name="javax.persistence.schema-generation-target"
                 value="database" />
             <property name="javax.persistence.jdbc.driver"
@@ -30,8 +31,8 @@
             <property name="javax.persistence.jdbc.user" value="transport_user" />
             <property name="javax.persistence.jdbc.password"
                 value="admin" />
-                
-                <property name="javax.persistence.jdbc.show_sql" value="true"/>
+
+            <property name="javax.persistence.jdbc.show_sql" value="true" />
         </properties>
     </persistence-unit>
     <persistence-unit name="snel-transport-test" transaction-type="RESOURCE_LOCAL">
@@ -44,9 +45,8 @@
                 value="drop-and-create" />
             <property name="eclipselink.canonicalmodel.subpackage"
                 value="test" />
-
             <property name="javax.persistence.schema-generation-target"
-                value="database" /> 
+                value="database" />
             <property name="javax.persistence.jdbc.driver"
                 value="org.postgresql.Driver" />
             <property name="javax.persistence.jdbc.url"
