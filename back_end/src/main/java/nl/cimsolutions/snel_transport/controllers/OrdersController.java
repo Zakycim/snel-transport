@@ -146,17 +146,18 @@ public class OrdersController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response editOrder(Orders data) {
-        Orders order = orderFacade.find(data.getId());
+    	Orders order = new Orders();
+        order = orderFacade.find(data.getId());
         order.setStatus(data.getStatus());
-        order = orderFacade.edit(order);
-
-    	return Response.status(Response.Status.CREATED).entity(order).build();
-//        try {
-//        	orderFacade.edit(order);
-//        	return Response.status(Response.Status.CREATED).entity("Status changed").build();
-//		} catch (Exception e) {
-//			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update order status").build();
-//		}
+        
+//        order = orderFacade.edit(order);
+//    	return Response.status(Response.Status.CREATED).entity(order).build();
+        try {
+        	orderFacade.edit(order);
+        	return Response.status(Response.Status.CREATED).entity("Status changed").build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update order status").build();
+		}
     }
 
     @GET
