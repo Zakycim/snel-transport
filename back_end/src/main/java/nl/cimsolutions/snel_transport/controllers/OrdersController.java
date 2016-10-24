@@ -3,6 +3,7 @@ package nl.cimsolutions.snel_transport.controllers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,8 +23,11 @@ import nl.cimsolutions.snel_transport.models.Customer;
 import nl.cimsolutions.snel_transport.models.OrderLine;
 import nl.cimsolutions.snel_transport.services.CustomerFacade;
 import nl.cimsolutions.snel_transport.models.Orders;
+import nl.cimsolutions.snel_transport.models.Product;
 import nl.cimsolutions.snel_transport.models.Status;
 import nl.cimsolutions.snel_transport.services.OrdersFacade;
+import nl.cimsolutions.snel_transport.services.ProductFacade;
+import nl.cimsolutions.snel_transport.services.StatusFacade;
 import nl.cimsolutions.snel_transport.services.OrderLineFacade;
 
 /**
@@ -70,22 +74,33 @@ public class OrdersController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(Orders data) {
-
         Orders order = new Orders();
-
         CustomerFacade customerFacade = new CustomerFacade();
+        StatusFacade statusFacade = new StatusFacade();
 
-        Customer customer = new Customer();
-        customer = data.getCustomer();
-
+        Customer customer = customerFacade.find(data.getCustomer().getId());
+        Status status = statusFacade.find(data.getStatus().getId());
         order.setCustomer(customer);
 
         Date orderDate = new Date();
         order.setOrderDate(orderDate);
-        order.setStatus(data.getStatus());
+        order.setStatus(status);
 
         if (data.getOrderLines() != null) {
-            order.setOrderLines(data.getOrderLines());
+            List<OrderLine> orderLines = new ArrayList<OrderLine>(); 
+            Product product = new Product();
+            ProductFacade productFacade = new ProductFacade();
+            
+            for (int i = 0; i < data.getOrderLines().size(); i++) {
+                OrderLine orderLine = new OrderLine();
+                //TO DO: check if product exists 
+                product = productFacade.find(data.getOrderLines().get(i).getProduct().getId());
+                orderLine.setProduct(product);
+                orderLine.setAmount(data.getOrderLines().get(i).getAmount());
+                orderLines.add(orderLine);
+            }
+            
+            order.setOrderLines(orderLines);
         }
 
         OrdersFacade orderFacade = new OrdersFacade();
