@@ -187,10 +187,15 @@ export class OrderCreateComponent implements OnInit {
     this.orderlines.forEach(function(entry) {
 
 //      this.postProducts.push(JSON.stringify(entry));
-    });
+    }); 
+    
+    console.log("orderlinelog:" + JSON.stringify({
+      customer: {id: this.customerId},
+      orderLines: this.orderlines
+    }), { headers: this.headers });
 
     this.http.post(this.orderUrl, JSON.stringify({
-      customerId: this.customerId,
+      customer: {id: this.customerId},
       orderLines: this.orderlines
     }), { headers: this.headers })
       .toPromise().then(this.extractData).catch(this.handleError);
@@ -198,6 +203,8 @@ export class OrderCreateComponent implements OnInit {
   
   private extractData(res: Response) {
     let body = res.json();
+    console.log("res");
+    console.log(res);
     if(res.status == 201) {
       alert("Bestelling is succesvol aangemaakt");
     }

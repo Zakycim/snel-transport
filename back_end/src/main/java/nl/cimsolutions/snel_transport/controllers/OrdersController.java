@@ -74,12 +74,13 @@ public class OrdersController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(Orders data) {
+        System.out.println("add order"+ data.getId());
         Orders order = new Orders();
         CustomerFacade customerFacade = new CustomerFacade();
         StatusFacade statusFacade = new StatusFacade();
 
         Customer customer = customerFacade.find(data.getCustomer().getId());
-        Status status = statusFacade.find(data.getStatus().getId());
+        Status status = statusFacade.find(1L);
         order.setCustomer(customer);
 
         Date orderDate = new Date();
@@ -147,6 +148,9 @@ public class OrdersController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response editOrder(Orders data) {
     	Orders order = new Orders();
+    	System.out.println("editOrder");
+    	System.out.println("data id " + data.getId());
+    	
         order = orderFacade.find(data.getId());
         order.setStatus(data.getStatus());
         

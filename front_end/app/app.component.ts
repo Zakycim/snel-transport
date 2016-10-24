@@ -19,7 +19,7 @@ import {OrderGetComponent} from "./order/order-get.component";
           <nav class="mdl-navigation">
             <a class="mdl-navigation__link" [routerLink]="['/']">Home</a>
             <a class="mdl-navigation__link" [routerLink]="['/order']">Bestelling</a>
-            <a class="mdl-navigation__link" [routerLink]="['/orderlist']">Leveringsstatus</a>
+            <a class="mdl-navigation__link" [routerLink]="['/orderstatus']">Leveringsstatus</a>
             <a class="mdl-navigation__link" [routerLink]="['/deliverylist']">Bezorglijst</a>
             <a class="mdl-navigation__link" [routerLink]="['/orderlist']">BestellingVerdelen</a>
           </nav>
