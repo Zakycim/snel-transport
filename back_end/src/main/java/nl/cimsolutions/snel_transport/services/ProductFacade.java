@@ -39,6 +39,6 @@ public class ProductFacade extends AbstractFacade<Product> {
         return  find(id);
     }
     public List<Product> getAllProducts() {
-        return findAll("SELECT p FROM Product p");
+        return findAll("SELECT p FROM Product p ORDER BY p.id");
     }
 }

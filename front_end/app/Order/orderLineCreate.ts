@@ -21,6 +21,10 @@ export class orderLineCreate{
     getamount(){
         return this.amount;
     }
+    
+    getProductId() {
+        return this.productId;
+    }
   
     getId(){
         return this.productId;

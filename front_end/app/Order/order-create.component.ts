@@ -47,6 +47,9 @@ export class OrderCreateComponent implements OnInit {
   orderlines: Array<orderLineCreate>;
   orderUrl = 'http://localhost:8080/snel-transport/api/orders';
 
+  orderLineProductId: number;
+  orderLineAmount: number;
+
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
   private handleError(error: any): Promise<any> {
@@ -106,7 +109,7 @@ export class OrderCreateComponent implements OnInit {
 
   setOrderTotal(total: number) {
     total = 0;
-    this.orderlines.forEach(function(item) {
+    this.orderlines.forEach(function (item) {
       total = total + item["total"];
     });
     this.orderTotal = total;
@@ -184,28 +187,59 @@ export class OrderCreateComponent implements OnInit {
     //    this.http.post(this.heroesUrl, JSON.stringify({ name: name }), { headers: this.headers })
     //      .toPromise().then(res => res.json().data).catch(this.handleError);
 
-    this.orderlines.forEach(function(entry) {
+    this.orderlines.forEach(function (entry) {
 
-//      this.postProducts.push(JSON.stringify(entry));
-    }); 
-    
-    console.log("orderlinelog:" + JSON.stringify({
-      customer: {id: this.customerId},
-      orderLines: this.orderlines
-    }), { headers: this.headers });
+      //      this.postProducts.push(JSON.stringify(entry));
+    });
+
+    var index;
+    var newOrderLines = [];
+
+    for (index = 0; index < this.orderlines.length; ++index) {
+      // let orderline = (id, this.productName, this.productCat, this.productCode, this.productPrice, quantity, this.orderLineTotal);
+      console.log("this.orderlines[index] ");
+      // console.log(this.orderlines[index]);
+      // console.log("orderlines product Id ");
+      // console.log(this.orderlines[index].productId);
+      console.log("json stringy amount Id ");
+      console.log(this.orderlines[index].amount);
+      this.orderLineProductId = this.orderlines[index].productId;
+      this.orderLineAmount = this.orderlines[index].amount;
+      // console.log(JSON.stringify({product: {id: this.orderlines[index].productId}},amount: this.orderlines[index].amount),);
+
+      newOrderLines.push("{product: { id: " + this.orderLineProductId + "}, amount: " + this.orderLineAmount + "},");
+
+      //  this.newOrderLines.push("{ product: this.orderlines[index].getProductId() } amount: this.orderlines[index].getamount()");
+    };
+
+    // console.log("newOrderLines array: " + newOrderLines);
+    console.log("post request: " + JSON.stringify({
+      customer: { id: this.customerId },
+      orderLines: newOrderLines
+    }));
+
+
+    // console.log("orderlinelog:" + JSON.stringify({
+    //   customer: { id: this.customerId },
+    //   orderLines: newOrderLines
+    // }), { headers: this.headers });
+
+    // console.log("orderlinelog:" + JSON.stringify({
+    //   orderLines: this.orderlines
+    // }), { headers: this.headers });
 
     this.http.post(this.orderUrl, JSON.stringify({
-      customer: {id: this.customerId},
-      orderLines: this.orderlines
+      customer: { id: this.customerId },
+      orderLines: newOrderLines
     }), { headers: this.headers })
       .toPromise().then(this.extractData).catch(this.handleError);
   }
-  
+
   private extractData(res: Response) {
     let body = res.json();
     console.log("res");
     console.log(res);
-    if(res.status == 201) {
+    if (res.status == 201) {
       alert("Bestelling is succesvol aangemaakt");
     }
     location.reload();
