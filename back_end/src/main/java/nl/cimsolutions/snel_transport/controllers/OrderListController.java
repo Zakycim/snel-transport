@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PrePersist;
 import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -25,11 +26,13 @@ public class OrderListController {
 
 	OrderListFacade oFacade = new OrderListFacade();
 	@GET
+	//@PrePersist
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<OrderList>  getAllorderlists() {
+	public Response  getAllorderlists() {
+		
 		List<OrderList> orderListIds =oFacade.AssignTrucksToOrders();
 		
-		return orderListIds;//new Gson().toJson(orderListIds);
+		return oFacade.generateOrderList(orderListIds);
 	}
 
 }
