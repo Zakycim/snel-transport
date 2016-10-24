@@ -194,25 +194,20 @@ export class OrderCreateComponent implements OnInit {
 
     var index;
     var newOrderLines = [];
-
     for (index = 0; index < this.orderlines.length; ++index) {
       // let orderline = (id, this.productName, this.productCat, this.productCode, this.productPrice, quantity, this.orderLineTotal);
-      console.log("this.orderlines[index] ");
-      // console.log(this.orderlines[index]);
-      // console.log("orderlines product Id ");
-      // console.log(this.orderlines[index].productId);
-      console.log("json stringy amount Id ");
-      console.log(this.orderlines[index].amount);
       this.orderLineProductId = this.orderlines[index].productId;
       this.orderLineAmount = this.orderlines[index].amount;
-      // console.log(JSON.stringify({product: {id: this.orderlines[index].productId}},amount: this.orderlines[index].amount),);
 
-      newOrderLines.push("{product: { id: " + this.orderLineProductId + "}, amount: " + this.orderLineAmount + "},");
-
-      //  this.newOrderLines.push("{ product: this.orderlines[index].getProductId() } amount: this.orderlines[index].getamount()");
+      newOrderLines.push({
+        "product": {
+          "id": this.orderLineProductId
+        }
+        ,
+        "amount": this.orderLineAmount
+      });
     };
 
-    // console.log("newOrderLines array: " + newOrderLines);
     console.log("post request: " + JSON.stringify({
       customer: { id: this.customerId },
       orderLines: newOrderLines
