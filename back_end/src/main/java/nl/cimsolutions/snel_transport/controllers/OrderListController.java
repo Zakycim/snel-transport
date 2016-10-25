@@ -1,5 +1,7 @@
 package nl.cimsolutions.snel_transport.controllers;
 
+import java.util.Date;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,9 +28,8 @@ public class OrderListController {
 	OrderListFacade oFacade = new OrderListFacade();
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<OrderList>  getAllorderlists() {
-		List<OrderList> orderListIds =oFacade.AssignTrucksToOrders();
-		
+	public List<OrderList> getAllorderlists() {
+	    List<OrderList> orderListIds =oFacade.AssignTrucksToOrders();		
 		return orderListIds;//new Gson().toJson(orderListIds);
 	}
 
