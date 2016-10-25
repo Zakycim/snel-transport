@@ -74,35 +74,50 @@ public class OrdersController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(Orders data) {
-        System.out.println("add order"+ data.getId());
-        Orders order = new Orders();
+        if(data.getCustomer().getId() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("customer ID is required").build();
+        }
+        
         CustomerFacade customerFacade = new CustomerFacade();
+        Customer customer = customerFacade.find(data.getCustomer().getId());
+        
+        if(customer == null) {
+            System.out.println("customer is null" );
+            return Response.status(Response.Status.BAD_REQUEST).entity("customerID wasn't found").build();
+        }
+        
+        Orders order = new Orders();
         StatusFacade statusFacade = new StatusFacade();
 
-        Customer customer = customerFacade.find(data.getCustomer().getId());
         Status status = statusFacade.find(1L);
         order.setCustomer(customer);
 
         Date orderDate = new Date();
         order.setOrderDate(orderDate);
         order.setStatus(status);
-
-        if (data.getOrderLines() != null) {
-            List<OrderLine> orderLines = new ArrayList<OrderLine>(); 
-            Product product = new Product();
-            ProductFacade productFacade = new ProductFacade();
-            
-            for (int i = 0; i < data.getOrderLines().size(); i++) {
-                OrderLine orderLine = new OrderLine();
-                //TO DO: check if product exists 
-                product = productFacade.find(data.getOrderLines().get(i).getProduct().getId());
-                orderLine.setProduct(product);
-                orderLine.setAmount(data.getOrderLines().get(i).getAmount());
-                orderLines.add(orderLine);
+        
+        if (data.getOrderLines() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Order lines are required").build();
+        }
+        
+        List<OrderLine> orderLines = new ArrayList<OrderLine>(); 
+        Product product = new Product();
+        ProductFacade productFacade = new ProductFacade();
+        
+        for (int i = 0; i < data.getOrderLines().size(); i++) {
+            OrderLine orderLine = new OrderLine();
+            product = productFacade.find(data.getOrderLines().get(i).getProduct().getId());
+            if(product == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("product ID wasn't found").build();
             }
             
-            order.setOrderLines(orderLines);
+            orderLine.setProduct(product);
+            orderLine.setAmount(data.getOrderLines().get(i).getAmount());
+            orderLines.add(orderLine);
         }
+        
+        order.setOrderLines(orderLines);
+        
 
         OrdersFacade orderFacade = new OrdersFacade();
 
@@ -110,19 +125,6 @@ public class OrdersController {
         newlyOrder = orderFacade.create(order);
 
         return Response.status(Response.Status.CREATED).entity(newlyOrder).build();
-        
-        // if(data.getCustomerId() == null) {
-        // return Response.status(Response.Status.BAD_REQUEST).entity("customer
-        // ID is required").build();
-        // }
-
-        // Customer customer = customerFacade.find(customerId);
-        //
-        // if(customer == null) {
-        // System.out.println("customer is null" );
-        // return Response.status(Response.Status.BAD_REQUEST).entity("customer
-        // ID wasn't found").build();
-        // }
     }
 
     @POST
