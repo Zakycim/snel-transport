@@ -18,7 +18,7 @@ public class OrderLineFacade extends AbstractFacade<OrderLine> {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
     EntityManager testEm = emf.createEntityManager();
-    
+
     public OrderLineFacade() {
         super(OrderLine.class);
     }
@@ -29,23 +29,23 @@ public class OrderLineFacade extends AbstractFacade<OrderLine> {
     }
 
     public List<OrderLine> findWithOrderId(long orderId) {
-        
-      EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
-      EntityManager em = emf.createEntityManager();
-      
-      EntityTransaction tx = em.getTransaction();
-      tx.begin();
-      
-      em.flush();
-      tx.commit();
-      
-      Query query = em.createQuery("SELECT o FROM OrderLine o WHERE o.orderId = :orderId");
-      query.setParameter("orderId", orderId);
-      List resultList = query.getResultList();
-      
-      em.close();
-      emf.close();
-        
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        em.flush();
+        tx.commit();
+
+        Query query = em.createQuery("SELECT o FROM OrderLine o WHERE o.orderId = :orderId");
+        query.setParameter("orderId", orderId);
+        List resultList = query.getResultList();
+
+        em.close();
+        emf.close();
+
         return resultList;
     }
 }

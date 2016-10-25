@@ -7,28 +7,41 @@ import 'rxjs/add/operator/toPromise';
 @Component({
   moduleId: module.id,
   selector: 'OrderList',
-  templateUrl : `order-list.component.html`
+  templateUrl: `order-list.component.html`
 })
 
 // Component class implementing OnInit
-export class OrderListComponent{
-   
+export class OrderListComponent {
+
   // customers = [];
   // trucks = [];
   trucklist = [];
+  assignlist = [];
   trucklistUrl = ("http://localhost:8080/snel-transport/api/trucks");
+  assignlistUrl = ("http://localhost:8080/snel-transport/api/orderlist");
 
   //private headers = new Headers({ 'Content-Type': 'application/json' });
-private todos = ['Angular Notification', 'Filter', 'Request API'];
+  private todos = ['Angular Notification', 'Filter', 'Request API'];
 
   constructor(private http: Http) {
     this.todos
   }
- ngOnInit() {
+
+  AssignOrders() {
+    console.log("Trucklist: "+this.trucklist);
+    this.trucklist = this.trucklist;
+
+    this.http.get(this.assignlistUrl).
+      toPromise().then(r => r.json()).then(r => this.assignlist = r);
 
     this.http.get(this.trucklistUrl).
       toPromise().then(r => r.json()).then(r => this.trucklist = r);
   }
- 
+  ngOnInit() {
+
+    // this.http.get(this.trucklistUrl).
+    //   toPromise().then(r => r.json()).then(r => this.trucklist = r);
+  }
+
 
 } 
