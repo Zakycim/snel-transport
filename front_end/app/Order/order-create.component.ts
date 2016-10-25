@@ -208,11 +208,10 @@ export class OrderCreateComponent implements OnInit {
       });
     };
 
-    console.log("post request: " + JSON.stringify({
-      customer: { id: this.customerId },
-      orderLines: newOrderLines
-    }));
-
+    // console.log("post request: " + JSON.stringify({
+    //   customer: { id: customerId },
+    //   orderLines: newOrderLines
+    // }));
 
     // console.log("orderlinelog:" + JSON.stringify({
     //   customer: { id: this.customerId },
@@ -224,7 +223,7 @@ export class OrderCreateComponent implements OnInit {
     // }), { headers: this.headers });
 
     this.http.post(this.orderUrl, JSON.stringify({
-      customer: { id: this.customerId },
+      customer: { id: customerId },
       orderLines: newOrderLines
     }), { headers: this.headers })
       .toPromise().then(this.extractData).catch(this.handleError);
