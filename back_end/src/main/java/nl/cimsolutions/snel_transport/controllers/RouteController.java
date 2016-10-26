@@ -23,13 +23,33 @@ public class RouteController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addRoute(Route data) {
+        System.out.println("wassuppp2");
+        if(data.getCustomerA() == null || data.getCustomerB() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("customerA and/or CustomerB object is required")
+                    .build();
+        }
+        if(data.getCustomerA().getId() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("customerA ID is required").build();
+        }
+        if(data.getCustomerB().getId() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("customerB ID is required").build();
+        }
+        
         System.out.println("addRoute works");
         Route route = new Route();
         CustomerFacade customerFacade = new CustomerFacade();
         RouteFacade routerFacade = new RouteFacade();
         
         Customer customerA = customerFacade.find(data.getCustomerA().getId());
+        if(customerA == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("customerA ID wasn't found").build();
+        }
+        
         Customer customerB = customerFacade.find(data.getCustomerB().getId());
+        if(customerB == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("customerB ID wasn't found").build();
+        }
+        
         route.setCustomerA(customerA);
         route.setCustomerB(customerB);
         
@@ -48,11 +68,9 @@ public class RouteController {
         String duration = String.format("%d:%02d:%02d", hoursInSeconds / 3600, (minutesInSeconds % 3600) / 60, (seconds % 60));
         route.setDuration(duration);
         route.setDistance(data.getDistance());
-System.out.println("works zz");
-
+        
         Route newlyRoute = new Route();
         newlyRoute = routerFacade.create(route);
         return Response.status(Response.Status.CREATED).entity(newlyRoute).build();
-//        return Response.status(Response.Status.CREATED).entity("qwe").build();
     }
 }

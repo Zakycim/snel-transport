@@ -62,8 +62,7 @@ public class RouteControllerTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
-    public void testAddRoute() {
+    public Response addRouteRequest() {        
         Route route = new Route();
         String url = "http://localhost:8080/snel-transport/api/routes";
         Client client = ClientBuilder.newClient();
@@ -72,7 +71,6 @@ public class RouteControllerTest {
         
         //Preparing data to send with the POST request
         CustomerFacade customerFacade = new CustomerFacade();
-        RouteFacade routerFacade = new RouteFacade();
         
         Customer customerA = customerFacade.find(1L);
         Customer customerB = customerFacade.find(7L);
@@ -86,6 +84,13 @@ public class RouteControllerTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(route, MediaType.APPLICATION_JSON));
         
+        return response;
+    }
+    
+    @Test
+    public void testAddRoute() {
+        RouteFacade routerFacade = new RouteFacade();
+        Response response = addRouteRequest();
         //We expect to receive a 201 as statuscode
         assertEquals(201, response.getStatus());
         
@@ -103,5 +108,97 @@ public class RouteControllerTest {
        
         //We remove the test data from the database, because we don't want to have TEST data in the development database
         routerFacade.remove(foundRoute);
+    }
+    
+    @Test
+    public void testAddRouteWithoutCustomerA() {
+        Route route = new Route();
+        String url = "http://localhost:8080/snel-transport/api/routes";
+        Client client = ClientBuilder.newClient();
+        //Setting the url for the client
+        WebTarget target = client.target(url);
+        
+        //Preparing data to send with the POST request
+        CustomerFacade customerFacade = new CustomerFacade();
+        RouteFacade routerFacade = new RouteFacade();
+        
+        Customer customerA = customerFacade.find(1L);
+        Customer customerB = customerFacade.find(7L);
+        route.setCustomerB(customerB);
+        
+        route.setDuration("25:10:40");
+        route.setDistance(50);
+        
+        //Making a POST request to receive a response from the webserver
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(route, MediaType.APPLICATION_JSON));
+        
+        //We expect to receive a 201 as statuscode
+        assertEquals(400, response.getStatus());
+        
+        String output = response.readEntity(String.class);
+        assertEquals("customerA and/or CustomerB object is required", output);
+    }
+    
+    @Test
+    public void testAddRouteWithoutCustomerAId() {
+        Route route = new Route();
+        String url = "http://localhost:8080/snel-transport/api/routes";
+        Client client = ClientBuilder.newClient();
+        //Setting the url for the client
+        WebTarget target = client.target(url);
+        
+        //Preparing data to send with the POST request
+        CustomerFacade customerFacade = new CustomerFacade();
+        
+        Customer customerA = new Customer();
+        customerA.setId(null);
+        Customer customerB = customerFacade.find(7L);
+        route.setCustomerA(customerA);
+        route.setCustomerB(customerB);
+        
+        route.setDuration("25:10:40");
+        route.setDistance(50);
+        
+        //Making a POST request to receive a response from the webserver
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(route, MediaType.APPLICATION_JSON));
+        
+        //We expect to receive a 201 as statuscode
+        assertEquals(400, response.getStatus());
+        
+        String output = response.readEntity(String.class);
+        assertEquals("customerA ID is required", output);
+    }
+    
+    @Test
+    public void testAddRouteWithInvalidCustomerA(){
+        Route route = new Route();
+        String url = "http://localhost:8080/snel-transport/api/routes";
+        Client client = ClientBuilder.newClient();
+        //Setting the url for the client
+        WebTarget target = client.target(url);
+        
+        //Preparing data to send with the POST request
+        CustomerFacade customerFacade = new CustomerFacade();
+        
+        Customer customerA = new Customer();
+        customerA.setId(80L);
+        Customer customerB = customerFacade.find(7L);
+        route.setCustomerA(customerA);
+        route.setCustomerB(customerB);
+        
+        route.setDuration("25:10:40");
+        route.setDistance(50);
+        
+        //Making a POST request to receive a response from the webserver
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(route, MediaType.APPLICATION_JSON));
+        
+        //We expect to receive a 201 as statuscode
+        assertEquals(400, response.getStatus());
+        
+        String output = response.readEntity(String.class);
+        assertEquals("customerA ID wasn't found", output);
     }
 }
