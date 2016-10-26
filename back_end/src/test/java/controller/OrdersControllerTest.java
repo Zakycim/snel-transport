@@ -46,6 +46,7 @@ public class OrdersControllerTest {
     ProductFacade productFacade = new ProductFacade();
     OrdersFacade orderFacade = new OrdersFacade();
     String orderURL = "http://localhost:8080/snel-transport/api/orders";
+    Orders foundOrder = new Orders();
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -64,7 +65,7 @@ public class OrdersControllerTest {
     public void tearDown() throws Exception {
     }
     
-    public Response addOrderMethod(String url, long productId, int amount, long customerId, boolean orderline){
+    public Response addOrderMethod(String url, long productId, int amount, long customerId, boolean orderline, boolean deleteOrder){
     	//We first insert an order in the database.
         Product product = new Product();
         Client client = ClientBuilder.newClient();
@@ -101,6 +102,22 @@ public class OrdersControllerTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
         
+        if(deleteOrder == true){
+        	
+        	String output = response.readEntity(String.class);
+            JsonReader jsonReader = Json.createReader(new StringReader(output));
+            JsonObject object = jsonReader.readObject();
+            jsonReader.close();
+
+            long orderId = object.getInt("id");
+            System.out.println("Orderid is "+orderId);
+            
+            //We expect that the found order has a customer id of 1
+            foundOrder = orderFacade.find(orderId);
+            
+            //orderFacade.remove(foundOrder);
+        }
+        
     	return response;
     }
     
@@ -112,8 +129,51 @@ public class OrdersControllerTest {
 //        System.out.println(em);
 //    }
     @Test
+    public void testGetOrderByInvalidId() {
+    	
+    	Client client = ClientBuilder.newClient();
+    	orderURL = "http://localhost:8080/snel-transport/api/orders/234234";
+        WebTarget target = client.target(orderURL);
+        
+        //Making a GET request to receive a response from the webserver
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .get();
+        
+      //We expect to receive a 400 as statuscode
+        assertEquals(400, response.getStatus());
+    }
+    @Test
+    public void testGetOrderById() {
+    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true, false);
+    	
+    	Client client = ClientBuilder.newClient();
+    	//Setting the url for the client
+    	String output = response.readEntity(String.class);
+    	JsonReader jsonReader = Json.createReader(new StringReader(output));
+    	JsonObject object = jsonReader.readObject();
+    	jsonReader.close();
+    	
+    	long orderId = object.getInt("id");
+    	
+    	orderURL = "http://localhost:8080/snel-transport/api/orders/"+orderId;
+    	WebTarget target = client.target(orderURL);
+    	
+    	//Making a GET request to receive a response from the webserver
+    	response = target.request(MediaType.APPLICATION_JSON)
+    			.get();
+    	
+    	//We expect to receive a 200 as statuscode
+    	assertEquals(200, response.getStatus());
+    	
+    	//We expect that the found order has a customer id of 1
+        foundOrder = orderFacade.find(orderId);
+    	
+    	//We remove the test data from the database
+        orderFacade.remove(foundOrder);
+    }
+    @Test
     public void testGetAllOrders() {
-    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true);
+    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true, false);
     	
     	Client client = ClientBuilder.newClient();
         //Setting the url for the client
@@ -127,7 +187,6 @@ public class OrdersControllerTest {
         JsonObject object = jsonReader.readObject();
         jsonReader.close();
         
-        Orders foundOrder = new Orders();
         long orderId = object.getInt("id");
         
         //We expect that the found order has a customer id of 1
@@ -150,9 +209,9 @@ public class OrdersControllerTest {
         orderFacade.remove(foundOrder);
     }
     //To do: make this test pass
-    //@Test
+    @Test
     public void testEditOrder() {
-    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true);
+    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true, false);
     	
     	Client client = ClientBuilder.newClient();
         //Setting the url for the client
@@ -166,7 +225,6 @@ public class OrdersControllerTest {
         JsonObject object = jsonReader.readObject();
         jsonReader.close();
         
-        Orders foundOrder = new Orders();
         long orderId = object.getInt("id");
         
         //We expect that the found order has a customer id of 1
@@ -194,14 +252,12 @@ public class OrdersControllerTest {
         System.out.println("found order status getid "+ foundOrder.getStatus().getId());
         //To do: pass this test
         assertEquals("2", foundOrder.getStatus().getId().toString());
-       
-        //We remove the test data from the database, because we don't want to have TEST data in the development database
-//        orderFacade.remove(foundOrder);
+
     }
     @Test
     public void testAddOrder() {
         // Add order by method addOrderMethod
-    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true);
+    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true, false);
     	
     	 //We expect to receive a 201 as statuscode
         assertEquals(201, response.getStatus());
@@ -223,11 +279,10 @@ public class OrdersControllerTest {
         //We remove the test data from the database, because we don't want to have TEST data in the development database
         orderFacade.remove(foundOrder);
     }
-    
     @Test
     public void testAddOrderWithoutCustomer() {
     	// Add order by method addOrderMethod
-    	Response response = addOrderMethod(orderURL, 3L, 4, 0L, true);
+    	Response response = addOrderMethod(orderURL, 3L, 4, 0L, true, false);
         
         //We expect to receive a 400 as statuscode
         assertEquals(400, response.getStatus());
@@ -235,23 +290,22 @@ public class OrdersControllerTest {
         String output = response.readEntity(String.class);
         assertEquals("customer ID is required", output);
     }
-    
     @Test
     public void testAddOrderWithInvalidCustomer() {        
     	// Add order by method addOrderMethod
-    	Response response = addOrderMethod(orderURL, 3L, 4, 80L, true);
+    	Response response = addOrderMethod(orderURL, 3L, 4, 80L, true, false);
         
         //We expect to receive a 400 as statuscode
         assertEquals(400, response.getStatus());
         
         String output = response.readEntity(String.class);
+        System.out.println("output response read entity "+output);
         assertEquals("customerID wasn't found", output);
     }
-    
     @Test
     public void testAddOrderWithoutOrderLines() {
     	// Add order by method addOrderMethod
-    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, false);
+    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, false, false);
         
         //We expect to receive a 400 as statuscode
         assertEquals(400, response.getStatus());
@@ -262,12 +316,13 @@ public class OrdersControllerTest {
     @Test
     public void testAddOrderWithInvalidOrderLines() {
     	// Add order by method addOrderMethod
-    	Response response = addOrderMethod(orderURL, 60L, 4, 1L, true);
+    	Response response = addOrderMethod(orderURL, 60L, 4, 1L, true, false);
         
         //We expect to receive a 400 as statuscode
         assertEquals(400, response.getStatus());
         
         String output = response.readEntity(String.class);
+        System.out.println("output response read entity "+output);
         assertEquals("product ID wasn't found", output);
     }
 }

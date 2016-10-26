@@ -63,10 +63,13 @@ public class OrdersController {
         OrdersFacade orderFacade = new OrdersFacade();
 
         Orders order = orderFacade.find(id);
-
-        return Response.status(Response.Status.OK).entity(order).build();
-        // return
-        // order;//Response.status(Response.Status.CREATED).entity(value).build();
+        
+        // Check if order is empty
+        if(order == null){
+        	return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't find customer").build();
+        } else {
+        	return Response.status(Response.Status.OK).entity(order).build();
+        }
 
     }
 
@@ -158,8 +161,8 @@ public class OrdersController {
 //        order = orderFacade.edit(order);
 //    	return Response.status(Response.Status.CREATED).entity(order).build();
         try {
-        	
-        	return Response.status(Response.Status.CREATED).entity(orderFacade.edit(order)).build();
+        	orderFacade.edit(order);
+        	return Response.status(Response.Status.CREATED).entity("Status changed").build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update order status").build();
 		}
