@@ -82,7 +82,6 @@ public class OrdersController {
         Customer customer = customerFacade.find(data.getCustomer().getId());
         
         if(customer == null) {
-            System.out.println("customer is null" );
             return Response.status(Response.Status.BAD_REQUEST).entity("customerID wasn't found").build();
         }
         
@@ -159,8 +158,8 @@ public class OrdersController {
 //        order = orderFacade.edit(order);
 //    	return Response.status(Response.Status.CREATED).entity(order).build();
         try {
-        	orderFacade.edit(order);
-        	return Response.status(Response.Status.CREATED).entity("Status changed").build();
+        	
+        	return Response.status(Response.Status.CREATED).entity(orderFacade.edit(order)).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update order status").build();
 		}
