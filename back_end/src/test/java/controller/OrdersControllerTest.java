@@ -45,6 +45,7 @@ public class OrdersControllerTest {
     CustomerFacade customerFacade = new CustomerFacade();
     ProductFacade productFacade = new ProductFacade();
     OrdersFacade orderFacade = new OrdersFacade();
+    String orderURL = "http://localhost:8080/snel-transport/api/orders";
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -63,6 +64,46 @@ public class OrdersControllerTest {
     public void tearDown() throws Exception {
     }
     
+    public Response addOrderMethod(String url, long productId, int amount, long customerId, boolean orderline){
+    	//We first insert an order in the database.
+        Product product = new Product();
+        Client client = ClientBuilder.newClient();
+        //Setting the url for the client
+        WebTarget target = client.target(url);
+        
+        //Preparing data to send with the POST request
+        List<OrderLine> orderLines = new ArrayList<OrderLine>(); 
+        OrderLine orderLine = new OrderLine();
+        product.setId(productId);
+
+        Customer customer = new Customer();
+        
+        Orders postOrder = new Orders();
+        if(customerId == 0L){
+        } else { 	
+            customer.setId(customerId);
+
+        }
+        postOrder.setCustomer(customer);
+        
+        // Check if orderline needs to be added to the order
+        if(orderline == true){
+        	orderLine.setProduct(product);
+            orderLine.setAmount(amount);
+            
+            orderLines.add(orderLine);
+            
+            // Add orderlines to the orderRequest
+            postOrder.setOrderLines(orderLines);
+        }
+        
+        //Making a POST request to receive a response from the webserver
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
+        
+    	return response;
+    }
+    
 //    @Test
 //    public void test(){
 //        EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
@@ -72,35 +113,13 @@ public class OrdersControllerTest {
 //    }
     @Test
     public void testGetAllOrders() {
-    	//We first insert an order in the database.
-        Product product = new Product();
-        String url = "http://localhost:8080/snel-transport/api/orders";
-        Client client = ClientBuilder.newClient();
+    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true);
+    	
+    	Client client = ClientBuilder.newClient();
         //Setting the url for the client
-        WebTarget target = client.target(url);
+        WebTarget target = client.target(orderURL);
         
-        //Preparing data to send with the POST request
-        List<OrderLine> orderLines = new ArrayList<OrderLine>(); 
-        OrderLine orderLine = new OrderLine();
-        product.setId(3L);
-        orderLine.setProduct(product);
-        orderLine.setAmount(4);
-        
-        orderLines.add(orderLine);
-        
-        Orders postOrder = new Orders();
-        
-        Customer customer = new Customer();
-        customer.setId(1L);
-        
-        postOrder.setCustomer(customer);
-        postOrder.setOrderLines(orderLines);
-        
-        //Making a POST request to receive a response from the webserver
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
-        
-        //We expect to receive a 201 as statuscode
+      //We expect to receive a 201 as statuscode
         assertEquals(201, response.getStatus());
         
         String output = response.readEntity(String.class);
@@ -113,9 +132,6 @@ public class OrdersControllerTest {
         
         //We expect that the found order has a customer id of 1
         foundOrder = orderFacade.find(orderId);
-       
-        //We remove the test data from the database, because we don't want to have TEST data in the development database
-        orderFacade.remove(foundOrder);
         
         //Making a GET request to receive a response from the webserver
         response = target.request(MediaType.APPLICATION_JSON)
@@ -130,42 +146,21 @@ public class OrdersControllerTest {
         assertTrue("Previous (" + jsonArray.size() + ") should be greater than current (" + 1 + ")", jsonArray.size() > 0);
 //        object.size();
         
-    
+      //We remove the test data from the database, because we don't want to have TEST data in the development database
+        orderFacade.remove(foundOrder);
     }
     //To do: make this test pass
     //@Test
     public void testEditOrder() {
-    	//We first insert an order in the database.
-        Product product = new Product();
-        String url = "http://localhost:8080/snel-transport/api/orders";
-        Client client = ClientBuilder.newClient();
+    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true);
+    	
+    	Client client = ClientBuilder.newClient();
         //Setting the url for the client
-        WebTarget target = client.target(url);
-        
-        //Preparing data to send with the POST request
-        List<OrderLine> orderLines = new ArrayList<OrderLine>(); 
-        OrderLine orderLine = new OrderLine();
-        product.setId(3L);
-        orderLine.setProduct(product);
-        orderLine.setAmount(4);
-        
-        orderLines.add(orderLine);
-        
-        Orders postOrder = new Orders();
-        
-        Customer customer = new Customer();
-        customer.setId(1L);
-        
-        postOrder.setCustomer(customer);
-        postOrder.setOrderLines(orderLines);
-        
-        //Making a POST request to receive a response from the webserver
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
+        WebTarget target = client.target(orderURL);
         
         //We expect to receive a 201 as statuscode
         assertEquals(201, response.getStatus());
-//        
+        
         String output = response.readEntity(String.class);
         JsonReader jsonReader = Json.createReader(new StringReader(output));
         JsonObject object = jsonReader.readObject();
@@ -174,9 +169,9 @@ public class OrdersControllerTest {
         Orders foundOrder = new Orders();
         long orderId = object.getInt("id");
         
-        //We set the found order status to verzonden
+        //We expect that the found order has a customer id of 1
         foundOrder = orderFacade.find(orderId);
-        System.out.println("orderId before put "+ orderId);
+    	
         Status status = new Status();
         status.setId(2L);
         foundOrder.setStatus(status);
@@ -205,36 +200,12 @@ public class OrdersControllerTest {
     }
     @Test
     public void testAddOrder() {
-        Product product = new Product();
-        String url = "http://localhost:8080/snel-transport/api/orders";
-        Client client = ClientBuilder.newClient();
-        //Setting the url for the client
-        WebTarget target = client.target(url);
-        
-        //Preparing data to send with the POST request
-        List<OrderLine> orderLines = new ArrayList<OrderLine>(); 
-        OrderLine orderLine = new OrderLine();
-        product.setId(3L);
-        orderLine.setProduct(product);
-        orderLine.setAmount(4);
-        
-        orderLines.add(orderLine);
-        
-        Orders postOrder = new Orders();
-        
-        Customer customer = new Customer();
-        customer.setId(1L);
-        
-        postOrder.setCustomer(customer);
-        postOrder.setOrderLines(orderLines);
-        
-        //Making a POST request to receive a response from the webserver
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
-        
-        //We expect to receive a 201 as statuscode
+        // Add order by method addOrderMethod
+    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true);
+    	
+    	 //We expect to receive a 201 as statuscode
         assertEquals(201, response.getStatus());
-//        
+        
         String output = response.readEntity(String.class);
         JsonReader jsonReader = Json.createReader(new StringReader(output));
         JsonObject object = jsonReader.readObject();
@@ -245,6 +216,8 @@ public class OrdersControllerTest {
         
         //We expect that the found order has a customer id of 1
         foundOrder = orderFacade.find(orderId);
+    	
+    	// Check if order id exists
         assertEquals("1", foundOrder.getCustomer().getId().toString());
        
         //We remove the test data from the database, because we don't want to have TEST data in the development database
@@ -253,29 +226,8 @@ public class OrdersControllerTest {
     
     @Test
     public void testAddOrderWithoutCustomer() {
-        Product product = new Product();
-        String url = "http://localhost:8080/snel-transport/api/orders";
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(url);
-
-        
-        List<OrderLine> orderLines = new ArrayList<OrderLine>(); 
-        
-        OrderLine orderLine = new OrderLine();
-        product.setId(3L);
-        orderLine.setProduct(product);
-        orderLine.setAmount(4);
-        
-        orderLines.add(orderLine);
-        
-        Orders postOrder = new Orders();
-        
-        Customer customer = new Customer();
-        postOrder.setCustomer(customer);
-        postOrder.setOrderLines(orderLines);
-        
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
+    	// Add order by method addOrderMethod
+    	Response response = addOrderMethod(orderURL, 3L, 4, 0L, true);
         
         //We expect to receive a 400 as statuscode
         assertEquals(400, response.getStatus());
@@ -286,29 +238,8 @@ public class OrdersControllerTest {
     
     @Test
     public void testAddOrderWithInvalidCustomer() {        
-        Product product = new Product();
-        String url = "http://localhost:8080/snel-transport/api/orders";
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(url);
-        List<OrderLine> orderLines = new ArrayList<OrderLine>(); 
-        
-        OrderLine orderLine = new OrderLine();
-        product.setId(3L);
-        orderLine.setProduct(product);
-        orderLine.setAmount(4);
-        
-        orderLines.add(orderLine);
-        
-        Orders postOrder = new Orders();
-        
-        Customer customer = new Customer();
-        customer.setId(45L);
-        
-        postOrder.setCustomer(customer);
-        postOrder.setOrderLines(orderLines);
-
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
+    	// Add order by method addOrderMethod
+    	Response response = addOrderMethod(orderURL, 3L, 4, 80L, true);
         
         //We expect to receive a 400 as statuscode
         assertEquals(400, response.getStatus());
@@ -319,29 +250,8 @@ public class OrdersControllerTest {
     
     @Test
     public void testAddOrderWithoutOrderLines() {
-        Product product = new Product();
-        String url = "http://localhost:8080/snel-transport/api/orders";
-        Client client = ClientBuilder.newClient();
-        //Setting the url for the client
-        WebTarget target = client.target(url);
-        List<OrderLine> orderLines = new ArrayList<OrderLine>(); 
-        
-        OrderLine orderLine = new OrderLine();
-        product.setId(3L);
-        orderLine.setProduct(product);
-        orderLine.setAmount(4);
-        
-        orderLines.add(orderLine);
-        
-        Orders postOrder = new Orders();
-        
-        Customer customer = new Customer();
-        customer.setId(1L);
-        
-        postOrder.setCustomer(customer);
-        
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
+    	// Add order by method addOrderMethod
+    	Response response = addOrderMethod(orderURL, 3L, 4, 1L, false);
         
         //We expect to receive a 400 as statuscode
         assertEquals(400, response.getStatus());
@@ -351,30 +261,8 @@ public class OrdersControllerTest {
     }
     @Test
     public void testAddOrderWithInvalidOrderLines() {
-        Product product = new Product();
-        String url = "http://localhost:8080/snel-transport/api/orders";
-        Client client = ClientBuilder.newClient();
-        //Setting the url for the client
-        WebTarget target = client.target(url);
-        List<OrderLine> orderLines = new ArrayList<OrderLine>(); 
-        
-        OrderLine orderLine = new OrderLine();
-        product.setId(60L);
-        orderLine.setProduct(product);
-        orderLine.setAmount(4);
-        
-        orderLines.add(orderLine);
-        
-        Orders postOrder = new Orders();
-        
-        Customer customer = new Customer();
-        customer.setId(1L);
-        
-        postOrder.setCustomer(customer);
-        postOrder.setOrderLines(orderLines);
-        
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(postOrder, MediaType.APPLICATION_JSON));
+    	// Add order by method addOrderMethod
+    	Response response = addOrderMethod(orderURL, 60L, 4, 1L, true);
         
         //We expect to receive a 400 as statuscode
         assertEquals(400, response.getStatus());
