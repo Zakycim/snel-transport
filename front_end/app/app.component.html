@@ -1,0 +1,18 @@
+<div class="demo-layout-transparent mdl-layout mdl-js-layout">
+      <header class="mdl-layout__header mdl-layout__header--transparent">
+        <div class="mdl-layout__header-row">
+          <!-- Add spacer, to align navigation to the right -->
+          <div class="mdl-layout-spacer"></div>
+          <!-- Navigation with router directives-->
+          <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" [routerLink]="['/']">Home</a>
+            <a class="mdl-navigation__link" [routerLink]="['/order']">Bestelling</a>
+            <a class="mdl-navigation__link" [routerLink]="['/orderlist']">Leveringsstatus</a>
+          </nav>
+        </div>
+      </header>
+    </div>
+    <!-- Router Outlet -->
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>

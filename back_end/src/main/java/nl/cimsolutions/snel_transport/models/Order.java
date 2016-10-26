@@ -3,6 +3,9 @@ package nl.cimsolutions.snel_transport.models;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,27 +14,30 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="\"Order\"")
 public class Order implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
+    @TableGenerator(
+            name = "OrderGenerator",
+            allocationSize = 1,
+            initialValue = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_gen")
-    @SequenceGenerator(name = "order_gen", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.TABLE, 
+        generator = "OrderGenerator")
     private Long id;
-    private String name;
-    private Double price;
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
     private Long customerId;
     private Integer status;
-    @OneToMany
+    @OneToMany( cascade = CascadeType.PERSIST)
     @JoinColumn(name="orderId")
     private List<OrderLine> orderLines;
     
@@ -42,8 +48,6 @@ public class Order implements Serializable {
     public Order(String name, Double price, Date deliveryDate, Long customerId, Integer status,
             List<OrderLine> orderLines) {
         super();
-        this.name = name;
-        this.price = price;
         this.deliveryDate = deliveryDate;
         this.customerId = customerId;
         this.status = status;
@@ -56,22 +60,6 @@ public class Order implements Serializable {
 
     public void setOrderLines(List<OrderLine> orderLines) {
         this.orderLines = orderLines;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public Date getOrderDate() {
