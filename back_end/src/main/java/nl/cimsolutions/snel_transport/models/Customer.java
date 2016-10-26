@@ -42,6 +42,12 @@ public class Customer implements Serializable {
     private String fax;
     @OneToMany(mappedBy = "customer", targetEntity = Orders.class)
     private List<Orders> orders;
+    
+    @OneToMany(mappedBy = "customerA")
+    private List<Route> routes;
+    
+    @OneToMany(mappedBy = "customerB")
+    private List<Route> routes2;
 
     public Customer() {
         // TODO Auto-generated constructor stub
