@@ -6,9 +6,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { orderRoutes }    from './order/order.routes';
 import { contactsRoutes }    from './contacts/contacts.routes';
-import { orderListRoutes } from './orderlist/order-list.routes';
+import { orderStatusRoutes } from './orderstatus/orderstatus.routes';
 // import { filtersRoutes }    from './filters/filters.routes';
 import { deliveryRoutes } from './deliverylist/delivery-list.routes';
+import { exampleRoutes } from './example/example.routes';
+import { orderListRoutes } from './orderlist/order-list.routes';
 
 // Route Configuration
 export const routes: Routes = [
@@ -19,8 +21,10 @@ export const routes: Routes = [
   },
   ...orderRoutes,
   ...contactsRoutes,
-  ...orderListRoutes,
-  ...deliveryRoutes
+  ...orderStatusRoutes,
+  ...deliveryRoutes,
+  ...exampleRoutes,
+  ...orderListRoutes
   // ...filtersRoutes
 ];
 

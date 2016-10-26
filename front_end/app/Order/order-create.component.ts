@@ -1,7 +1,7 @@
 // Imports
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Http } from '@angular/http';
+import { Http, RequestOptions, RequestOptionsArgs, Headers, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {orderLineCreate} from './orderLineCreate';
 
@@ -18,6 +18,7 @@ export class OrderCreateComponent implements OnInit {
   customers = [];
   products = [];
   selectedProducts = [];
+  postProducts = [];
 
   // customer variables
   customerAddress: string;
@@ -44,17 +45,30 @@ export class OrderCreateComponent implements OnInit {
   indexOfOrderLine: number;
   newOrderTotal = 0;
   orderlines: Array<orderLineCreate>;
+  orderUrl = 'http://localhost:8080/snel-transport/api/orders';
+
+  orderLineProductId: number;
+  orderLineAmount: number;
+
+  private headers = new Headers({ 'Content-Type': 'application/json' });
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error); // for demo purposes only
+    alert(error["_body"]);
+    return Promise.reject(error.message || error);
+  }
+
   constructor(private http: Http) {
     this.orderlines = [];
   }
 
   addOrderLine(id, quantity: number) {
     if (!isNaN(id)) {
-      this.indexOfOrderLine = this.getIndexByValue("Id", id);
+      this.indexOfOrderLine = this.getIndexByValue("productId", id);
 
       if (!isNaN(this.indexOfOrderLine)) {
 
-        alert("Nee sorry!");
+        alert("Het is niet mogelijk om dezelfde producten toe te voegen. Pas het aantal van het product aan.");
         // var test = quantity.toString(quantity);
         // var test_2 = parseInt(test);
         // var testQuantity =  this.orderlines[this.indexOfOrderLine].getQuantity().toString(this.orderlines[this.indexOfOrderLine].getQuantity());
@@ -70,12 +84,13 @@ export class OrderCreateComponent implements OnInit {
       } else {
 
         this.productName = this.products[this.productSelectId].name;
-        this.productCat = this.products[this.productSelectId].category;
+        this.productCat = this.products[this.productSelectId].categories.name;
         this.productCode = this.products[this.productSelectId].code;
         this.productPrice = this.products[this.productSelectId].price;
 
         this.orderLineTotal = this.productPrice * quantity;
 
+        console.log("id " + id);
         let orderline = new orderLineCreate(id, this.productName, this.productCat, this.productCode, this.productPrice, quantity, this.orderLineTotal);
         this.orderlines.push(orderline);
         this.orderTotal = this.orderTotal + this.orderLineTotal;
@@ -101,9 +116,10 @@ export class OrderCreateComponent implements OnInit {
   }
 
   getCustomerInfo(customerId) {
+    console.log(customerId);
     this.customerId = parseInt(customerId) - 1;
     this.customerAddress = this.customers[this.customerId].adres;
-    this.customerZipCode = this.customers[this.customerId].zipCode;
+    this.customerZipCode = this.customers[this.customerId].postalCode;
     this.customerCity = this.customers[this.customerId].city;
     //this.order.type=value;
     // this.selectedOption = this.options.filter((item)=> item.id == optionid)[0];
@@ -112,7 +128,7 @@ export class OrderCreateComponent implements OnInit {
   getProductInfo(productId) {
     if (productId) {
       this.productSelectId = parseInt(productId) - 1;
-      this.productCat = this.products[this.productSelectId].category;
+      this.productCat = this.products[this.productSelectId].categories.name;
       this.productCode = this.products[this.productSelectId].code;
       this.productPrice = this.products[this.productSelectId].price;
       this.productStock = this.products[this.productSelectId].stock;
@@ -123,7 +139,7 @@ export class OrderCreateComponent implements OnInit {
       this.selectedProducts = [
         { productId: this.productId, totalPrice: this.products[this.productSelectId].price },
       ];
-    }else{
+    } else {
       this.productCat = null;
       this.productCode = null;
       this.productPrice = null;
@@ -145,7 +161,7 @@ export class OrderCreateComponent implements OnInit {
   updateTotalPrice(quantity, productId) {
     this.indexOfOrderLine = this.getIndexByValue("Id", productId);
 
-    this.orderlines[this.indexOfOrderLine].setQuantity(quantity);
+    this.orderlines[this.indexOfOrderLine].setamount(quantity);
 
     this.setOrderTotal(0);
     // return this.orderlines[]
@@ -167,11 +183,70 @@ export class OrderCreateComponent implements OnInit {
   }
 
 
+  submitOrder(customerId) {
+    //    this.http.post(this.heroesUrl, JSON.stringify({ name: name }), { headers: this.headers })
+    //      .toPromise().then(res => res.json().data).catch(this.handleError);
+
+    this.orderlines.forEach(function (entry) {
+
+      //      this.postProducts.push(JSON.stringify(entry));
+    });
+
+    var index;
+    var newOrderLines = [];
+    for (index = 0; index < this.orderlines.length; ++index) {
+      // let orderline = (id, this.productName, this.productCat, this.productCode, this.productPrice, quantity, this.orderLineTotal);
+      this.orderLineProductId = this.orderlines[index].productId;
+      this.orderLineAmount = this.orderlines[index].amount;
+
+      newOrderLines.push({
+        "product": {
+          "id": this.orderLineProductId
+        }
+        ,
+        "amount": this.orderLineAmount
+      });
+    };
+
+    console.log("post request: " + JSON.stringify({
+      customer: { id: this.customerId },
+      orderLines: newOrderLines
+    }));
+
+
+    // console.log("orderlinelog:" + JSON.stringify({
+    //   customer: { id: this.customerId },
+    //   orderLines: newOrderLines
+    // }), { headers: this.headers });
+
+    // console.log("orderlinelog:" + JSON.stringify({
+    //   orderLines: this.orderlines
+    // }), { headers: this.headers });
+
+    this.http.post(this.orderUrl, JSON.stringify({
+      customer: { id: this.customerId },
+      orderLines: newOrderLines
+    }), { headers: this.headers })
+      .toPromise().then(this.extractData).catch(this.handleError);
+  }
+
+  private extractData(res: Response) {
+    let body = res.json();
+    console.log("res");
+    console.log(res);
+    if (res.status == 201) {
+      alert("Bestelling is succesvol aangemaakt");
+    }
+    location.reload();
+
+    return body.data || {};
+  }
+
   ngOnInit() {
     this.http.get("http://localhost:8080/snel-transport/api/customers").
       toPromise().then(r => r.json()).then(r => this.customers = r);
 
-   // this.http.get("http://localhost:8080/snelTransport/resources/products").
-   //   toPromise().then(r => r.json()).then(r => this.products = r);
+    this.http.get("http://localhost:8080/snel-transport/api/products").
+      toPromise().then(r => r.json()).then(r => this.products = r);
   }
 }

@@ -18,18 +18,13 @@ public abstract class AbstractFacade<T> {
     EntityManagerFactory entityManagerFactory;
 
     protected abstract EntityManager getEntityManager();
-  
-    public EntityManagerFactory getEntityManagerFactory() {
-        return entityManagerFactory;
+
+    public EntityManagerFactory getEntityManagerFactory(){
+        return this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport");
     }
     
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
-    }
-    
-    public void setup(){
-        this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport");
-        setEntityManagerFactory(this.entityManagerFactory);
     }
     
     public T create(T entity) {
@@ -40,17 +35,34 @@ public abstract class AbstractFacade<T> {
         em.flush();
         tx.commit();
         em.close();
-        getEntityManagerFactory().close();
+//        getEntityManagerFactory().close();
        
         return entity;
     }
 
-    public void edit(T entity) {
-        getEntityManager().merge(entity);
+//    public void edit(T entity) {
+//        getEntityManager().merge(entity);
+//    }
+    
+    public T edit(T entity) {
+        EntityManager em = getEntityManagerFactory().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        entity= em.merge(entity);
+        em.flush();
+        tx.commit();
+        em.close();
+    	
+        return entity;
     }
 
     public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
+        EntityManager em = getEntityManagerFactory().createEntityManager();
+        em.getTransaction().begin();
+        em.remove(em.merge(entity));
+        
+        em.getTransaction().commit();        
+        em.close();
     }
 
     public T find(Object id) {
@@ -61,7 +73,7 @@ public abstract class AbstractFacade<T> {
         em.flush();
         tx.commit();
         em.close();
-        getEntityManagerFactory().close();
+//        getEntityManagerFactory().close();
         
         return t;
     }
@@ -93,7 +105,7 @@ public abstract class AbstractFacade<T> {
         em.flush();
         tx.commit();
         em.close();
-        getEntityManagerFactory().close();
+//        getEntityManagerFactory().close();
         
         return t;
     }
@@ -124,8 +136,6 @@ public abstract class AbstractFacade<T> {
     }
     
     public AbstractFacade(Class<T> entityClass) {
-        setup();
         this.entityClass = entityClass;
     }
-
 }

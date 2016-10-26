@@ -1,0 +1,90 @@
+.align-left {
+	text-align: left;
+}
+
+.align-left span {
+	display: block;
+	width: 100%;
+	margin-bottom: 1%;
+}
+
+.date {
+	margin-bottom: 25px !important;
+}
+
+.deliver-container {
+	border: 5px solid;
+	position: relative;
+	height: auto;
+}
+
+.row {
+	display: inline-block;
+	width: 98%;
+	padding: 1%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.smallHeight {
+	height: 50px;
+}
+
+.bigHeight {
+	height: 150px;
+}
+
+.column {
+	width: 20%;
+	padding: 10px;
+}
+
+.column-default {
+	float: left;
+}
+
+.big-column {
+	width: 40%;
+}
+
+.column-right {
+	float: right;
+}
+
+.tile {
+	clear: both;
+}
+
+.column-left {
+	float: left;
+}
+
+@media print {
+	body * {
+		visibility: hidden;
+	}
+	.deliver-container, .deliver-container * {
+		visibility: visible;
+	}
+	.deliver-container {
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+}
+
+.sign-title {
+	text-align: center;
+	width: 85%;
+	display: block;
+}
+
+.sign-border {
+	border: 1px solid;
+	height: 80%;
+	width: 85%;
+}
+
+.print-btn {
+	margin-top: 1%;
+}

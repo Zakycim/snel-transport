@@ -7,11 +7,15 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
@@ -19,8 +23,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="\"Order\"")
-public class Order implements Serializable {
+@Table(name="orders")
+public class Orders implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @TableGenerator(
@@ -35,25 +39,28 @@ public class Order implements Serializable {
     private Date orderDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
-    private Long customerId;
-    private Integer status;
+    @OneToOne
+    @JoinColumn(name="statusid")
+    private Status status;
     @OneToMany( cascade = CascadeType.PERSIST)
     @JoinColumn(name="orderId")
     private List<OrderLine> orderLines;
+    @ManyToOne
+    @JoinColumn(name="customerId")
+    private Customer customer;
     
-    public Order() {
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Orders() {
         
     }
     
-    public Order(String name, Double price, Date deliveryDate, Long customerId, Integer status,
-            List<OrderLine> orderLines) {
-        super();
-        this.deliveryDate = deliveryDate;
-        this.customerId = customerId;
-        this.status = status;
-        this.orderLines = orderLines;
-    }
-
     public List<OrderLine> getOrderLines() {
         return orderLines;
     }
@@ -78,23 +85,26 @@ public class Order implements Serializable {
         this.deliveryDate = deliveryDate;
     }
 
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
+    public Orders(Long id, Date orderDate, Date deliveryDate, Status status, List<OrderLine> orderLines,
+            Customer customer) {
+        super();
+        this.id = id;
+        this.orderDate = orderDate;
+        this.deliveryDate = deliveryDate;
         this.status = status;
+        this.orderLines = orderLines;
+        this.customer = customer;
     }
-    
-    public Long getId() {
+
+    public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -112,10 +122,10 @@ public class Order implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Order)) {
+        if (!(object instanceof Orders)) {
             return false;
         }
-        Order other = (Order) object;
+        Orders other = (Orders) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

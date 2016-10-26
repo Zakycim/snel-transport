@@ -1,77 +1,86 @@
 <div id="main">
-  <div class="contentContainer">
-    <div class="clientContainer">
-      <div class="Column">
-        <div class="nameLabel">
-          <label>Klant</label>
-        </div>
-        <input list=customers name="term" class="customerSelect largeInput" placeholder="Kies klant" #t (change)="getCustomerInfo(t.value)" [(ngModel)]="term">
-        <datalist id=customers>
-          <option *ngFor="let customer of customers | filter:term" id="{{customer.id}}" >{{customer.name}}, {{customer.id}}</option>
-        </datalist>
-      </div>
-      <div class="Column">
-        <div class="nameLabel">
-          <label>Bezorgadres</label>
-        </div>
-        <input #name class="marginAdres largeInput" type="text" name="address" placeholder="Adres" value="{{customerAddress}}"
-        />
-        <input class="marginAdres smallInput" type="text" name="zipcode" placeholder="Postcode" value="{{customerZipCode}}" />
-        <input class="marginAdres largeInput" type="text" name="city" placeholder="Stad" value="{{customerCity}}" />
-      </div>
-    </div>
-    <div class="productForm">
-      <table class="fontSize">
-        <tr>
-          <th>ID</th>
-          <th>Naam</th>
-          <th>Categorie</th>
-          <th>Code</th>
-          <th>Voorraad</th>
-          <th>Prijs</th>
-          <th class="smallInput">Aantal</th>
-          <th class="smallInput">Totaal</th>
-          <th></th>
-        </tr>
-        <tr>
-          <td>{{productId}}</td>
-          <td><select #id class="largeInput" #i (change)="getProductInfo(i.value)">
-                <option>Kies product</option>
-                <option *ngFor="let product of products" value="{{product.id}}">{{product.name}} </option>
-            </select>
-          </td>
-          <td>{{productCat}}</td>
-          <td>{{productCode}}</td>
-          <td>&#8734;</td>
-          <td>{{productPrice | currency:'EUR':true:'1.2-2'}}</td>
-          <td><input #quantity id="product_amount" class="smallInput" type="number" min="1" step="1" value="{{productQuantity}}" #p (change)="getTotalPrice(p.value, productId)"
-            /></td>
-          <td>{{totalPrice | currency:'EUR':true:'1.2-2'}}</td>
-          <td><button (click)="addOrderLine(id.value,quantity.value)">Add</button></td>
-        </tr>
-        <tr *ngFor="let orderline of orderlines" style="margin-bottom: 10px;">
-          <td>{{orderline.Id}}</td>
-          <td>{{orderline.name}}</td>
-          <td>{{orderline.category}}</td>
-          <td>{{orderline.code}}</td>
-          <td>&#8734;</td>
-          <td>{{orderline.price | currency:'EUR':true:'1.2-2'}}</td>
-          <td><input #quantity id="product_amount" class="smallInput" type="number" min="1" step="1" value="{{orderline.quantity}}"
-              #p (change)="updateTotalPrice(p.value, orderline.Id, orderline.length)" /></td>
-          <td>{{orderline.total | currency:'EUR':true:'1.2-2'}}</td>
-          <td><button (click)="removeOrderLine(orderline)">Delete</button></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>Totaal</td>
-          <td>{{orderTotal | currency:'EUR':true:'1.2-2'}}</td>
-        </tr>
-      </table>
-    </div>
-  </div>
+	<div class="contentContainer">
+		<div class="clientContainer">
+			<div class="Column-o">
+				<div class="nameLabel">
+					<label>Klant</label>
+				</div>
+				<select class="largeInput" #t (change)="getCustomerInfo(t.value)">
+					<option>Kies klant</option>
+					<option *ngFor="let customer of customers" value="{{customer.id}}">{{customer.name}}
+					</option>
+				</select>
+
+			</div>
+			<div class="Column-o">
+				<div class="nameLabel">
+					<label>Bezorgadres</label>
+				</div>
+				<input #name class="marginAdres largeInput" type="text"
+					name="address" placeholder="Adres" value="{{customerAddress}}" />
+				<input class="marginAdres smallInput" type="text" name="zipcode"
+					placeholder="Postcode" value="{{customerZipCode}}" /> <input
+					class="marginAdres largeInput" type="text" name="city"
+					placeholder="Stad" value="{{customerCity}}" />
+			</div>
+		</div>
+		<div class="productForm">
+			<table class="fontSize">
+				<tr>
+					<th>ID</th>
+					<th>Naam</th>
+					<th>Categorie</th>
+					<th>Code</th>
+					<th>Voorraad</th>
+					<th>Prijs</th>
+					<th class="smallInput">Aantal</th>
+					<th class="smallInput">Totaal</th>
+					<th></th>
+				</tr>
+				<tr>
+					<td>{{productId}}</td>
+					<td><select #id class="largeInput" #i
+						(change)="getProductInfo(i.value)">
+							<option>Kies product</option>
+							<option *ngFor="let product of products" value="{{product.id}}">{{product.name}}
+							</option>
+					</select></td>
+					<td>{{productCat}}</td>
+					<td>{{productCode}}</td>
+					<td>&#8734;</td>
+					<td>{{productPrice | currency:'EUR':true:'1.2-2'}}</td>
+					<td><input #amount id="product_amount" class="smallInput"
+						type="number" min="1" step="1" value="{{productQuantity}}" #p
+						(change)="getTotalPrice(p.value, productId)" /></td>
+					<td>{{totalPrice | currency:'EUR':true:'1.2-2'}}</td>
+					<td><button (click)="addOrderLine(id.value,amount.value)">Add</button></td>
+				</tr>
+				<tr *ngFor="let orderline of orderlines"
+					style="margin-bottom: 10px;">
+					<td>{{orderline.productId}}</td>
+					<td>{{orderline.name}}</td>
+					<td>{{orderline.category}}</td>
+					<td>{{orderline.code}}</td>
+					<td>&#8734;</td>
+					<td>{{orderline.price | currency:'EUR':true:'1.2-2'}}</td>
+					<td><input #amount id="product_amount" class="smallInput"
+						type="number" min="1" step="1" value="{{orderline.amount}}" #p
+						(change)="updateTotalPrice(p.value, orderline.Id, orderline.length)" /></td>
+					<td>{{orderline.total | currency:'EUR':true:'1.2-2'}}</td>
+					<td><button (click)="removeOrderLine(orderline)">Delete</button></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>Totaal</td>
+					<td>{{orderTotal | currency:'EUR':true:'1.2-2'}}</td>
+				</tr>
+			</table>
+			<button (click)="submitOrder(t.value)">Bestelling plaatsen</button>
+		</div>
+	</div>
 </div>

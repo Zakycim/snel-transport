@@ -9,7 +9,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>snel-transport</name>
     <properties>
-        <jersey.version>2.23</jersey.version>
+        <jersey.version>2.17</jersey.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -71,8 +71,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-
 
     <build>
         <finalName>snel-transport</finalName>

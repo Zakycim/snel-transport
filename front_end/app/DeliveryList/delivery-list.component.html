@@ -1,8 +1,62 @@
-<form id="filter">
-	<input type="text" name="term" [(ngModel)]="term"/>
-</form>
-	<ul>
-		<li *ngFor="let todo of todos | filter:term">
-			{{todo}}
-		</li>
-	</ul>
+<div class="deliver-container">
+	<div class="row">
+		<div class="tile col-lg-6"></div>
+		<div
+			class="tile bigHeight column column-right align-left column-default">
+			<span class="date"><strong>Datum:</strong> {{order?.orderDate | date:'d'}}/{{order?.orderDate | date:'M'}}/{{order?.orderDate | date:'y'}}</span><span><strong>Klantgegevens</strong></span>
+			<p>{{order?.customer.name}}</p>
+			<p>{{order?.customer.adres}}  {{order?.customer.streetNumber}}</p>
+			<p>{{order?.customer.postalCode}} {{order?.customer.city}}</p>
+			<p>tel: {{order?.customer.tel}}</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="tile smallHeight column column-left">
+			<span><strong>Order nr:</strong> {{order?.id}}</span>
+		</div>
+		<div class="tile col-lg-6"></div>
+	</div>
+	<div class="row row-deliver-big">
+		<div class="tile bigHeight column column-default">
+			<span><strong>Artikel nr</strong></span>
+			<!--  -->
+			<div *ngFor="let orderLine of order?.orderLines">
+				<div>{{orderLine.product.code}}</div>
+			</div>
+		</div>
+		<div class="bigHeight column column-default">
+			<span><strong>Omschrijving</strong></span>
+			<div *ngFor="let orderLine of order?.orderLines">
+				<div>{{orderLine.product.name}}</div>
+			</div>
+		</div>
+		<div class="bigHeight column column-default">
+			<span><strong>Aantal</strong></span>
+				<div *ngFor="let orderLine of order?.orderLines">
+				<div>{{orderLine.amount}}</div>
+			</div>
+		</div>
+		<div class="bigHeight column column-default">
+			<span><strong>Prijs</strong></span>
+				<div *ngFor="let orderLine of order?.orderLines">
+				<div>{{orderLine.amount * orderLine.product.price | number : '1.2-2'}}</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="tile smallHeight column column-left">
+			<span class="deliver-text"><strong>Tijdstip aflevering:</strong></span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="tile bigHeight column column-default big-column">
+			<span class="sign-title"><strong>Paraaf chauffeur</strong></span>
+			<div class="sign-border"></div>
+		</div>
+		<div class="bigHeight column column-default big-column column-right">
+			<span class="sign-title"><strong>Paraaf klant</strong></span>
+			<div class="sign-border"></div>
+		</div>
+	</div>
+</div>
+	<button class="print-btn" href="#" onclick="window.print();return false;">Deze pagina uitprinten</button>
