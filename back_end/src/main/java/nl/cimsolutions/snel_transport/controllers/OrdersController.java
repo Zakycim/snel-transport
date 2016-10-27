@@ -22,7 +22,7 @@ import javax.ws.rs.core.Response;
 import nl.cimsolutions.snel_transport.models.Customer;
 import nl.cimsolutions.snel_transport.models.OrderLine;
 import nl.cimsolutions.snel_transport.services.CustomerFacade;
-import nl.cimsolutions.snel_transport.models.Orders;
+import nl.cimsolutions.snel_transport.models.Order;
 import nl.cimsolutions.snel_transport.models.Product;
 import nl.cimsolutions.snel_transport.models.Status;
 import nl.cimsolutions.snel_transport.services.OrdersFacade;
@@ -38,8 +38,8 @@ public class OrdersController {
     OrdersFacade orderFacade = new OrdersFacade();
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Orders> getAllOrders() {
-        List<Orders> orders = orderFacade.findAll();// findAll();
+    public List<Order> getAllOrders() {
+        List<Order> orders = orderFacade.findAll();// findAll();
         return orders;
     }
 
@@ -49,7 +49,7 @@ public class OrdersController {
     public Response getOrderById(@PathParam("id") long id) {
         OrdersFacade orderFacade = new OrdersFacade();
 
-        Orders order = orderFacade.find(id);
+        Order order = orderFacade.find(id);
         
         // Check if order is empty
         if(order == null){
@@ -63,8 +63,8 @@ public class OrdersController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addOrder(Orders data) {
-        Orders order = new Orders();
+    public Response addOrder(Order data) {
+        Order order = new Order();
         try {
             order = order.completeFlow(data);
         } catch (Exception e) {
@@ -94,9 +94,9 @@ public class OrdersController {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response editOrder(Orders data) {
-    	Orders order = new Orders();
-    	Orders editedOrder = new Orders();
+    public Response editOrder(Order data) {
+    	Order order = new Order();
+    	Order editedOrder = new Order();
     	System.out.println("editOrder");
     	System.out.println("data id " + data.getId());
     	
@@ -116,10 +116,10 @@ public class OrdersController {
     @GET
     @Path("/{id}/orderlines")
     @Produces(MediaType.APPLICATION_JSON)
-    public Orders getOrderLines(@PathParam("id") long id) {
+    public Order getOrderLines(@PathParam("id") long id) {
 //        OrdersFacade orderFacade = new OrdersFacade();
 
-        Orders order = orderFacade.find(id);
+        Order order = orderFacade.find(id);
 
         return order;// Response.status(Response.Status.CREATED).entity(value).build();
 

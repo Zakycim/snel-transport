@@ -23,7 +23,7 @@ public class Status implements Serializable {
     private Long id;
     private String name;
     @OneToOne(mappedBy="status")
-    private Orders order;
+    private Order order;
 
     public Status() {
         // TODO Auto-generated constructor stub

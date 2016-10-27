@@ -37,13 +37,13 @@ public class OrderList implements Serializable{
 //	private List<Orders> order;
     @OneToOne
     @JoinColumn(name="orderId")
-    private Orders order;
+    private Order order;
 	
 	public OrderList() {
 		
 	}
 
-    public OrderList(Long id, Long truckId, Orders order) {
+    public OrderList(Long id, Long truckId, Order order) {
         super();
         this.id = id;
         this.truckId = truckId;
@@ -66,11 +66,11 @@ public class OrderList implements Serializable{
         this.truckId = truckId;
     }
 
-    public Orders getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(Orders order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 }

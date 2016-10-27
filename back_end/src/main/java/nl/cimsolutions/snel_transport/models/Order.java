@@ -31,7 +31,7 @@ import nl.cimsolutions.snel_transport.services.StatusFacade;
 
 @Entity
 @Table(name = "orders")
-public class Orders implements Serializable {
+public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @TableGenerator(name = "OrderGenerator", allocationSize = 1, initialValue = 1)
@@ -60,7 +60,7 @@ public class Orders implements Serializable {
         this.customer = customer;
     }
 
-    public Orders() {
+    public Order() {
 
     }
 
@@ -88,7 +88,7 @@ public class Orders implements Serializable {
         this.deliveryDate = deliveryDate;
     }
 
-    public Orders(Long id, Date orderDate, Date deliveryDate, Status status, List<OrderLine> orderLines,
+    public Order(Long id, Date orderDate, Date deliveryDate, Status status, List<OrderLine> orderLines,
             Customer customer) {
         super();
         this.id = id;
@@ -126,10 +126,10 @@ public class Orders implements Serializable {
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are
         // not set
-        if (!(object instanceof Orders)) {
+        if (!(object instanceof Order)) {
             return false;
         }
-        Orders other = (Orders) object;
+        Order other = (Order) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -141,13 +141,13 @@ public class Orders implements Serializable {
         return "model.Order[ id=" + id + " ]";
     }
 
-    public Orders completeFlow(Orders data) throws Exception {
-        Orders order = new Orders();
+    public Order completeFlow(Order data) throws Exception {
+        Order order = new Order();
         CustomerFacade customerFacade = new CustomerFacade();
         StatusFacade statusFacade = new StatusFacade();
         Date orderDate = new Date();
         OrdersFacade orderFacade = new OrdersFacade();
-        Orders newlyOrder = new Orders();
+        Order newlyOrder = new Order();
 
         if (data.getCustomer().getId() == null) {
             throw new Exception("customer ID is required");

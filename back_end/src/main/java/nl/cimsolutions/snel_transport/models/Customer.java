@@ -40,8 +40,8 @@ public class Customer implements Serializable {
     private String tel;
     @Column(name="Fax")
     private String fax;
-    @OneToMany(mappedBy = "customer", targetEntity = Orders.class)
-    private List<Orders> orders;
+    @OneToMany(mappedBy = "customer", targetEntity = Order.class)
+    private List<Order> orders;
     
     @OneToMany(mappedBy = "customerA")
     private List<Route> routes;

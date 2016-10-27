@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import nl.cimsolutions.snel_transport.models.Orders;
+import nl.cimsolutions.snel_transport.models.Order;
 
 
 
@@ -17,13 +17,13 @@ public class OrderService {
 //        Orders.put(2L, new Order(2, "Hello Jersey", "koushik"));
     }
     
-    public Orders addOrder(Orders Order) {
+    public Order addOrder(Order Order) {
 //        Order.setId("1");
 //        Orders.put(Order.getId(), Order);
         return Order;
     }
     
-    public Orders updateOrder(Orders Order) {
+    public Order updateOrder(Order Order) {
         if (Order.getId() <= 0) {
             return null;
         }

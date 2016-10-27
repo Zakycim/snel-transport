@@ -26,56 +26,32 @@ public class Category implements Serializable {
             generator="ProductGenerator")
     @Column(name="categoryId")
     private Long categoryId;
-    @Column(name="name")
-    private String Name;
+
+    private String name;
 	
     public Category(){
-    	
     }
     
     public Category(Long categoryId, String name) {
-		super();
-		categoryId = categoryId;
-		Name = name;
+		this.categoryId = categoryId;
+		this.name = name;
 	}
-	
+
     public Long getCategoryId() {
-		return categoryId;
-	}
-	public void setCategoryId(Long categoryId) {
-		categoryId = categoryId;
-	}
-	public String getName() {
-		return Name;
-	}
-	public void setName(String name) {
-		Name = name;
-	}
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 	
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (categoryId != null ? categoryId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Category)) {
-            return false;
-        }
-        Category other = (Category) object;
-        if ((this.categoryId == null && other.categoryId != null) || (this.categoryId != null && !this.categoryId.equals(other.categoryId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "model.Order[ id=" + categoryId + " ]";
-    }
     
-	
 }

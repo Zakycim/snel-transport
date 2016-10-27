@@ -31,7 +31,7 @@ import org.junit.Test;
 
 import nl.cimsolutions.snel_transport.models.Customer;
 import nl.cimsolutions.snel_transport.models.OrderLine;
-import nl.cimsolutions.snel_transport.models.Orders;
+import nl.cimsolutions.snel_transport.models.Order;
 import nl.cimsolutions.snel_transport.models.Product;
 import nl.cimsolutions.snel_transport.models.Route;
 import nl.cimsolutions.snel_transport.models.Status;

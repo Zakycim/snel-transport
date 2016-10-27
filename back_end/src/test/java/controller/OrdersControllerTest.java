@@ -31,7 +31,7 @@ import org.junit.Test;
 
 import nl.cimsolutions.snel_transport.models.Customer;
 import nl.cimsolutions.snel_transport.models.OrderLine;
-import nl.cimsolutions.snel_transport.models.Orders;
+import nl.cimsolutions.snel_transport.models.Order;
 import nl.cimsolutions.snel_transport.models.Product;
 import nl.cimsolutions.snel_transport.models.Status;
 import nl.cimsolutions.snel_transport.services.CustomerFacade;
@@ -46,7 +46,7 @@ public class OrdersControllerTest {
     ProductFacade productFacade = new ProductFacade();
     OrdersFacade orderFacade = new OrdersFacade();
     String orderURL = "http://localhost:8080/snel-transport/api/orders";
-    Orders foundOrder = new Orders();
+    Order foundOrder = new Order();
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -79,7 +79,7 @@ public class OrdersControllerTest {
 
         Customer customer = new Customer();
         
-        Orders postOrder = new Orders();
+        Order postOrder = new Order();
         if(customerId == 0L){
         } else { 	
             customer.setId(customerId);
@@ -267,7 +267,7 @@ public class OrdersControllerTest {
         JsonObject object = jsonReader.readObject();
         jsonReader.close();
         
-        Orders foundOrder = new Orders();
+        Order foundOrder = new Order();
         long orderId = object.getInt("id");
         
         //We expect that the found order has a customer id of 1

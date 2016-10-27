@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 @Access(AccessType.FIELD)
 public class Product {
     
-    @TableGenerator(
+    @TableGenerator( 
             name = "ProductGenerator",
             allocationSize = 1,
             initialValue = 1)
@@ -37,7 +37,7 @@ public class Product {
     @Column(name="Price")
     private Double Price;
     @Column(name="code")
-    private String Code;
+    private String barCode;
 //    @NotNull
 //    @Column(name="categoryid")
 //    private Long CategoryId;
@@ -56,7 +56,7 @@ public class Product {
         id = Id;
         Name = name;
         Price = price;
-        Code = code;
+        barCode = code;
         Categories = categories;
     }
     
@@ -79,10 +79,10 @@ public class Product {
         Price = price;
     }
     public String getCode() {
-        return Code;
+        return barCode;
     }
     public void setCode(String code) {
-        Code = code;
+        barCode = code;
     }
 
     public Category getCategories() {
@@ -103,7 +103,7 @@ public class Product {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Orders)) {
+        if (!(object instanceof Order)) {
             return false;
         }
         Product other = (Product) object;

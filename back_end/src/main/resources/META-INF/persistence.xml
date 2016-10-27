@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <persistence-unit name="snel-transport" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>nl.cimsolutions.snel_transport.models.Orders</class>
+        <class>nl.cimsolutions.snel_transport.models.Order</class>
         <class>nl.cimsolutions.snel_transport.models.OrderLine</class>
         <class>nl.cimsolutions.snel_transport.models.OrderList</class>
         <class>nl.cimsolutions.snel_transport.models.Customer</class>
