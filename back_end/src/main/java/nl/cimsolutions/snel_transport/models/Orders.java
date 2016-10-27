@@ -1,6 +1,7 @@
 package nl.cimsolutions.snel_transport.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,34 +22,36 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.ws.rs.core.Response;
+
+import nl.cimsolutions.snel_transport.services.CustomerFacade;
+import nl.cimsolutions.snel_transport.services.OrdersFacade;
+import nl.cimsolutions.snel_transport.services.ProductFacade;
+import nl.cimsolutions.snel_transport.services.StatusFacade;
 
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 public class Orders implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    @TableGenerator(
-            name = "OrderGenerator",
-            allocationSize = 1,
-            initialValue = 1)
+    @TableGenerator(name = "OrderGenerator", allocationSize = 1, initialValue = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, 
-        generator = "OrderGenerator")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "OrderGenerator")
     private Long id;
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
     @OneToOne
-    @JoinColumn(name="statusid")
+    @JoinColumn(name = "statusid")
     private Status status;
-    @OneToMany( cascade = CascadeType.PERSIST)
-    @JoinColumn(name="orderId")
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "orderId")
     private List<OrderLine> orderLines;
     @ManyToOne
-    @JoinColumn(name="customerId")
+    @JoinColumn(name = "customerId")
     private Customer customer;
-    
+
     public Customer getCustomer() {
         return customer;
     }
@@ -58,9 +61,9 @@ public class Orders implements Serializable {
     }
 
     public Orders() {
-        
+
     }
-    
+
     public List<OrderLine> getOrderLines() {
         return orderLines;
     }
@@ -97,14 +100,14 @@ public class Orders implements Serializable {
     }
 
     public Status getStatus() {
-		return status;
-	}
+        return status;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -121,7 +124,8 @@ public class Orders implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are
+        // not set
         if (!(object instanceof Orders)) {
             return false;
         }
@@ -136,5 +140,52 @@ public class Orders implements Serializable {
     public String toString() {
         return "model.Order[ id=" + id + " ]";
     }
-    
+
+    public Orders completeFlow(Orders data) throws Exception {
+        Orders order = new Orders();
+        CustomerFacade customerFacade = new CustomerFacade();
+        StatusFacade statusFacade = new StatusFacade();
+        Date orderDate = new Date();
+        OrdersFacade orderFacade = new OrdersFacade();
+        Orders newlyOrder = new Orders();
+
+        if (data.getCustomer().getId() == null) {
+            throw new Exception("customer ID is required");
+        }
+
+        Customer customer = customerFacade.find(data.getCustomer().getId());
+        if (customer == null) {
+            throw new Exception("customerID wasn't found");
+        }
+
+        Status status = statusFacade.find(1L);
+        order.setCustomer(customer);
+        order.setOrderDate(orderDate);
+        order.setStatus(status);
+
+        if (data.getOrderLines() == null) {
+            throw new Exception("Order lines are required");
+        }
+
+        List<OrderLine> orderLines = new ArrayList<OrderLine>();
+        Product product = new Product();
+        ProductFacade productFacade = new ProductFacade();
+
+        for (int i = 0; i < data.getOrderLines().size(); i++) {
+            OrderLine orderLine = new OrderLine();
+            product = productFacade.find(data.getOrderLines().get(i).getProduct().getId());
+            if (product == null) {
+                throw new Exception("product ID wasn't found");
+            }
+
+            orderLine.setProduct(product);
+            orderLine.setAmount(data.getOrderLines().get(i).getAmount());
+            orderLines.add(orderLine);
+        }
+        
+        //Complete the flow by adding the order in the database
+        order.setOrderLines(orderLines);
+        newlyOrder = orderFacade.create(order);
+        return newlyOrder;
+    }
 }
