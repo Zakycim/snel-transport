@@ -19,13 +19,11 @@ import nl.cimsolutions.snel_transport.services.OrdersFacade;
 import nl.cimsolutions.snel_transport.services.ProductFacade;
 
 @Path("products")
-public class ProductController {
-    
+public class ProductController {    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Product> getProducts() {
         ProductFacade pf = new ProductFacade();
         return pf.getAllProducts();
     }
-
 }

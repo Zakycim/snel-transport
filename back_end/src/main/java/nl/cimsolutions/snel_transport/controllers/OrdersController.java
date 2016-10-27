@@ -35,24 +35,11 @@ import nl.cimsolutions.snel_transport.services.OrderLineFacade;
  */
 @Path("orders")
 public class OrdersController {
-
-    /**
-     * Method handling HTTP GET requests. The returned object will be sent to
-     * the client as "text/plain" media type.
-     *
-     * @return String that will be returned as a text/plain response.
-     */
-
     OrdersFacade orderFacade = new OrdersFacade();
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Orders> getAllOrders() {
-        System.out.println("getallorders");
-//        OrdersFacade orderFacade = new OrdersFacade();
         List<Orders> orders = orderFacade.findAll();// findAll();
-
-        System.out.println(orders);
-        System.out.println("getallorders end");
         return orders;
     }
 

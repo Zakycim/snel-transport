@@ -9,3 +9,6 @@ INSERT INTO Product (Name, Code, Price, CategoryID, id) VALUES(E'Asus U2000 Keyb
 
 /* Insert data into Status table */
 INSERT INTO "status" ("id", "name") VALUES (1, E'In behandeling'), (2, E'Verzonden'), (3, E'Afgeleverd'), (4, E'Geannuleerd'); /*!40000 ALTER TABLE "status" ENABLE KEYS */;
+
+/* Insert data into Truck table */
+INSERT INTO "truck" ("id", "available", "licenseplate") VALUES (1, E'true', E'qqww11'), (2, E'false', E'wwee22'), (3, E'true', E'rrtt33'); /*!40000 ALTER TABLE "truck" ENABLE KEYS */;
