@@ -24,11 +24,13 @@ import nl.cimsolutions.snel_transport.services.TruckFacade;
 
 @Path("trucks")
 public class TruckController {
+    
+    private TruckFacade truckFacade = new TruckFacade();
+    
 	@GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Truck> getAllTrucks() {
-		TruckFacade truckFacade = new TruckFacade();
-
+		
         List<Truck> trucks = truckFacade.getAllTrucks();//findAll();
 
         return trucks;
@@ -38,25 +40,33 @@ public class TruckController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTruck(Truck data) {
-        Truck truck = new Truck();//(data.getId(), data.getLicensePlate(), true);
-        truck.setLicensePlate("abcdefg");
-        truck.setAvailable(true);
-        
-        System.out.println("addtruck");
-        for (int i = 0; i < data.getOrderList().size(); i++) {
-            
-            System.out.println("de truck id");
-            System.out.println(data.getOrderList().get(i).getTruckId());
-            System.out.println(data.getOrderList().get(i).getTruckId());
-            System.out.println("de order id");
-            System.out.println(data.getOrderList().get(i).getOrder().getId());
-           
-        }
-    
-        truck.setOrderList(data.getOrderList());
-        
-        TruckFacade truckFacade = new TruckFacade();
-         
-        return Response.status(Response.Status.CREATED).entity(truckFacade.create(truck)).build(); 
+        System.out.println("data:" + data);
+        Truck newTruck = new Truck();
+        newTruck.setLicensePlate(data.getLicensePlate());
+        System.out.println("licenseplate:" +data.getLicensePlate());
+        newTruck.setAvailable(data.isAvailable());
+        System.out.println("available:" +data.isAvailable());
+        truckFacade.create(newTruck);
+
+        return Response.status(Response.Status.CREATED).entity(data).build(); 
     }
+    
+//  Truck truck = new Truck();//(data.getId(), data.getLicensePlate(), true);
+//  truck.setLicensePlate("abcdefg");
+//  truck.setAvailable(true);
+//  
+//  System.out.println("addtruck");
+//  for (int i = 0; i < data.getOrderList().size(); i++) {
+//      
+//      System.out.println("de truck id");
+//      System.out.println(data.getOrderList().get(i).getTruckId());
+//      System.out.println(data.getOrderList().get(i).getTruckId());
+//      System.out.println("de order id");
+//      System.out.println(data.getOrderList().get(i).getOrder().getId());
+//     
+//  }
+//
+//  truck.setOrderList(data.getOrderList());
+//  
+//  TruckFacade truckFacade = new TruckFacade();
 }

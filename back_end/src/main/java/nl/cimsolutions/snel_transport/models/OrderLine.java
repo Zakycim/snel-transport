@@ -19,7 +19,7 @@ public class OrderLine implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableGenerator(
             name = "OrderLineGenerator",
-            allocationSize = 1,
+            allocationSize = 2,
             initialValue = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE,

@@ -31,28 +31,19 @@ public class Truck implements Serializable {
     private String LicensePlate;
     @Column(name = "available")
     private boolean Available;
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "truckId")
-    private List<OrderList> orderList;
-
-    public List<OrderList> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(List<OrderList> orderList) {
-        this.orderList = orderList;
-    }
+    @OneToMany(mappedBy = "truck", targetEntity = OrderList.class)
+    private List<OrderList> orderLists;
 
     public Truck() {
 
     }
-
-    public Truck(Long id, String licensePlate, boolean available, List<OrderList> orderList) {
+    
+    public Truck(Long id, String licensePlate, boolean available, List<OrderList> orderLists) {
         super();
         this.id = id;
-        LicensePlate = licensePlate;
-        Available = available;
-        orderList = orderList;
+        this.LicensePlate = licensePlate;
+        this.Available = available;
+        this.orderLists = orderLists;
     }
 
     public Long getId() {
@@ -68,7 +59,7 @@ public class Truck implements Serializable {
     }
 
     public void setLicensePlate(String licensePlate) {
-        LicensePlate = licensePlate;
+        this.LicensePlate = licensePlate;
     }
 
     public boolean isAvailable() {
@@ -79,5 +70,14 @@ public class Truck implements Serializable {
         Available = available;
     }
 
+    public List<OrderList> getOrderLists() {
+        return orderLists;
+    }
+
+    public void setOrderLists(List<OrderList> orderLists) {
+        this.orderLists = orderLists;
+    }
+
+   
 
 }

@@ -8,6 +8,8 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
+import nl.cimsolutions.snel_transport.models.OrderList;
+
 /**
  *
  * @author Z.Huraibi
@@ -64,7 +66,22 @@ public abstract class AbstractFacade<T> {
         em.getTransaction().commit();        
         em.close();
     }
+    
+    public List<OrderList[]> findall(){
+        EntityManager em = getEntityManagerFactory().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        tx.begin();
 
+        cq.select(cq.from(entityClass));
+        List t = em.createQuery(cq).getResultList();
+        em.flush();
+        tx.commit();
+        em.close();
+        //getEntityManagerFactory().close();
+
+        return t;
+    }
     public T find(Object id) {
         EntityManager em = getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = em.getTransaction();

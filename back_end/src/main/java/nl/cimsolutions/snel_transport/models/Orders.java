@@ -42,9 +42,21 @@ public class Orders implements Serializable {
     @OneToOne
     @JoinColumn(name="statusid")
     private Status status;
-    @OneToMany( cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name="orderId")
     private List<OrderLine> orderLines;
+    
+    @OneToOne(mappedBy = "order", targetEntity = OrderList.class)
+    private OrderList orderLists;
+    
+    public OrderList getOrderLists() {
+        return orderLists;
+    }
+
+    public void setOrderLists(OrderList orderLists) {
+        this.orderLists = orderLists;
+    }
+
     @ManyToOne
     @JoinColumn(name="customerId")
     private Customer customer;
