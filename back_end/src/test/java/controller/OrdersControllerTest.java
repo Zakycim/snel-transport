@@ -208,8 +208,8 @@ public class OrdersControllerTest {
       //We remove the test data from the database, because we don't want to have TEST data in the development database
         orderFacade.remove(foundOrder);
     }
-    //To do: make this test pass
-    //@Test
+    
+    @Test
     public void testEditOrder() {
     	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true, false);
     	
