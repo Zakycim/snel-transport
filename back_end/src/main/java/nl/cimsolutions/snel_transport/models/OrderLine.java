@@ -18,7 +18,7 @@ public class OrderLine implements Serializable {
             initialValue = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE,
-        generator="OrderLineGenerator")
+        generator="OrderLineGenerator") 
     private Long id;
     @Column(name = "orderId")
     private Long orderId;

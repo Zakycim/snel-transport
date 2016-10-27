@@ -39,7 +39,7 @@ public class TruckFacade extends AbstractFacade<Truck> {
 		Truck truck = new Truck();
 		
 //System.out.println("idtruck:"+ getTrukId() );
-		return findAll("SELECT t FROM Truck t");
+		return findAll("SELECT t FROM Truck t WHERE t.Available = true");
 		
 	}
 
@@ -67,7 +67,7 @@ public class TruckFacade extends AbstractFacade<Truck> {
 	 public List<Long> getAllIdTrucks() {
 		 EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
 	       em = emf.createEntityManager();
-	       Query query = em.createQuery("SELECT t.id FROM Truck t");
+	       Query query = em.createQuery("SELECT t.id FROM Truck t WHERE t.Available = true");
 	       List<Long> truckIds =  (List<Long>) query.getResultList();
 	       return truckIds;
 	 }

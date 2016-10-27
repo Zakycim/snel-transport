@@ -1,5 +1,6 @@
 package nl.cimsolutions.snel_transport.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -28,24 +29,22 @@ import nl.cimsolutions.snel_transport.services.TruckFacade;
 public class OrderListController {
 
 	OrderListFacade oFacade = new OrderListFacade();
+	
 	@GET
-	//@PrePersist
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<OrderList>  getAllorderlists() {
-		
-		List<OrderList> orderListIds =oFacade.AssignTrucksToOrders();
-		return orderListIds;
-		//return oFacade.generateOrderList(orderListIds);
+	public Response  getAllorderlists() throws Exception {
+	    
+		oFacade.AssignOrdersTolist();
+		List<OrderList> orderListIds = null;//oFacade.AssignTrucksToOrders();
+		return Response.status(Response.Status.CREATED).entity("").build();
 	}
 	
 	@GET
 	@Path("/create")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrderList> getAllOrders() {
-
-        List<OrderList> orderlist = oFacade.AssignTrucksToOrders();//findAll();
-
-        return orderlist;
+    public Response confirmOrderList() throws Exception {
+	    
+        return oFacade.generateOrderList(oFacade.AssignTrucksToOrders());
     } 
 
 }

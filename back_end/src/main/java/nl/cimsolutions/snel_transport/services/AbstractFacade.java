@@ -42,7 +42,7 @@ public abstract class AbstractFacade<T> {
 		em.flush();
 		tx.commit();
 		em.close();
-		getEntityManagerFactory().close();
+//		getEntityManagerFactory().close();
 
 		return entity;
 	}
@@ -63,7 +63,7 @@ public abstract class AbstractFacade<T> {
 		em.flush();
 		tx.commit();
 		em.close();
-		getEntityManagerFactory().close();
+		//getEntityManagerFactory().close();
 
 		return t;
 	}
@@ -96,7 +96,7 @@ public abstract class AbstractFacade<T> {
 		em.flush();
 		tx.commit();
 		em.close();
-		getEntityManagerFactory().close();
+		//getEntityManagerFactory().close();
 
 		return t;
 	}

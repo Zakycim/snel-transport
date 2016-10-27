@@ -16,9 +16,11 @@
         <properties>
             <property
                 name="javax.persistence.schema-generation.database.action"
-                value="create" />
+                value="drop-and-create" />
             <property name="eclipselink.canonicalmodel.subpackage"
                 value="dev" />
+            <property name="javax.persistence.sql-load-script-source"
+                value="META-INF/sql/insert.sql" />
 
             <property name="javax.persistence.schema-generation-target"
                 value="database" />
