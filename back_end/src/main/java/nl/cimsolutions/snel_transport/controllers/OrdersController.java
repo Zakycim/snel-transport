@@ -96,6 +96,7 @@ public class OrdersController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response editOrder(Orders data) {
     	Orders order = new Orders();
+    	Orders editedOrder = new Orders();
     	System.out.println("editOrder");
     	System.out.println("data id " + data.getId());
     	
@@ -105,8 +106,8 @@ public class OrdersController {
 //        order = orderFacade.edit(order);
 //    	return Response.status(Response.Status.CREATED).entity(order).build();
         try {
-        	orderFacade.edit(order);
-        	return Response.status(Response.Status.CREATED).entity("Status changed").build();
+            editedOrder = orderFacade.edit(order);
+        	return Response.status(Response.Status.CREATED).entity(editedOrder).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update order status").build();
 		}
