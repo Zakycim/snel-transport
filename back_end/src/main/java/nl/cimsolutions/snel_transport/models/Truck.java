@@ -34,6 +34,10 @@ public class Truck implements Serializable {
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "truckId")
     private List<OrderList> orderList;
+    
+    @OneToMany(mappedBy = "truck", targetEntity = DeliveryList.class)
+    private List<DeliveryList> deliveries;
+
 
     public List<OrderList> getOrderList() {
         return orderList;
@@ -77,6 +81,14 @@ public class Truck implements Serializable {
 
     public void setAvailable(boolean available) {
         Available = available;
+    }
+
+    public List<DeliveryList> getDeliveries() {
+        return deliveries;
+    }
+
+    public void setDeliveries(List<DeliveryList> deliveries) {
+        this.deliveries = deliveries;
     }
 
 

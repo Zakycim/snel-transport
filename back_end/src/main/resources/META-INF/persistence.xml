@@ -13,6 +13,7 @@
         <class>nl.cimsolutions.snel_transport.models.Status</class>
         <class>nl.cimsolutions.snel_transport.models.Truck</class>
         <class>nl.cimsolutions.snel_transport.models.Route</class>
+        <class>nl.cimsolutions.snel_transport.models.DeliveryList</class>
         <!-- <jta-data-source>java:app/snel-transport</jta-data-source> -->
         <!-- <exclude-unlisted-classes>false</exclude-unlisted-classes> -->
         <properties>
