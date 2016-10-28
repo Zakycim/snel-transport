@@ -21,14 +21,18 @@ import javax.ws.rs.core.Response;
 
 import nl.cimsolutions.snel_transport.models.Customer;
 import nl.cimsolutions.snel_transport.models.OrderLine;
+import nl.cimsolutions.snel_transport.models.OrderList;
 import nl.cimsolutions.snel_transport.services.CustomerFacade;
 import nl.cimsolutions.snel_transport.models.Orders;
 import nl.cimsolutions.snel_transport.models.Product;
 import nl.cimsolutions.snel_transport.models.Status;
+import nl.cimsolutions.snel_transport.models.Truck;
 import nl.cimsolutions.snel_transport.services.OrdersFacade;
 import nl.cimsolutions.snel_transport.services.ProductFacade;
 import nl.cimsolutions.snel_transport.services.StatusFacade;
+import nl.cimsolutions.snel_transport.services.TruckFacade;
 import nl.cimsolutions.snel_transport.services.OrderLineFacade;
+import nl.cimsolutions.snel_transport.services.OrderListFacade;
 
 /**
  * Root resource (exposed at "orders" path)
@@ -71,6 +75,17 @@ public class OrdersController {
         	return Response.status(Response.Status.OK).entity(order).build();
         }
 
+    }
+    
+    @GET
+    @Path("/deliverylist")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrderList> getOrderList() {
+    	System.out.println("getallorders");
+    	OrderListFacade orderListFacade = new OrderListFacade();
+	      List<OrderList> orderlists = orderListFacade.findAll();// findAll();
+
+	      return orderlists;
     }
 
     @POST
@@ -145,6 +160,44 @@ public class OrdersController {
 
         return Response.status(Response.Status.CREATED).entity(data).build();
 
+    }
+    
+    @POST
+    @Path("/deliverylist")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addOrderList(OrderList data) {
+    	OrderListFacade orderListFacade = new OrderListFacade();
+    	TruckFacade truckFacade = new TruckFacade();
+    	OrdersFacade ordersFacade = new OrdersFacade();
+        // Print all the array elements
+//        OrderList orderList = new OrderList();
+//        Orders order = new Orders();
+//        Truck truck = new Truck();
+//        truck.setId(data.getTruck().getId());
+//        truck = truckFacade.find(truck.getId());
+//        orderList.setOrder(order);
+//        orderList.setTruck(data.getTruck());
+//        orderListFacade.create(orderList);
+    	
+    	// calculatie van pallavi aantal orders voor 10 uur
+        int pallavidatumshizzle = 5;
+        
+        for (int i = 0; i < pallavidatumshizzle; i++) {
+        	Orders order = new Orders();
+        	OrderList orderList = new OrderList();
+        	order.setId((long)i+1);
+        	orderList.setOrder(order);
+            orderList.setTruck(data.getTruck());
+            orderListFacade.create(orderList);
+        }
+        
+        // Lezen met welk nummer de eerste orderlist begint
+        
+        // roep method op van khaoula en meesturen in parameter
+//        verdeelOrders(startInt)
+
+
+        return Response.status(Response.Status.CREATED).entity("blabla").build();
     }
     
     @PUT

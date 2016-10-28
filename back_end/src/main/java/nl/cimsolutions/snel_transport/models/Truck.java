@@ -31,28 +31,24 @@ public class Truck implements Serializable {
     private String LicensePlate;
     @Column(name = "available")
     private boolean Available;
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "truckId")
+//   
+//    @OneToMany(mappedBy="truck", targetEntity = OrderList.class )
+//    @JoinColumn(name="orderList")
+//    private List<OrderList> orderList;
+    
+    @OneToMany( cascade = CascadeType.PERSIST)
+    @JoinColumn(name="TruckId")
     private List<OrderList> orderList;
-
-    public List<OrderList> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(List<OrderList> orderList) {
-        this.orderList = orderList;
-    }
 
     public Truck() {
 
     }
 
-    public Truck(Long id, String licensePlate, boolean available, List<OrderList> orderList) {
-        super();
+    public Truck(Long id, String licensePlate, boolean available,List<OrderList> orderList) {
         this.id = id;
-        LicensePlate = licensePlate;
-        Available = available;
-        orderList = orderList;
+        this.LicensePlate = licensePlate;
+        this.Available = available;
+        this.orderList = orderList;
     }
 
     public Long getId() {
@@ -62,8 +58,16 @@ public class Truck implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    public List<OrderList> getOrderList() {
+		return orderList;
+	}
 
-    public String getLicensePlate() {
+	public void setOrderList(List<OrderList> orderList) {
+		this.orderList = orderList;
+	}
+
+	public String getLicensePlate() {
         return LicensePlate;
     }
 
