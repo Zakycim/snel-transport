@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -30,23 +31,24 @@ public class OrderList implements Serializable{
     private Long id;
 //	@Column(name = "orderId")
 //  private Long orderId;
-	@Column(name = "truckId")
-    private Long truckId;
+	 @Column(name = "truckId")
+	    private Long truckId;
 //	@OneToMany
 //	@JoinColumn(name="id")
 //	private List<Orders> order;
-    @OneToOne
-    @JoinColumn(name="orderId")
+
+	@OneToOne
+	@JoinColumn(name = "orderId")
     private Orders order;
 	
 	public OrderList() {
 		
 	}
 
-    public OrderList(Long id, Long truckId, Orders order) {
+    public OrderList(Long id, Long truck, Orders order) {
         super();
         this.id = id;
-        this.truckId = truckId;
+        this.truckId = truck;
         this.order = order;
     }
 
@@ -58,15 +60,15 @@ public class OrderList implements Serializable{
         this.id = id;
     }
 
-    public Long getTruckId() {
-        return truckId;
-    }
+    public Long getTruck() {
+		return truckId;
+	}
 
-    public void setTruckId(Long truckId) {
-        this.truckId = truckId;
-    }
+	public void setTruck(Long truck) {
+		this.truckId = truck;
+	}
 
-    public Orders getOrder() {
+	public Orders getOrder() {
         return order;
     }
 

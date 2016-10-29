@@ -51,7 +51,10 @@ public class Orders implements Serializable {
     @ManyToOne
     @JoinColumn(name = "customerId")
     private Customer customer;
-
+    
+    @OneToOne(mappedBy = "order",targetEntity = OrderList.class, cascade = CascadeType.PERSIST)
+    private OrderList orderList;
+    
     public Customer getCustomer() {
         return customer;
     }
@@ -63,8 +66,19 @@ public class Orders implements Serializable {
     public Orders() {
 
     }
-
-    public List<OrderLine> getOrderLines() {
+    
+    public Orders(Long id, Date orderDate, Date deliveryDate, Status status, List<OrderLine> orderLines,
+            Customer customer) {
+        super();
+        this.id = id;
+        this.orderDate = orderDate;
+        this.deliveryDate = deliveryDate;
+        this.status = status;
+        this.orderLines = orderLines;
+        this.customer = customer;
+    }
+    
+	public List<OrderLine> getOrderLines() {
         return orderLines;
     }
 
@@ -86,17 +100,6 @@ public class Orders implements Serializable {
 
     public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
-    }
-
-    public Orders(Long id, Date orderDate, Date deliveryDate, Status status, List<OrderLine> orderLines,
-            Customer customer) {
-        super();
-        this.id = id;
-        this.orderDate = orderDate;
-        this.deliveryDate = deliveryDate;
-        this.status = status;
-        this.orderLines = orderLines;
-        this.customer = customer;
     }
 
     public Status getStatus() {
