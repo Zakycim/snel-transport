@@ -5,7 +5,11 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -59,7 +63,6 @@ public class RouteController {
 
         // Splits each element between a colon
         String[] parts = data.getDuration().split("\\:");
-        System.out.println("parts[1] " + parts[1]);
 
         int hours = Integer.parseInt(parts[0]);
         int minutes = Integer.parseInt(parts[1]);
@@ -81,14 +84,11 @@ public class RouteController {
     @GET
     @Path("/shortest")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getShortestRoute() {
+    public List<Route> getShortestRoute() {
         List<Route> routes = routerFacade.findAll();
         List<Route> minRoutes = new ArrayList<Route>();
         List<Route> maxRoutes = new ArrayList<Route>();
-
-        // for (int i = 0; i < minRoutes.size(); i++) {
-        // System.out.println("i "+ i);
-        // }
+        List<Route> sortedRoutes = new ArrayList<Route>();
 
         // array to be sorted in, this array is necessary
         // when we sort object datatypes, if we don't, 
@@ -118,9 +118,9 @@ public class RouteController {
         counts[0]--;
         for (int i = 1; i < counts.length; i++) {
             counts[i] = counts[i] + counts[i - 1];
-            System.out.println("counts i" + counts[i]);
         }
 
+        HashMap hm = new HashMap();
         /*
          * Sort the array right to the left 1) Look up in the array of
          * occurences the last occurence of the given value 2) Place it into the
@@ -129,11 +129,23 @@ public class RouteController {
          * (goto set1), terminate if all values were already sorted
          */
         for (int i = routes.size() - 1; i >= 0; i--) {
-            System.out.println("distt "+ routes.get(i).getDistance());
-            System.out.println("counts[routes.get(i).getDistance() - minRoutes.get(0).getDistance()] "+ counts[routes.get(i).getDistance() - minRoutes.get(0).getDistance()]);
-            aux[counts[routes.get(i).getDistance() - minRoutes.get(0).getDistance()]--] = routes.get(i).getDistance();
+            hm.put( (counts[routes.get(i).getDistance() - minRoutes.get(0).getDistance()]--), routes.get(i));
         }
         
-        return Response.status(Response.Status.CREATED).entity("worksa").build();
+        // Get a set of the entries
+        Set set = hm.entrySet();
+        
+        // Get an iterator
+        Iterator i = set.iterator();
+        
+        // Display elements
+        while(i.hasNext()) {
+           Map.Entry me = (Map.Entry)i.next();
+           System.out.print("me key "+me.getKey() + ": ");
+           System.out.println("me value "+ ((Route) me.getValue()).getDistance());
+           sortedRoutes.add((Route) me.getValue());
+        }
+        
+        return sortedRoutes;
     }
 }
