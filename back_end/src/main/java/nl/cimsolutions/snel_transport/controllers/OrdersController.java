@@ -25,6 +25,7 @@ import nl.cimsolutions.snel_transport.models.OrderList;
 import nl.cimsolutions.snel_transport.services.CustomerFacade;
 import nl.cimsolutions.snel_transport.models.Orders;
 import nl.cimsolutions.snel_transport.models.Product;
+import nl.cimsolutions.snel_transport.models.Route;
 import nl.cimsolutions.snel_transport.models.Status;
 import nl.cimsolutions.snel_transport.models.Truck;
 import nl.cimsolutions.snel_transport.services.OrdersFacade;
@@ -190,7 +191,7 @@ public class OrdersController {
 		for (int i = 0; i < orders.size(); i++) {
 			
 			OrderList orderList = new OrderList();
-	
+			Route route = new Route();
 			//assign truck to orderlist
 			if(availableTime <= 0){
 				j++;
@@ -203,6 +204,13 @@ public class OrdersController {
 			else{
 				orderList.setOrder(orders.get(i));
                 orderList.setTruck(trucks.get(j).getId());
+                
+                if (orders.get(i).getCustomer() != null) {
+                    route.setCustomerA(orders.get(i).getCustomer());                    
+                }
+                if (orders.get(i + 1).getCustomer() != null) {
+                    route.setCustomerB(orders.get(i + 1).getCustomer());                    
+                }
                 
                 orderList = orderListFacade.create(orderList);
     			orderlists.add(orderList);
