@@ -164,7 +164,7 @@ public class OrdersController {
 	@POST
 	@Path("/deliverylist")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addOrderList() {
+	public List<OrderList> addOrderList() {
 		OrderListFacade orderListFacade = new OrderListFacade();
 		TruckFacade truckFacade = new TruckFacade();
 		OrdersFacade ordersFacade = new OrdersFacade();
@@ -204,7 +204,7 @@ public class OrdersController {
 				orderList.setOrder(orders.get(i));
                 orderList.setTruck(trucks.get(j).getId());
                 
-                orderListFacade.create(orderList);
+                orderList = orderListFacade.create(orderList);
     			orderlists.add(orderList);
     			System.out.println("hier :" + orders.get(i));
 			}
@@ -212,7 +212,7 @@ public class OrdersController {
 			availableTime -= 60;
 		}
 
-		return Response.status(Response.Status.CREATED).entity("").build();
+		return orderlists;
 	}
 
 	@PUT
