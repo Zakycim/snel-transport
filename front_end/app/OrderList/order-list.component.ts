@@ -24,11 +24,9 @@ private todos = ['Angular Notification', 'Filter', 'Request API'];
   constructor(private http: Http) {
     this.todos
   }
+  
  ngOnInit() {
-
     this.http.get(this.trucklistUrl).
       toPromise().then(r => r.json()).then(r => this.trucklist = r);
   }
- 
-
 } 

@@ -12,14 +12,14 @@
 				<!-- <thread> -->
 				<tr>
 					<th>Klantennummers</th>
+					<th>Klantnaam</th>
 					<th>Ordernummers</th>
 				</tr>
 				<!-- </thread> -->
-				<tr *ngFor="let bla of truck.orderList">
-					<td *ngFor="let blaat of bla.order">
-						{{blaat.customerId}}
-					</td>
-					<td>{{bla.id}}</td>
+				<tr *ngFor="let orderList of truck.orderList">
+					<td>{{orderList?.order.customer.id}}</td>
+					<td>{{orderList?.order.customer.name}}</td>
+					<td>{{orderList?.order.id}}</td>
 				</tr>
 			</table>
 		</div>
