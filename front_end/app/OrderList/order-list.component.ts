@@ -36,6 +36,7 @@ export class OrderListComponent {
     this._orderService.divideOrders()
       .subscribe(
       res => {
+        location.reload();
         console.log("res");
         //De response geeft een 200 statuscode maar ik heb geen idee waarom res.status undefined is..
         if (res.status == 200) {
@@ -46,6 +47,8 @@ export class OrderListComponent {
         location.reload();
       },
       error => {
+        // ugly bugsolve
+        location.reload();
         console.log("app divide orders error");
       }
       );
