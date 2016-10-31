@@ -34,10 +34,10 @@ public class OrdersFacade extends AbstractFacade<Orders> {
 	}
 	@SuppressWarnings("deprecation")
 	public Date getLatestDeliveryTimeAndDate() {
-		int numberOfDaysToLookBack = 1;
+		int numberOfDaysToLookBack = 0;
 		Date date = new Date();
-		date.setHours(22);
-		date.setMinutes(00);
+		date.setHours(15);
+		date.setMinutes(30);
 		date.setSeconds(00);
 		date.setDate(date.getDate() - numberOfDaysToLookBack);
 		System.out.println(date);

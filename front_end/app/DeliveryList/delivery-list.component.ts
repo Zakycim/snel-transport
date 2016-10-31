@@ -18,7 +18,7 @@ import { OrderService } from './order.service';
 export class DeliveryListComponent implements OnInit {
   order: Order;
 
-  orderId: number;
+  truckId: number;
   orderURL: string;
 
   constructor(private http: Http, private route: ActivatedRoute, private _orderService: OrderService,
@@ -45,12 +45,12 @@ export class DeliveryListComponent implements OnInit {
       (param: any) => {
         let id = param['id'];
         //        console.log(id);
-        this.orderId = id;
+        this.truckId = id;
       });
 
 
 
-    this._orderService.getOrder(this.orderId)
+    this._orderService.getTruck(this.truckId)
       .subscribe(
       res => {
         this.order = res;
