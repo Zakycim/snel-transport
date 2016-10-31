@@ -8,7 +8,7 @@
 	</div>
 	<div class="orderlist-body">
 		<div class="table-data">
-			<table class="data">
+			<table class="data trucklist">
 				<!-- <thread> -->
 				<tr>
 					<th>Klantennummers</th>
@@ -18,11 +18,10 @@
 				<!-- </thread> -->
 				<tr *ngFor="let orderList of truck.orderList">
 					<td>{{orderList?.order.customer.id}}</td>
-					<td>{{orderList?.order.customer.name}}</td>
+					<td><a href="deliverylist/{{orderList?.order.id}}">{{orderList?.order.customer.name}}</a></td>
 					<td>{{orderList?.order.id}}</td>
 				</tr>
 			</table>
 		</div>
 	</div>
 </div>
-<button class="btn btn-confirm">Bevestigen</button>

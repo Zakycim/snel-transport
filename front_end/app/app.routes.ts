@@ -16,7 +16,7 @@ import { orderListRoutes } from './orderlist/order-list.routes';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/order/create',
+    redirectTo: '/welcome',
     pathMatch: 'full'
   },
   ...orderRoutes,
