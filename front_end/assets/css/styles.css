@@ -114,11 +114,19 @@ td, th {
     height: 18px;
 }
 
+.trucklist tr td, .trucklist tr th {
+    width: 90px;
+}
+
 tr:nth-child(even) {
     background-color: #d3d3d3;
 }
 
 .fontSize td, th {
+    font-size: 11px;
+}
+
+td, td a {
     font-size: 12px;
 }
 

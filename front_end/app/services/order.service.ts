@@ -49,6 +49,17 @@ export class OrderService {
             .catch(this.handleError);
     }
   
+    getTrucks() {
+        this.url = "http://localhost:8080/snel-transport/api/trucks";
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        options.body = '';
+
+        return this._http.get(this.url, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+  
     divideOrders() {
         this.url = "http://localhost:8080/snel-transport/api/orders/deliverylist";
         let data = { name : "AA" };
