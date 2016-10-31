@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Http, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Order} from '../models/Order';
+import {Truck} from '../models/Truck';
 import {Status} from '../models/Status';
 import { OrderService } from '../services/order.service';
 import { StatusService } from '../services/status.service';
@@ -20,8 +21,8 @@ import { StatusService } from '../services/status.service';
 // Component class implementing OnInit
 export class OrderStatusComponent implements OnInit {
   orders: Order;
-  statuses: Status;
   trucks: Truck;
+  statuses: Status;
   customers = [];
   deliverylist = [];
 
@@ -71,8 +72,8 @@ export class OrderStatusComponent implements OnInit {
         console.log("app put order error");
         console.log(error);
       }
-      location.reload();
       );
+      location.reload();
   }
 
 }
