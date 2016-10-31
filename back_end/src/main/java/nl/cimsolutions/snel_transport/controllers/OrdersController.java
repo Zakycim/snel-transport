@@ -1,12 +1,20 @@
 
 package nl.cimsolutions.snel_transport.controllers;
 
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonValue;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -16,6 +24,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -30,6 +41,7 @@ import nl.cimsolutions.snel_transport.models.Status;
 import nl.cimsolutions.snel_transport.models.Truck;
 import nl.cimsolutions.snel_transport.services.OrdersFacade;
 import nl.cimsolutions.snel_transport.services.ProductFacade;
+import nl.cimsolutions.snel_transport.services.RouteFacade;
 import nl.cimsolutions.snel_transport.services.StatusFacade;
 import nl.cimsolutions.snel_transport.services.TruckFacade;
 import nl.cimsolutions.snel_transport.services.OrderLineFacade;
@@ -40,221 +52,302 @@ import nl.cimsolutions.snel_transport.services.OrderListFacade;
  */
 @Path("orders")
 public class OrdersController {
-	/**
-	 * Method handling HTTP GET requests. The returned object will be sent to
-	 * the client as "text/plain" media type.
-	 *
-	 * @return String that will be returned as a text/plain response.
-	 */
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent to
+     * the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     */
 
-	OrdersFacade orderFacade = new OrdersFacade();
+    OrdersFacade orderFacade = new OrdersFacade();
+    RouteFacade routerFacade = new RouteFacade();
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Orders> getAllOrders() {
-		System.out.println("getallorders");
-		// OrdersFacade orderFacade = new OrdersFacade();
-		List<Orders> orders = orderFacade.findAll();// findAll();
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Orders> getAllOrders() {
+        System.out.println("getallorders");
+        // OrdersFacade orderFacade = new OrdersFacade();
+        List<Orders> orders = orderFacade.findAll();// findAll();
 
-		System.out.println(orders);
-		System.out.println("getallorders end");
-		return orders;
-	}
+        System.out.println(orders);
+        System.out.println("getallorders end");
+        return orders;
+    }
 
-	@GET
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getOrderById(@PathParam("id") long id) {
-		OrdersFacade orderFacade = new OrdersFacade();
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderById(@PathParam("id") long id) {
+        OrdersFacade orderFacade = new OrdersFacade();
 
-		Orders order = orderFacade.find(id);
+        Orders order = orderFacade.find(id);
 
-		// Check if order is empty
-		if (order == null) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't find customer").build();
-		} else {
-			return Response.status(Response.Status.OK).entity(order).build();
-		}
+        // Check if order is empty
+        if (order == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't find customer").build();
+        } else {
+            return Response.status(Response.Status.OK).entity(order).build();
+        }
 
-	}
+    }
 
-	@GET
-	@Path("/deliverylist")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<OrderList> getOrderList() {
-		System.out.println("getallorders");
-		OrderListFacade orderListFacade = new OrderListFacade();
-		List<OrderList> orderlists = orderListFacade.findAll();// findAll();
+    @GET
+    @Path("/deliverylist")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrderList> getOrderList() {
+        System.out.println("getallorders");
+        OrderListFacade orderListFacade = new OrderListFacade();
+        List<OrderList> orderlists = orderListFacade.findAll();// findAll();
 
-		return orderlists;
-	}
+        return orderlists;
+    }
 
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response addOrder(Orders data) {
-		if (data.getCustomer().getId() == null) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("customer ID is required").build();
-		}
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addOrder(Orders data) {
+        if (data.getCustomer().getId() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("customer ID is required").build();
+        }
 
-		CustomerFacade customerFacade = new CustomerFacade();
-		Customer customer = customerFacade.find(data.getCustomer().getId());
+        CustomerFacade customerFacade = new CustomerFacade();
+        Customer customer = customerFacade.find(data.getCustomer().getId());
 
-		if (customer == null) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("customerID wasn't found").build();
-		}
+        if (customer == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("customerID wasn't found").build();
+        }
 
-		Orders order = new Orders();
-		StatusFacade statusFacade = new StatusFacade();
+        Orders order = new Orders();
+        StatusFacade statusFacade = new StatusFacade();
 
-		Status status = statusFacade.find(1L);
-		order.setCustomer(customer);
+        Status status = statusFacade.find(1L);
+        order.setCustomer(customer);
 
-		Date orderDate = new Date();
-		order.setOrderDate(orderDate);
-		order.setStatus(status);
+        Date orderDate = new Date();
+        order.setOrderDate(orderDate);
+        order.setStatus(status);
 
-		if (data.getOrderLines() == null) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Order lines are required").build();
-		}
+        if (data.getOrderLines() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Order lines are required").build();
+        }
 
-		List<OrderLine> orderLines = new ArrayList<OrderLine>();
-		Product product = new Product();
-		ProductFacade productFacade = new ProductFacade();
+        List<OrderLine> orderLines = new ArrayList<OrderLine>();
+        Product product = new Product();
+        ProductFacade productFacade = new ProductFacade();
 
-		for (int i = 0; i < data.getOrderLines().size(); i++) {
-			OrderLine orderLine = new OrderLine();
-			product = productFacade.find(data.getOrderLines().get(i).getProduct().getId());
-			if (product == null) {
-				return Response.status(Response.Status.BAD_REQUEST).entity("product ID wasn't found").build();
-			}
+        for (int i = 0; i < data.getOrderLines().size(); i++) {
+            OrderLine orderLine = new OrderLine();
+            product = productFacade.find(data.getOrderLines().get(i).getProduct().getId());
+            if (product == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("product ID wasn't found").build();
+            }
 
-			orderLine.setProduct(product);
-			orderLine.setAmount(data.getOrderLines().get(i).getAmount());
-			orderLines.add(orderLine);
-		}
+            orderLine.setProduct(product);
+            orderLine.setAmount(data.getOrderLines().get(i).getAmount());
+            orderLines.add(orderLine);
+        }
 
-		order.setOrderLines(orderLines);
+        order.setOrderLines(orderLines);
 
-		OrdersFacade orderFacade = new OrdersFacade();
+        OrdersFacade orderFacade = new OrdersFacade();
 
-		Orders newlyOrder = new Orders();
-		newlyOrder = orderFacade.create(order);
+        Orders newlyOrder = new Orders();
+        newlyOrder = orderFacade.create(order);
 
-		return Response.status(Response.Status.CREATED).entity(newlyOrder).build();
-	}
+        return Response.status(Response.Status.CREATED).entity(newlyOrder).build();
+    }
 
-	@POST
-	@Path("/orderlines")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response addOrderLine(OrderLine[] data) {
-		OrderLineFacade orderLineFacade = new OrderLineFacade();
-		// Print all the array elements
-		for (int i = 0; i < data.length; i++) {
-			OrderLine orderLine = new OrderLine();
-			orderLine.setOrderId(data[i].getOrderId());
-			orderLine.setProduct(data[i].getProduct());
-			orderLine.setAmount(data[i].getAmount());
-			orderLineFacade.create(orderLine);
-		}
+    @POST
+    @Path("/orderlines")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addOrderLine(OrderLine[] data) {
+        OrderLineFacade orderLineFacade = new OrderLineFacade();
+        // Print all the array elements
+        for (int i = 0; i < data.length; i++) {
+            OrderLine orderLine = new OrderLine();
+            orderLine.setOrderId(data[i].getOrderId());
+            orderLine.setProduct(data[i].getProduct());
+            orderLine.setAmount(data[i].getAmount());
+            orderLineFacade.create(orderLine);
+        }
 
-		return Response.status(Response.Status.CREATED).entity(data).build();
+        return Response.status(Response.Status.CREATED).entity(data).build();
 
-	}
+    }
 
-	@POST
-	@Path("/deliverylist")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<OrderList> addOrderList() {
-		OrderListFacade orderListFacade = new OrderListFacade();
-		TruckFacade truckFacade = new TruckFacade();
-		OrdersFacade ordersFacade = new OrdersFacade();
-		List<OrderList> orderlists = new ArrayList<>();
-		Long lastOrderListID = 1L;
-		OrderList lastOrderList = new OrderList();
-		int availableTime = 480;
-		TruckFacade tf = new TruckFacade();
-		 List<Truck> trucks = tf.getAllTrucks();
-		
-		// Print all the array elements
+    @POST
+    @Path("/deliverylist")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrderList> addOrderList() {
+        OrderListFacade orderListFacade = new OrderListFacade();
+        TruckFacade truckFacade = new TruckFacade();
+        OrdersFacade ordersFacade = new OrdersFacade();
+        List<OrderList> orderlists = new ArrayList<>();
+        Long lastOrderListID = 1L;
+        OrderList lastOrderList = new OrderList();
+        int availableTime = 480;
+        TruckFacade tf = new TruckFacade();
+         List<Truck> trucks = tf.getAllTrucks();
+        
+        // Print all the array elements
 
-		// clear the table of orderlist
-		orderListFacade.clearTable();
-		
-		// calculatie van pallavi aantal orders voor 10 uur
-		List<Orders> orders = ordersFacade.getOrdersByDates();
-		int j = 0;
-		int truckSize = trucks.size();
+        // clear the table of orderlist
+        orderListFacade.clearTable();
+        routerFacade.clearTable();
+        
+        // calculatie van pallavi aantal orders voor 10 uur
+        List<Orders> orders = ordersFacade.getOrdersByDates();
+        int j = 0;
+        int truckSize = trucks.size();
 
-		int pallavidatumshizzle = 5;
+        int pallavidatumshizzle = 5;
 
-		for (int i = 0; i < orders.size(); i++) {
-			
-			OrderList orderList = new OrderList();
-			Route route = new Route();
-			//assign truck to orderlist
-			if(availableTime <= 0){
-				j++;
-				availableTime = 480;
-			}
-			
-			if (j == truckSize) {
-				break;
-			}
-			else{
-				orderList.setOrder(orders.get(i));
+        for (int i = 0; i < orders.size(); i++) {
+            
+            OrderList orderList = new OrderList();
+            Route route = new Route();
+            //assign truck to orderlist
+            if(availableTime <= 0){
+                j++;
+                availableTime = 480;
+            }
+            
+            if (j == truckSize) {
+                break;
+            }
+            else{
+                orderList.setOrder(orders.get(i));
                 orderList.setTruck(trucks.get(j).getId());
                 
-                if (orders.get(i).getCustomer() != null) {
-                    route.setCustomerA(orders.get(i).getCustomer());                    
-                }
-                if (orders.get(i + 1).getCustomer() != null) {
-                    route.setCustomerB(orders.get(i + 1).getCustomer());                    
+                //To prevent a ArrayIndexOutOfBoundsException 
+                if( i + 1 < orders.size()){
+                    if (orders.get(i + 1).getCustomer() != null) {
+                        route.setCustomerB(orders.get(i + 1).getCustomer()); 
+                        
+                        
+                        String origins = "";
+                        String destinations = "";
+                        try {
+                            origins = URLEncoder.encode(orders.get(i).getCustomer().getAdres(), "UTF-8");
+                            destinations = URLEncoder.encode(orders.get(i + 1).getCustomer().getAdres(), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        String googleApiURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+origins+"&destinations="+destinations+"&key=AIzaSyBIYcblUGajTp-uRV4B-9MkDaPSJrguafc";
+                        
+                        Client client = ClientBuilder.newClient();
+                        //Setting the url for the client
+                        WebTarget target = client.target(googleApiURL);
+                        
+                        //Making a GET request to receive the status from the webserver
+                        Response response = target.request(MediaType.APPLICATION_JSON)
+                                .get();
+                        
+                        String output = response.readEntity(String.class);
+                        JsonReader jsonReader = Json.createReader(new StringReader(output));
+                        JsonObject jsonObject = jsonReader.readObject();
+                        jsonReader.close();
+                        
+                        System.out.println("jsonobj array");
+                        System.out.println(jsonObject.getJsonArray("rows"));
+                        System.out.println(jsonObject.getJsonArray("rows").get(0));
+                        
+                        JsonValue rowObj = jsonObject.getJsonArray("rows").get(0);
+                        jsonReader = Json.createReader(new StringReader(rowObj.toString()));
+                        jsonObject = jsonReader.readObject();
+                        jsonReader.close();
+                        
+                        System.out.println("jsonobj getJsonArray elements");
+                        System.out.println(jsonObject.getJsonArray("elements").get(0));
+                        
+                        JsonValue elementObj = jsonObject.getJsonArray("elements").get(0);
+                        jsonReader = Json.createReader(new StringReader(elementObj.toString()));
+                        jsonObject = jsonReader.readObject();
+                        jsonReader.close();
+                        
+                        System.out.println("jsonobj distance");
+                        System.out.println(jsonObject.get("distance"));
+                        
+                        JsonValue distanceObj = jsonObject.get("distance");
+                        JsonValue durationeObj = jsonObject.get("duration");
+                        
+                        jsonReader = Json.createReader(new StringReader(distanceObj.toString()));
+                        jsonObject = jsonReader.readObject();
+                        jsonReader.close();
+                        
+                        System.out.println("distanceObj distance");
+                        System.out.println(jsonObject);
+                        System.out.println(jsonObject.getInt("value"));
+                        int distanceValue = jsonObject.getInt("value");
+
+                        jsonReader = Json.createReader(new StringReader(durationeObj.toString()));
+                        jsonObject = jsonReader.readObject();
+                        jsonReader.close();
+                        
+                        System.out.println("duration distance");
+                        
+                        String duration = jsonObject.getString("text");
+                        System.out.println(duration);
+                        
+                        route.setDistance(distanceValue);
+                        route.setDuration(duration);
+                    }
+                    
+                    if (orders.get(i).getCustomer() != null) {
+                        route.setCustomerA(orders.get(i).getCustomer());  
+                        route.setTruckId(trucks.get(j).getId());
+                        System.out.println("routerFacade ye");
+                        routerFacade.create(route);
+                        System.out.println("created ye");
+                    }
                 }
                 
+                //TO DO orderList.setOrderfororder !!!!!!!!!!!!!!!
+                
                 orderList = orderListFacade.create(orderList);
-    			orderlists.add(orderList);
-    			System.out.println("hier :" + orders.get(i));
-			}
-			// bestellingtijd - 60
-			availableTime -= 60;
-		}
+                orderlists.add(orderList);
+                System.out.println("hier :" + orders.get(i));
+            }
+            // bestellingtijd - 60
+            availableTime -= 60;
+        }
 
-		return orderlists;
-	}
+        return orderlists;
+    }
 
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response editOrder(Orders data) {
-		Orders order = new Orders();
-		Orders editedOrder = new Orders();
-		System.out.println("editOrder");
-		System.out.println("data id " + data.getId());
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editOrder(Orders data) {
+        Orders order = new Orders();
+        Orders editedOrder = new Orders();
+        System.out.println("editOrder");
+        System.out.println("data id " + data.getId());
 
-		order = orderFacade.find(data.getId());
-		order.setStatus(data.getStatus());
+        order = orderFacade.find(data.getId());
+        order.setStatus(data.getStatus());
 
-		// order = orderFacade.edit(order);
-		// return
-		// Response.status(Response.Status.CREATED).entity(order).build();
-		try {
-			editedOrder = orderFacade.edit(order);
-			return Response.status(Response.Status.CREATED).entity(editedOrder).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update order status").build();
-		}
-	}
+        // order = orderFacade.edit(order);
+        // return
+        // Response.status(Response.Status.CREATED).entity(order).build();
+        try {
+            editedOrder = orderFacade.edit(order);
+            return Response.status(Response.Status.CREATED).entity(editedOrder).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Couldn't update order status").build();
+        }
+    }
 
-	@GET
-	@Path("/{id}/orderlines")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Orders getOrderLines(@PathParam("id") long id) {
-		// OrdersFacade orderFacade = new OrdersFacade();
+    @GET
+    @Path("/{id}/orderlines")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Orders getOrderLines(@PathParam("id") long id) {
+        // OrdersFacade orderFacade = new OrdersFacade();
 
-		Orders order = orderFacade.find(id);
+        Orders order = orderFacade.find(id);
 
-		return order;// Response.status(Response.Status.CREATED).entity(value).build();
+        return order;// Response.status(Response.Status.CREATED).entity(value).build();
 
-	}
+    }
 }

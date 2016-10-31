@@ -2,6 +2,7 @@ package nl.cimsolutions.snel_transport.models;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,17 +30,32 @@ public class Route implements Serializable {
     @ManyToOne
     @JoinColumn(name="customerB")
     private Customer customerB;
+    @Column(name = "truckId")
+    private Long truckId;
     
     public Route() {}
-    
-    public Route(Long id, int distance, String duration, Customer customerA, Customer customerB) {
+
+    public Route(Long id, int distance, String duration, Customer customerA, Customer customerB, Long truckId) {
         super();
         this.id = id;
         this.distance = distance;
         this.duration = duration;
         this.customerA = customerA;
         this.customerB = customerB;
+        this.truckId = truckId;
     }
+
+    public Long getTruckId() {
+        return truckId;
+    }
+
+
+
+    public void setTruckId(Long truckId) {
+        this.truckId = truckId;
+    }
+
+
 
     public Long getId() {
         return id;

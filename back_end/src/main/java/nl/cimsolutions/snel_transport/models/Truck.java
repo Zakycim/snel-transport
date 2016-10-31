@@ -39,16 +39,29 @@ public class Truck implements Serializable {
     @OneToMany( cascade = CascadeType.PERSIST)
     @JoinColumn(name="TruckId")
     private List<OrderList> orderList;
+    
+    @OneToMany( cascade = CascadeType.PERSIST)
+    @JoinColumn(name="TruckId")
+    private List<Route> routes;
 
     public Truck() {
 
     }
 
-    public Truck(Long id, String licensePlate, boolean available,List<OrderList> orderList) {
+    public Truck(Long id, String licensePlate, boolean available, List<OrderList> orderList, List<Route> routes) {
         this.id = id;
-        this.LicensePlate = licensePlate;
-        this.Available = available;
+        LicensePlate = licensePlate;
+        Available = available;
         this.orderList = orderList;
+        this.routes = routes;
+    }
+
+    public List<Route> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(List<Route> routes) {
+        this.routes = routes;
     }
 
     public Long getId() {
