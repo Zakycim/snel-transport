@@ -31,8 +31,10 @@ public class OrderList implements Serializable{
     private Long id;
 //	@Column(name = "orderId")
 //  private Long orderId;
-	 @Column(name = "truckId")
-	    private Long truckId;
+    @Column(name = "truckId")
+    private Long truckId;
+    @Column(name = "routeId")
+    private Long routeId;
 //	@OneToMany
 //	@JoinColumn(name="id")
 //	private List<Orders> order;
@@ -44,11 +46,12 @@ public class OrderList implements Serializable{
 	public OrderList() {
 		
 	}
-
-    public OrderList(Long id, Long truck, Orders order) {
+	
+    public OrderList(Long id, Long truckId, Long routeId, Orders order) {
         super();
         this.id = id;
-        this.truckId = truck;
+        this.truckId = truckId;
+        this.routeId = routeId;
         this.order = order;
     }
 
@@ -74,5 +77,13 @@ public class OrderList implements Serializable{
 
     public void setOrder(Orders order) {
         this.order = order;
+    }
+
+    public Long getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(Long routeId) {
+        this.routeId = routeId;
     }
 }

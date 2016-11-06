@@ -30,6 +30,7 @@ import nl.cimsolutions.snel_transport.models.Status;
 import nl.cimsolutions.snel_transport.models.Truck;
 import nl.cimsolutions.snel_transport.services.OrdersFacade;
 import nl.cimsolutions.snel_transport.services.ProductFacade;
+import nl.cimsolutions.snel_transport.services.RouteFacade;
 import nl.cimsolutions.snel_transport.services.StatusFacade;
 import nl.cimsolutions.snel_transport.services.TruckFacade;
 import nl.cimsolutions.snel_transport.services.OrderLineFacade;
@@ -216,6 +217,67 @@ public class OrdersController {
 		return orderlists;
 	}
 
+	//TO DO: use this instead of addOrderList so that you can test this
+    @GET
+    @Path("/deliverylistz")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<OrderList> divideOrderList() {
+        OrderListFacade orderListFacade = new OrderListFacade();
+        TruckFacade truckFacade = new TruckFacade();
+        OrdersFacade ordersFacade = new OrdersFacade();
+        List<OrderList> orderlists = new ArrayList<>();
+        Long lastOrderListID = 1L;
+        OrderList lastOrderList = new OrderList();
+        int availableTime = 480;
+        TruckFacade tf = new TruckFacade();
+        List<Truck> trucks = tf.getAllTrucks();
+
+        // Print all the array elements
+
+        // clear the table of orderlist
+        orderListFacade.clearTable();
+
+        // calculatie van pallavi aantal orders voor 10 uur
+        List<Orders> orders = ordersFacade.getOrdersByDates();
+        int j = 0;
+        int truckSize = trucks.size();
+
+        int pallavidatumshizzle = 5;
+
+        for (int i = 0; i < orders.size(); i++) {
+
+            OrderList orderList = new OrderList();
+            Route route = new Route();
+            // assign truck to orderlist
+            if (availableTime <= 0) {
+                j++;
+                availableTime = 480;
+            }
+
+            if (j == truckSize) {
+                break;
+            } else {
+                orderList.setOrder(orders.get(i));
+                orderList.setTruck(trucks.get(j).getId());
+                
+                RouteFacade routeFacade = new RouteFacade();
+                route = routeFacade.shortestDistance(orders.get(i), orders);
+                
+
+                
+                orderList.setRouteId(route.getId());
+                
+                orderList = orderListFacade.create(orderList);
+                orderlists.add(orderList);
+                System.out.println("hier :" + orders.get(i));
+            }
+            // bestellingtijd - 60
+            availableTime -= 60;
+        }
+
+        return orderlists;
+    }
+	   
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

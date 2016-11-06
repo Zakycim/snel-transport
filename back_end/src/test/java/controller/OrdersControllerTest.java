@@ -252,6 +252,9 @@ public class OrdersControllerTest {
         System.out.println("found order status getid "+ foundOrder.getStatus().getId());
         //To do: pass this test
         assertEquals("2", foundOrder.getStatus().getId().toString());
+        
+        //We remove the test data from the database, because we don't want to have TEST data in the development database
+        orderFacade.remove(foundOrder);
 
     }
     @Test
@@ -324,5 +327,35 @@ public class OrdersControllerTest {
         String output = response.readEntity(String.class);
         System.out.println("output response read entity "+output);
         assertEquals("product ID wasn't found", output);
+    }
+    
+    @Test
+    public void testAddOrderList() {
+        String url = "http://localhost:8080/snel-transport/api/orders";
+        Client client = ClientBuilder.newClient();
+        //Setting the url for the client
+        WebTarget target = client.target(url);
+                
+        //Making a GET request to receive a response from the webserver
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .get();
+        
+        //We expect to receive a 201 as statuscode
+        assertEquals(201, response.getStatus());
+//        
+        String output = response.readEntity(String.class);
+        JsonReader jsonReader = Json.createReader(new StringReader(output));
+        JsonObject object = jsonReader.readObject();
+        jsonReader.close();
+        
+        Orders foundOrder = new Orders();
+        long orderId = object.getInt("id");
+        
+        //We expect that the found order has a customer id of 1
+        foundOrder = orderFacade.find(orderId);
+        assertEquals("1", foundOrder.getCustomer().getId().toString());
+       
+        //We remove the test data from the database, because we don't want to have TEST data in the development database
+        orderFacade.remove(foundOrder);
     }
 }
