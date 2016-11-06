@@ -205,13 +205,6 @@ public class OrdersController {
 				orderList.setOrder(orders.get(i));
                 orderList.setTruck(trucks.get(j).getId());
                 
-                if (orders.get(i).getCustomer() != null) {
-                    route.setCustomerA(orders.get(i).getCustomer());                    
-                }
-                if (orders.get(i + 1).getCustomer() != null) {
-                    route.setCustomerB(orders.get(i + 1).getCustomer());                    
-                }
-                
                 orderList = orderListFacade.create(orderList);
     			orderlists.add(orderList);
     			System.out.println("hier :" + orders.get(i));

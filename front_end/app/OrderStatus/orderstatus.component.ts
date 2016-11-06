@@ -66,14 +66,13 @@ export class OrderStatusComponent implements OnInit {
     this._orderService.updateOrder(orderId, statusId)
       .subscribe(
       res => {
-        this.statuses = res;
+        console.log("app put order succes");
       },
       error => {
         console.log("app put order error");
         console.log(error);
       }
       );
-      location.reload();
   }
 
 }

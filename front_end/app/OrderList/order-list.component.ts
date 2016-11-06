@@ -47,9 +47,8 @@ export class OrderListComponent {
         location.reload();
       },
       error => {
-        // ugly bugsolve
-        location.reload();
         console.log("app divide orders error");
+        console.log(error);
       }
       );
   }
