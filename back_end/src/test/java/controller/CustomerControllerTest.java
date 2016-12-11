@@ -31,44 +31,44 @@ import org.junit.Test;
 import nl.cimsolutions.snel_transport.services.CustomerFacade;
 
 public class CustomerControllerTest {
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
-	CustomerFacade customerFacade = new CustomerFacade();
-	String URL = "http://localhost:8080/snel-transport/api/customers";
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport");
+    CustomerFacade customerFacade = new CustomerFacade();
+    String URL = "http://localhost:8080/snel-transport/api/customers";
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+    }
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+    }
 
-	@Before
-	public void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
 
-	}
+    }
 
-	@After
-	public void tearDown() throws Exception {
-	}
+    @After
+    public void tearDown() throws Exception {
+    }
 
-	@Test
-	public void testGetAllCustomers() {
-		Client client = ClientBuilder.newClient();
-		// Setting the url for the client
-		WebTarget target = client.target(URL);
+    @Test
+    public void testGetAllCustomers() {
+        Client client = ClientBuilder.newClient();
+        // Setting the url for the client
+        WebTarget target = client.target(URL);
 
-		// Making a GET request to receive the status from the webserver
-		Response response = target.request(MediaType.APPLICATION_JSON).get();
+        // Making a GET request to receive the status from the webserver
+        Response response = target.request(MediaType.APPLICATION_JSON).get();
 
-		String output = response.readEntity(String.class);
-		JsonReader jsonReader = Json.createReader(new StringReader(output));
-		JsonArray jsonArray = jsonReader.readArray();
-		jsonReader.close();
+        String output = response.readEntity(String.class);
+        JsonReader jsonReader = Json.createReader(new StringReader(output));
+        JsonArray jsonArray = jsonReader.readArray();
+        jsonReader.close();
 
-		int customers = customerFacade.findAll().size();
+        int customers = customerFacade.findAll().size();
 
-		assertTrue("Previous (" + customers + ") should be equal to (" + 1 + ")", jsonArray.size() > 1);
+        assertTrue("Previous (" + customers + ") should be equal to (" + 1 + ")", jsonArray.size() > 1);
 
-	}
+    }
 }

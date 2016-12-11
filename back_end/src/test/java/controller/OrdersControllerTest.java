@@ -331,31 +331,85 @@ public class OrdersControllerTest {
     
     @Test
     public void testAddOrderList() {
-        String url = "http://localhost:8080/snel-transport/api/orders";
+        
+        //Lets create three orders before we can divide them to the trucks
+        //addOrderMethod(String url, long productId, int amount, long customerId, boolean orderline, boolean deleteOrder)
+        Response response = addOrderMethod(orderURL, 3L, 4, 1L, true, false);
+        
+        
         Client client = ClientBuilder.newClient();
         //Setting the url for the client
-        WebTarget target = client.target(url);
-                
-        //Making a GET request to receive a response from the webserver
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .get();
-        
-        //We expect to receive a 201 as statuscode
-        assertEquals(201, response.getStatus());
-//        
         String output = response.readEntity(String.class);
         JsonReader jsonReader = Json.createReader(new StringReader(output));
         JsonObject object = jsonReader.readObject();
         jsonReader.close();
         
-        Orders foundOrder = new Orders();
         long orderId = object.getInt("id");
         
-        //We expect that the found order has a customer id of 1
-        foundOrder = orderFacade.find(orderId);
-        assertEquals("1", foundOrder.getCustomer().getId().toString());
-       
-        //We remove the test data from the database, because we don't want to have TEST data in the development database
-        orderFacade.remove(foundOrder);
+        
+        //Creating the second order
+        response = addOrderMethod(orderURL, 4L, 4, 2L, true, false);
+        client = ClientBuilder.newClient();
+        //Setting the url for the client
+        output = response.readEntity(String.class);
+        jsonReader = Json.createReader(new StringReader(output));
+        object = jsonReader.readObject();
+        jsonReader.close();
+        
+        long secOrderId = object.getInt("id");
+        
+        //Creating the third order
+        response = addOrderMethod(orderURL, 4L, 4, 4L, true, false);
+        client = ClientBuilder.newClient();
+        //Setting the url for the client
+        output = response.readEntity(String.class);
+        jsonReader = Json.createReader(new StringReader(output));
+        object = jsonReader.readObject();
+        jsonReader.close();
+        
+        long thirdOrderId = object.getInt("id");
+        
+        
+
+        
+        
+        
+        
+        String url = "http://localhost:8080/snel-transport/api/orders/deliverylistz";
+        client = ClientBuilder.newClient();
+        //Setting the url for the client
+        WebTarget target = client.target(url);
+                
+        //Making a GET request to receive a response from the webserver
+        response = target.request(MediaType.APPLICATION_JSON)
+                .get();
+        
+        //We remove the test data from the database
+//        Orders foundOrder = new Orders();
+//        foundOrder = orderFacade.find(orderId);
+//        orderFacade.remove( foundOrder );
+//        foundOrder = orderFacade.find(secOrderId);
+//        orderFacade.remove( foundOrder );
+//        foundOrder = orderFacade.find(thirdOrderId);
+//        orderFacade.remove( foundOrder );
+
+        //We expect to receive a 201 as statuscode
+        assertEquals(201, response.getStatus());
+     
+        output = response.readEntity(String.class);
+        jsonReader = Json.createReader(new StringReader(output));
+        object = jsonReader.readObject();
+        jsonReader.close();
+        
+        
+//        Orders foundOrder = new Orders();
+//        orderId = object.getInt("id");
+//        
+//        //We expect that the found order has a customer id of 1
+//        foundOrder = orderFacade.find(orderId);
+//        assertEquals("1", foundOrder.getCustomer().getId().toString());
+//       
+//        //We remove the test data from the database, because we don't want to have TEST data in the development database
+//        orderFacade.remove(foundOrder);
     }
 }

@@ -222,6 +222,8 @@ public class OrdersController {
     @Path("/deliverylistz")
     @Produces(MediaType.APPLICATION_JSON)
     public List<OrderList> divideOrderList() {
+        System.out.println("divideOrderList");
+        
         OrderListFacade orderListFacade = new OrderListFacade();
         TruckFacade truckFacade = new TruckFacade();
         OrdersFacade ordersFacade = new OrdersFacade();
@@ -231,11 +233,13 @@ public class OrdersController {
         int availableTime = 480;
         TruckFacade tf = new TruckFacade();
         List<Truck> trucks = tf.getAllTrucks();
+        RouteFacade routeFacade = new RouteFacade();
 
         // Print all the array elements
 
         // clear the table of orderlist
         orderListFacade.clearTable();
+        routeFacade.clearTable();
 
         // calculatie van pallavi aantal orders voor 10 uur
         List<Orders> orders = ordersFacade.getOrdersByDates();
@@ -260,11 +264,9 @@ public class OrdersController {
                 orderList.setOrder(orders.get(i));
                 orderList.setTruck(trucks.get(j).getId());
                 
-                RouteFacade routeFacade = new RouteFacade();
+                routeFacade = new RouteFacade();
                 route = routeFacade.shortestDistance(orders.get(i), orders);
-                
-
-                
+              
                 orderList.setRouteId(route.getId());
                 
                 orderList = orderListFacade.create(orderList);
