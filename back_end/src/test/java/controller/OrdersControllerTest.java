@@ -45,7 +45,7 @@ public class OrdersControllerTest {
     CustomerFacade customerFacade = new CustomerFacade();
     ProductFacade productFacade = new ProductFacade();
     OrdersFacade orderFacade = new OrdersFacade();
-    String orderURL = "http://localhost:8080/snel-transport/api/orders";
+    String orderURL = "http://localhost:9090/snel-transport/api/orders";
     Orders foundOrder = new Orders();
     
     @BeforeClass
