@@ -13,7 +13,9 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.validation.constraints.AssertTrue;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -29,11 +31,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import nl.cimsolutions.snel_transport.models.Category;
 import nl.cimsolutions.snel_transport.models.Customer;
 import nl.cimsolutions.snel_transport.models.OrderLine;
 import nl.cimsolutions.snel_transport.models.Orders;
 import nl.cimsolutions.snel_transport.models.Product;
 import nl.cimsolutions.snel_transport.models.Status;
+import nl.cimsolutions.snel_transport.services.CategoryFacade;
 import nl.cimsolutions.snel_transport.services.CustomerFacade;
 import nl.cimsolutions.snel_transport.services.OrdersFacade;
 import nl.cimsolutions.snel_transport.services.ProductFacade;
@@ -45,11 +49,14 @@ public class OrdersControllerTest {
     CustomerFacade customerFacade = new CustomerFacade();
     ProductFacade productFacade = new ProductFacade();
     OrdersFacade orderFacade = new OrdersFacade();
+    CategoryFacade categoryFacade = new CategoryFacade();
     String orderURL = "http://localhost:9090/snel-transport/api/orders";
     Orders foundOrder = new Orders();
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
+
+        
     }
 
     @AfterClass
@@ -63,6 +70,61 @@ public class OrdersControllerTest {
 
     @After
     public void tearDown() throws Exception {
+    }
+    
+    public void insertCategories(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport-test");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        
+        
+        Query q = em.createNativeQuery("INSERT INTO Category (Name, categoryId) " +
+                " VALUES(?,?)");
+        q.setParameter(1, "Games");
+        q.setParameter(2, 1L);
+        q.executeUpdate();
+                
+        tx.commit();
+    }
+    
+    //hier was je: je moet products in test db inserten je weet wel
+    public void insertProducts(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("snel-transport-test");
+//        EntityManager em = emf.createEntityManager();
+        
+//        Category category = categoryFacade.find(1L);
+//        Product product = new Product();
+//        product.setName("Snake");
+//        product.setCode("001");
+//        product.setPrice(10.00);
+//        product.setId(1L);
+//        product.setCategories(category);
+//        productFacade.create(product);
+        
+        System.out.println("ben er voorbij");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        
+        
+        Query q = em.createNativeQuery("INSERT INTO Product(id, code) " +
+                " VALUES(?,?)");
+        q.setParameter(1, 1);
+        q.setParameter(2, "002");
+        q.executeUpdate();
+                
+        tx.commit();
+
+        
+//        Ik kan ook geen catagory via de code aanmaken blijkbaar
+//        Category category = new Category();
+//        category.setCategoryId(2L);
+//        category.setName("whatever");
+//        categoryFacade.create(category);
+        
+        
+
     }
     
     public Response addOrderMethod(String url, long productId, int amount, long customerId, boolean orderline, boolean deleteOrder){
@@ -259,6 +321,8 @@ public class OrdersControllerTest {
     }
     @Test
     public void testAddOrder() {
+        insertCategories();
+//        insertProducts();
         // Add order by method addOrderMethod
     	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true, false);
     	
@@ -266,6 +330,9 @@ public class OrdersControllerTest {
         assertEquals(201, response.getStatus());
         
         String output = response.readEntity(String.class);
+        System.out.println("output yes");
+        System.out.println(output);
+        System.out.println("output klaar");
         JsonReader jsonReader = Json.createReader(new StringReader(output));
         JsonObject object = jsonReader.readObject();
         jsonReader.close();

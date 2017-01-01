@@ -8,6 +8,8 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
+import nl.cimsolutions.snel_transport.Server;
+
 /**
  *
  * @author Z.Huraibi
@@ -20,6 +22,12 @@ public abstract class AbstractFacade<T> {
     protected abstract EntityManager getEntityManager();
 
     public EntityManagerFactory getEntityManagerFactory(){
+        Server server = new Server();
+        String port = server.getPort();
+        System.out.println("port nummer = " + port);
+        if(port.equals("9090")){
+            return this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport-test");
+        }
         return this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport");
     }
     

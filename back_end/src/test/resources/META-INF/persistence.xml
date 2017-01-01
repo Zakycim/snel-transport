@@ -51,7 +51,7 @@
                 value="jdbc:postgresql://localhost:5432/snel-transport-test" />
             <property name="javax.persistence.jdbc.user" value="transport_user" />
             <property name="javax.persistence.jdbc.password"
-                value="admin" />
+                value="adminqwe" />
             <property name="driverClass" value="org.postgresql.Driver" />
         </properties>
     </persistence-unit>

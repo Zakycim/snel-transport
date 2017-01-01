@@ -1,12 +1,26 @@
 
 package nl.cimsolutions.snel_transport.controllers;
 
+import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.management.AttributeNotFoundException;
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanException;
+import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import javax.management.Query;
+import javax.management.ReflectionException;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -19,6 +33,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.persistence.sessions.server.Server;
+
+import java.util.Iterator;
 import nl.cimsolutions.snel_transport.models.Customer;
 import nl.cimsolutions.snel_transport.models.OrderLine;
 import nl.cimsolutions.snel_transport.models.OrderList;
@@ -94,6 +111,12 @@ public class OrdersController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addOrder(Orders data) {
+	    
+	    
+	    System.out.println("karalz");
+//	    String port = getPort();
+
+	    
 		if (data.getCustomer().getId() == null) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("customer ID is required").build();
 		}
@@ -123,6 +146,7 @@ public class OrdersController {
 		Product product = new Product();
 		ProductFacade productFacade = new ProductFacade();
 
+		//JE HEBT NOG GEEN PRODUCTEN IN JE TEST DATABASE! DRM KAN JE OOK NOG GEEN ORDERS OPSLAAN IN DE DATABASE WAT HEEL LOGISCH IS...
 		for (int i = 0; i < data.getOrderLines().size(); i++) {
 			OrderLine orderLine = new OrderLine();
 			product = productFacade.find(data.getOrderLines().get(i).getProduct().getId());
@@ -134,6 +158,7 @@ public class OrdersController {
 			orderLine.setAmount(data.getOrderLines().get(i).getAmount());
 			orderLines.add(orderLine);
 		}
+		System.out.println("qwe");
 
 		order.setOrderLines(orderLines);
 
@@ -143,9 +168,40 @@ public class OrdersController {
 		newlyOrder = orderFacade.create(order);
 
 		return Response.status(Response.Status.CREATED).entity(newlyOrder).build();
+//		return Response.status(Response.Status.CREATED).entity("lol").build();
 	}
 
-	@POST
+	public String getPort() {
+	    String port = "";
+        try {
+            port = getEndPoints();
+           System.out.println(port);
+       } catch (MalformedObjectNameException e) {
+           // TODO Auto-generated catch block
+           e.printStackTrace();
+       } catch (AttributeNotFoundException e) {
+           // TODO Auto-generated catch block
+           e.printStackTrace();
+       } catch (InstanceNotFoundException e) {
+           // TODO Auto-generated catch block
+           e.printStackTrace();
+       } catch (NullPointerException e) {
+           // TODO Auto-generated catch block
+           e.printStackTrace();
+       } catch (UnknownHostException e) {
+           // TODO Auto-generated catch block
+           e.printStackTrace();
+       } catch (MBeanException e) {
+           // TODO Auto-generated catch block
+           e.printStackTrace();
+       } catch (ReflectionException e) {
+           // TODO Auto-generated catch block
+           e.printStackTrace();
+       }
+        return port;
+    }
+
+    @POST
 	@Path("/orderlines")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addOrderLine(OrderLine[] data) {
@@ -314,4 +370,26 @@ public class OrdersController {
 		return order;// Response.status(Response.Status.CREATED).entity(value).build();
 
 	}
+	
+    String getEndPoints() throws MalformedObjectNameException, NullPointerException, UnknownHostException,
+            AttributeNotFoundException, InstanceNotFoundException, MBeanException, ReflectionException {
+        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+        Set<ObjectName> objs = mbs.queryNames(new ObjectName("*:type=Connector,*"),
+                Query.match(Query.attr("protocol"), Query.value("HTTP/1.1")));
+        String hostname = InetAddress.getLocalHost().getHostName();
+        InetAddress[] addresses = InetAddress.getAllByName(hostname);
+        ArrayList<String> endPoints = new ArrayList<String>();
+        String port = "";
+        for (Iterator<ObjectName> i = objs.iterator(); i.hasNext();) {
+            ObjectName obj = i.next();
+            String scheme = mbs.getAttribute(obj, "scheme").toString();
+            port = obj.getKeyProperty("port");
+            for (InetAddress addr : addresses) {
+                String host = addr.getHostAddress();
+                String ep = scheme + "://" + host + ":" + port;
+                endPoints.add(ep);
+            }
+        }
+        return port;
+    }
 }
