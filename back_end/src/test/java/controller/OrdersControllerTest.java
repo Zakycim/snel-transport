@@ -111,7 +111,7 @@ public class OrdersControllerTest {
         Query q = em.createNativeQuery("INSERT INTO Product(id, code) " +
                 " VALUES(?,?)");
         q.setParameter(1, 1);
-        q.setParameter(2, "002");
+        q.setParameter(2, "00332");
         q.executeUpdate();
                 
         tx.commit();
@@ -321,7 +321,7 @@ public class OrdersControllerTest {
     }
     @Test
     public void testAddOrder() {
-        insertCategories();
+//        insertCategories();
 //        insertProducts();
         // Add order by method addOrderMethod
     	Response response = addOrderMethod(orderURL, 3L, 4, 1L, true, false);
@@ -343,11 +343,9 @@ public class OrdersControllerTest {
         //We expect that the found order has a customer id of 1
         foundOrder = orderFacade.find(orderId);
     	
-    	// Check if order id exists
+    	// Check if order with id 1 exists
         assertEquals("1", foundOrder.getCustomer().getId().toString());
        
-        //We remove the test data from the database, because we don't want to have TEST data in the development database
-        orderFacade.remove(foundOrder);
     }
     @Test
     public void testAddOrderWithoutCustomer() {

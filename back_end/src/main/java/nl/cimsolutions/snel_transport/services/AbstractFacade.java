@@ -25,10 +25,10 @@ public abstract class AbstractFacade<T> {
         Server server = new Server();
         String port = server.getPort();
         System.out.println("port nummer = " + port);
-        if(port.equals("9090")){
-            return this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport-test");
+        if(port.equals("8080")){
+            return this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport");
         }
-        return this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport");
+        return this.entityManagerFactory = Persistence.createEntityManagerFactory("snel-transport-test");
     }
     
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {

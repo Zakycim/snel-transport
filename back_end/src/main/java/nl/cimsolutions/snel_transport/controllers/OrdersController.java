@@ -112,11 +112,6 @@ public class OrdersController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addOrder(Orders data) {
 	    
-	    
-	    System.out.println("karalz");
-//	    String port = getPort();
-
-	    
 		if (data.getCustomer().getId() == null) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("customer ID is required").build();
 		}
@@ -168,38 +163,7 @@ public class OrdersController {
 		newlyOrder = orderFacade.create(order);
 
 		return Response.status(Response.Status.CREATED).entity(newlyOrder).build();
-//		return Response.status(Response.Status.CREATED).entity("lol").build();
 	}
-
-	public String getPort() {
-	    String port = "";
-        try {
-            port = getEndPoints();
-           System.out.println(port);
-       } catch (MalformedObjectNameException e) {
-           // TODO Auto-generated catch block
-           e.printStackTrace();
-       } catch (AttributeNotFoundException e) {
-           // TODO Auto-generated catch block
-           e.printStackTrace();
-       } catch (InstanceNotFoundException e) {
-           // TODO Auto-generated catch block
-           e.printStackTrace();
-       } catch (NullPointerException e) {
-           // TODO Auto-generated catch block
-           e.printStackTrace();
-       } catch (UnknownHostException e) {
-           // TODO Auto-generated catch block
-           e.printStackTrace();
-       } catch (MBeanException e) {
-           // TODO Auto-generated catch block
-           e.printStackTrace();
-       } catch (ReflectionException e) {
-           // TODO Auto-generated catch block
-           e.printStackTrace();
-       }
-        return port;
-    }
 
     @POST
 	@Path("/orderlines")
@@ -370,26 +334,4 @@ public class OrdersController {
 		return order;// Response.status(Response.Status.CREATED).entity(value).build();
 
 	}
-	
-    String getEndPoints() throws MalformedObjectNameException, NullPointerException, UnknownHostException,
-            AttributeNotFoundException, InstanceNotFoundException, MBeanException, ReflectionException {
-        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        Set<ObjectName> objs = mbs.queryNames(new ObjectName("*:type=Connector,*"),
-                Query.match(Query.attr("protocol"), Query.value("HTTP/1.1")));
-        String hostname = InetAddress.getLocalHost().getHostName();
-        InetAddress[] addresses = InetAddress.getAllByName(hostname);
-        ArrayList<String> endPoints = new ArrayList<String>();
-        String port = "";
-        for (Iterator<ObjectName> i = objs.iterator(); i.hasNext();) {
-            ObjectName obj = i.next();
-            String scheme = mbs.getAttribute(obj, "scheme").toString();
-            port = obj.getKeyProperty("port");
-            for (InetAddress addr : addresses) {
-                String host = addr.getHostAddress();
-                String ep = scheme + "://" + host + ":" + port;
-                endPoints.add(ep);
-            }
-        }
-        return port;
-    }
 }

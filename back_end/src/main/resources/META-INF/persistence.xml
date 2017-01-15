@@ -37,6 +37,10 @@
             <property name="javax.persistence.jdbc.show_sql" value="true" />
         </properties>
     </persistence-unit>
+    <!-- IMPORTANT NOTE:
+         On test environment when you call the find(id) method from OrdersController.java. Then the compiler will use the below
+         persistence-unit!
+     -->
     <persistence-unit name="snel-transport-test" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>nl.cimsolutions.snel_transport.models.Orders</class>
@@ -54,6 +58,9 @@
                 value="drop-and-create" />
             <property name="eclipselink.canonicalmodel.subpackage"
                 value="test" />
+                
+            <property name="javax.persistence.sql-load-script-source"
+                value="META-INF/sql/insert.sql" />
             <property name="javax.persistence.schema-generation-target"
                 value="database" />
             <property name="javax.persistence.jdbc.driver"
