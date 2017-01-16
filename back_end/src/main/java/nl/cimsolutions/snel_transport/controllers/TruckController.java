@@ -41,20 +41,6 @@ public class TruckController {
         Truck truck = new Truck();//(data.getId(), data.getLicensePlate(), true);
         truck.setLicensePlate("abcdefg");
         truck.setAvailable(true);
-        
-        System.out.println("addtruck");
-        for (int i = 0; i < data.getOrderList().size(); i++) {
-            
-            System.out.println("de truck id");
-            System.out.println(data.getOrderList().get(i).getTruckId());
-            System.out.println(data.getOrderList().get(i).getTruckId());
-            System.out.println("de order id");
-            System.out.println(data.getOrderList().get(i).getOrder().getId());
-           
-        }
-    
-        truck.setOrderList(data.getOrderList());
-        
         TruckFacade truckFacade = new TruckFacade();
          
         return Response.status(Response.Status.CREATED).entity(truckFacade.create(truck)).build(); 

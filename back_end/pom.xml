@@ -91,6 +91,7 @@
                 <version>2.2</version>
                 <configuration>
                     <port>9090</port>
+                    <contextFile>src/main/webapp/META-INF/context.xml</contextFile>
                 </configuration>
             </plugin>
         </plugins>

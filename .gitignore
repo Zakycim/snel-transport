@@ -29,3 +29,6 @@ font_end/!protractor*.js
 font_end/!systemjs.config.js
 font_end/!typings/typings.d.ts
 font_end/!wallaby.js
+
+#Angular 2
+front_end/debug.log

@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 @Entity 
@@ -27,7 +28,7 @@ public class OrderLine implements Serializable {
     private Long id;
     @Column(name = "orderId")
     private Long orderId;
-    @ManyToOne
+    @ManyToOne(targetEntity = nl.cimsolutions.snel_transport.models.Product.class)
     @JoinColumn(name="productId")
     private Product product;
     private int amount;

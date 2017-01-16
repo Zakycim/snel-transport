@@ -20,8 +20,6 @@ import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="Product")
-@Access(AccessType.FIELD)
 public class Product {
     
     @TableGenerator(
@@ -44,7 +42,8 @@ public class Product {
     @OneToOne
     @JoinColumn(name="categoryId")
     private Category Categories;
-    @OneToMany(mappedBy = "product", targetEntity = OrderLine.class)
+    
+    @OneToMany(mappedBy = "product", targetEntity = nl.cimsolutions.snel_transport.models.OrderLine.class)
     private List<OrderLine> orderLines;
 //    
     public Product(){

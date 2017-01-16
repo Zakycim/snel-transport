@@ -117,7 +117,7 @@ export class OrderCreateComponent implements OnInit {
 
   getCustomerInfo(customerId) {
     console.log(customerId);
-    this.customerId = parseInt(customerId) - 1;
+    this.customerId = parseInt(customerId);
     this.customerAddress = this.customers[this.customerId].adres;
     this.customerZipCode = this.customers[this.customerId].postalCode;
     this.customerCity = this.customers[this.customerId].city;

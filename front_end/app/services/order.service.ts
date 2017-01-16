@@ -48,6 +48,29 @@ export class OrderService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+  
+    getTrucks() {
+        this.url = "http://localhost:8080/snel-transport/api/trucks";
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        options.body = '';
+
+        return this._http.get(this.url, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+  
+    divideOrders() {
+        this.url = "http://localhost:8080/snel-transport/api/orders/deliverylist";
+        let data = { name : "AA" };
+        let body = JSON.stringify(data);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+        return this._http.post(this.url, body, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();

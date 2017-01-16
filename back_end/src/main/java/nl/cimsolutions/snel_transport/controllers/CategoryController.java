@@ -18,10 +18,8 @@ public class CategoryController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Category> getAllCategory() {
-        
         CategoryFacade categoryFacade = new CategoryFacade();
         List<Category> category = categoryFacade.findAll();
-        
         return category;
     }
 }

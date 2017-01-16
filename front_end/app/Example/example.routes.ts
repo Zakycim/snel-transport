@@ -6,5 +6,5 @@ import { ExampleComponent }    from './example.component';
 
 // Route Configuration
 export const exampleRoutes: Routes = [
-  { path: 'example', component: ExampleComponent }
+  { path: 'welcome', component: ExampleComponent }
 ];

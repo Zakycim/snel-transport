@@ -18,12 +18,12 @@ import javax.validation.constraints.NotNull;
 public class Category implements Serializable {
 
     @TableGenerator(
-            name = "ProductGenerator",
+            name = "CategoryGenerator",
             allocationSize = 1,
             initialValue = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE,
-            generator="ProductGenerator")
+            generator="CategoryGenerator")
     @Column(name="categoryId")
     private Long categoryId;
     @Column(name="name")

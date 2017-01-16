@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Http, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Order} from '../models/Order';
+import {Truck} from '../models/Truck';
 import {Status} from '../models/Status';
 import { OrderService } from '../services/order.service';
 import { StatusService } from '../services/status.service';
@@ -20,10 +21,10 @@ import { StatusService } from '../services/status.service';
 // Component class implementing OnInit
 export class OrderStatusComponent implements OnInit {
   orders: Order;
+  trucks: Truck;
   statuses: Status;
   customers = [];
   deliverylist = [];
-  heroesUrl = 'http://localhost:8080/snelTransport/resources/deliverylist';
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
@@ -37,12 +38,10 @@ export class OrderStatusComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._orderService.getOrders()
+    this._orderService.getTrucks()
       .subscribe(
       res => {
-        console.log("res");
-        console.log(res);
-        this.orders = res;
+        this.trucks = res;
       },
       error => {
         console.log("app get order error");
@@ -53,8 +52,6 @@ export class OrderStatusComponent implements OnInit {
     this._statusService.getStatuses()
       .subscribe(
       res => {
-        console.log("res");
-        console.log(res);
         this.statuses = res;
       },
       error => {
@@ -69,17 +66,13 @@ export class OrderStatusComponent implements OnInit {
     this._orderService.updateOrder(orderId, statusId)
       .subscribe(
       res => {
-        console.log("res");
-        console.log(res);
-        this.statuses = res;
+        console.log("app put order succes");
       },
       error => {
         console.log("app put order error");
         console.log(error);
       }
       );
-//    this.http.post(this.heroesUrl, JSON.stringify({ orderId: orderId, statusId: statusId }), { headers: this.headers })
-//      .toPromise().then(res => res.json().data).catch(this.handleError);
   }
 
 }

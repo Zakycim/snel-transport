@@ -26,9 +26,7 @@ public class StatusController {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Status> getAllStatus() {
     	StatusFacade statusFacade = new StatusFacade();
-
         List<Status> status = statusFacade.getAllStatus();//findAll();
-
         return status;
     } 
     
